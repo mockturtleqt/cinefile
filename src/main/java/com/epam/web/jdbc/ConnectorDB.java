@@ -11,7 +11,7 @@ public class ConnectorDB {
         String dbUrl = resource.getString("db.url");
         String user = resource.getString("db.user");
         String password = resource.getString("db.password");
-        //DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+        DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         return DriverManager.getConnection(dbUrl, user, password);
     }
 }

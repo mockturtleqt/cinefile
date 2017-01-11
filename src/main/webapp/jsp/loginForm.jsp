@@ -23,17 +23,16 @@
                     <input type="hidden" name="command" value="login">
                     <input type="text" class="login text-input" name="known-login"
                            placeholder=
-                           <fmt:message key="username"/> pattern="^([a-zA-Z]+)[a-zA-Z\d_]{4,}$"
-                           title=
-                           <fmt:message key="login.requirements"/> required/>
+                                   "<fmt:message key="username"/>" pattern="^([a-zA-Z]+)[a-zA-Z\d_]{4,}$"
+                           title="<fmt:message key="login.requirements"/>"
+                           required/>
                     <input type="password" class="password text-input" name="known-password"
-                           placeholder=
-                           <fmt:message key="password"/> pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
-                           title=
-                           <fmt:message key="password.requirements"/>
-                                   required/>
+                           placeholder="<fmt:message key="password"/>"
+                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
+                           title="<fmt:message key="password.requirements"/>"
+                           required/>
                     <input type="submit" class="sign-up-btn find-btn" value=
-                    <fmt:message key="login.btn"/>>
+                            "<fmt:message key="login.btn"/>">
                 </form>
             </li>
         </ul>
@@ -48,46 +47,41 @@
         <input type="hidden" name="command" value="sign-in-user">
         <div class="field required">
             <input type="text" class="login" name="login"
-                   placeholder=
-                   <fmt:message key="username"/> pattern="^([a-zA-Z]+)[a-zA-Z\d_]{4,}$"
-                   title=
-                   <fmt:message key="login.requirements"/> required/>
+                   placeholder="<fmt:message key="username"/>"
+                   pattern="^([a-zA-Z]+)[a-zA-Z\d_]{4,}$"
+                   title="<fmt:message key="login.requirements"/>"
+                   required/>
         </div>
         <div class="field required">
             <input type="password" id="password" class="password" name="password"
-                   placeholder=
-                   <fmt:message key="password"/> pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
-                   title=
-                   <fmt:message key="password.requirements"/>
-                           required/>
+                   placeholder="<fmt:message key="password"/>"
+                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
+                   title="<fmt:message key="password.requirements"/>"
+                   required/>
         </div>
         <div class="field required">
             <input type="password" id="confirm-password" class="confirm-password"
-                   placeholder=
-                   <fmt:message key="confirm.password"/> required/>
+                   placeholder="<fmt:message key="confirm.password"/>"
+                   required/>
         </div>
 
         <div class="field optional email-container">
             <input type="email" class="email" name="email"
-                   title=
-                   <fmt:message key="email.requirements"/>
-                           placeholder="Email"/>
+                   title="<fmt:message key="email.requirements"/>"
+                   placeholder="Email"/>
         </div>
 
         <div class="field optional">
             <input type="text" class="first-name" name="first-name"
-                   placeholder=
-            <fmt:message key="first.name"/>>
+                   placeholder="<fmt:message key="first.name"/>">
         </div>
 
         <div class="field optional">
             <input type="text" class="last-name" name="last-name"
-                   placeholder=
-            <fmt:message key="last.name"/>>
+                   placeholder="<fmt:message key="last.name"/>">
         </div>
 
-        <input type="submit" class="sign-up-btn" value=
-        <fmt:message key="signup.btn"/>>
+        <input type="submit" class="sign-up-btn" value="<fmt:message key="signup.btn"/>">
     </form>
 </div>
 </body>

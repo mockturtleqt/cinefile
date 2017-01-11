@@ -20,11 +20,12 @@
             <li>
                 <form action="controller">
                     <input type="hidden" name="command" value="change_language">
-                    <select class="language-select" name="language">
+                    <select class="language-select" name="language" onchange="this.form.submit()">
+                        <option selected disabled><fmt:message key="language"/> </option>
                         <option value="en_US">English</option>
                         <option value="ru_RU">Русский</option>
                     </select>
-                    <button class="language-btn" type="submit"><i class="fa fa-globe"></i></button>
+                    <%--<button class="language-btn" type="submit"><i class="fa fa-globe"></i></button>--%>
                 </form>
             </li>
             <li>
@@ -40,7 +41,7 @@
                 <form class="input-line">
                     <input type="hidden" name="command" value="find"/>
                     <input type="text" class="text-input"
-                           placeholder=<fmt:message key="search"/>>
+                           placeholder="<fmt:message key="search"/>">
                     <button class="find-btn"><i class="fa fa-search"></i></button>
                 </form>
             </li>

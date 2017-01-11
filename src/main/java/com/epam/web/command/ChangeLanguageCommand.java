@@ -13,7 +13,7 @@ public class ChangeLanguageCommand implements ActionCommand {
         String locale = request.getParameter("language");
         HttpSession session = request.getSession();
         session.setAttribute("locale", locale);
-
+        //session.setAttribute("language", "ru_RU");
         return ConfigurationManager.getProperty("path.page.index");
     }
 }

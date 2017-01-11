@@ -16,10 +16,9 @@
         <h5 class="footer-title"><fmt:message key="subscribe.msg"/></h5>
         <div class="footer-body">
             <form class="subscribe-form">
-                <input type="email" name="subscribe-email" class="email-input" placeholder=
-                <fmt:message key="email"/>>
-                <input type="button" name="subscribe-submit" value=
-                <fmt:message key="subscribe"/> class="subscribe-btn"/>
+                <input type="email" name="subscribe-email" class="email-input" placeholder="<fmt:message key="email"/>">
+                <input type="button" name="subscribe-submit" value="<fmt:message key="subscribe"/>"
+                       class="subscribe-btn"/>
             </form>
         </div>
     </div>
