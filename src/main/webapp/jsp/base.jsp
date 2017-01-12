@@ -10,33 +10,7 @@
 </head>
 <body class="home">
 
-<header class="main-header">
-    <nav class="site-nav">
-        <ul class="site-links">
-            <li>
-                <a href="../index.jsp" class="site-name">Cinefile</a>
-            </li>
-            <li>
-                <a href="#">Movies, Tv & Showtimes</a>
-            </li>
-            <li>
-                <a href="#">Celebs, Events & Photos</a>
-            </li>
-            <li>
-                <a href="loginForm.jsp">Log in</a>
-            </li>
-            <li>
-                <form class="input-line" action="controller" method="get">
-                    <input type="hidden" name="command" value="find">
-                    <input type="text" name="movie-to-find" class="text-input"
-                           placeholder="Search"/>
-                    <button class="find-btn"><i class="fa fa-search"></i></button>
-                </form>
-            </li>
-        </ul>
-    </nav>
-</header>
-
+<c:import url="header.jsp"/>
 <section class="section main">
     <div class="section-title">
         <h2>${queryName}</h2>
@@ -63,19 +37,7 @@
         </c:forEach>
     </section>
 </section>
-
-<footer class="main-footer">
-    <div class="footer-block">
-        <h5 class="footer-title">Subscribe to our newsletter</h5>
-        <div class="footer-body">
-            <form class="subscribe-form">
-                <input type="email" name="subscribe-email" class="email-input" placeholder="Your email address"/>
-                <input type="button" name="subscribe-submit" value="Subscribe" class="subscribe-btn"/>
-            </form>
-        </div>
-    </div>
-
-</footer>
+<c:import url="footer.jsp"/>
 </body>
 </html>
 

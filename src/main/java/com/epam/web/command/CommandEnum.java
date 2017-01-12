@@ -17,6 +17,12 @@ public enum CommandEnum {
         {
             this.command = new ChangeLanguageCommand();
         }
+    },
+
+    FIND {
+        {
+            this.command = new FindCommand();
+        }
     };
 
     ActionCommand command;

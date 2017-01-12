@@ -38,9 +38,9 @@
                 <a href="jsp/loginForm.jsp"><fmt:message key="signup"/></a>
             </li>
             <li>
-                <form class="input-line">
+                <form action="controller" class="input-line">
                     <input type="hidden" name="command" value="find"/>
-                    <input type="text" class="text-input"
+                    <input type="text" class="text-input" name="movie-to-find"
                            placeholder="<fmt:message key="search"/>">
                     <button class="find-btn"><i class="fa fa-search"></i></button>
                 </form>

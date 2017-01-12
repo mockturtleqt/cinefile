@@ -38,28 +38,28 @@ public class DataBaseHelper {
         return statement;
     }
 
-    public List<Movie> getMovie(String titleToFind) {
-        List<Movie> movieList = new ArrayList<>();
-        titleToFind = titleToFind.toUpperCase();
-        try {
-            PreparedStatement preparedStatement = getPreparedStatement(SQL_SELECT_MOVIE);
-            preparedStatement.setString(1, "%" + titleToFind + "%");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("movie_id");
-                String title = resultSet.getString("title");
-                String description = resultSet.getString("description");
-                String poster = resultSet.getString("poster");
-                Movie movie = new Movie(id, title);
-                movie.setDescription(description);
-                movie.setPoster(poster);
-                movieList.add(movie);
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return movieList;
-    }
+//    public List<Movie> getMovie(String titleToFind) {
+//        List<Movie> movieList = new ArrayList<>();
+//        titleToFind = titleToFind.toUpperCase();
+//        try {
+//            PreparedStatement preparedStatement = getPreparedStatement(SQL_SELECT_MOVIE);
+//            preparedStatement.setString(1, "%" + titleToFind + "%");
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                int id = resultSet.getInt("movie_id");
+//                String title = resultSet.getString("title");
+//                String description = resultSet.getString("description");
+//                String poster = resultSet.getString("poster");
+//                Movie movie = new Movie(id, title);
+//                movie.setDescription(description);
+//                movie.setPoster(poster);
+//                movieList.add(movie);
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e);
+//        }
+//        return movieList;
+//    }
 
     public User selectUser(String login, String password) {
 //        User user = null;
