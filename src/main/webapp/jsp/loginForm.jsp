@@ -19,7 +19,7 @@
                 <a href="../index.jsp" class="site-name">Cinefile</a>
             </li>
             <li>
-                <form class="input-line" action="controller" method="post">
+                <form class="input-line" action="/controller" method="post">
                     <input type="hidden" name="command" value="login">
                     <input type="text" class="login text-input" name="known-login"
                            placeholder=
@@ -31,9 +31,13 @@
                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
                            title="<fmt:message key="password.requirements"/>"
                            required/>
+
                     <input type="submit" class="sign-up-btn find-btn" value=
                             "<fmt:message key="login.btn"/>">
                 </form>
+            </li>
+            <li>
+                <h5 class="error-msg">${errorLoginPassMsg}</h5>
             </li>
         </ul>
     </nav>

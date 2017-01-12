@@ -25,7 +25,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
         titleToFind = titleToFind.toUpperCase();
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = getPreparedStatement(SQL_SELECT_MOVIE);
+            preparedStatement = this.getPreparedStatement(SQL_SELECT_MOVIE);
             preparedStatement.setString(1, "%" + titleToFind + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

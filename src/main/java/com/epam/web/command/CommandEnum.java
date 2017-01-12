@@ -21,7 +21,7 @@ public enum CommandEnum {
 
     FIND {
         {
-            this.command = new FindCommand();
+            this.command = new FindMovieCommand();
         }
     };
 

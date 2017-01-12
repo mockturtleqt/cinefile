@@ -18,7 +18,7 @@ import java.util.Enumeration;
 import java.util.Locale;
 
 
-@WebServlet(name = "Test", urlPatterns = {"/controller"})
+@WebServlet(name = "Controller", urlPatterns = {"/controller"})
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
 

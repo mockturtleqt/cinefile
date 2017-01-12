@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.util.List;
 
-public class FindCommand implements ActionCommand {
+public class FindMovieCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger();
 
     public String execute(HttpServletRequest request) {

@@ -18,7 +18,7 @@
                 <a href="../index.jsp" class="site-name">Cinefile</a>
             </li>
             <li>
-                <form action="controller">
+                <form action="controller" method="get">
                     <input type="hidden" name="command" value="change_language">
                     <select class="language-select" name="language" onchange="this.form.submit()">
                         <option selected disabled><fmt:message key="language"/> </option>
@@ -35,10 +35,10 @@
                 <a href="#"><fmt:message key="celebs"/></a>
             </li>
             <li>
-                <a href="jsp/loginForm.jsp"><fmt:message key="signup"/></a>
+                <a href="../jsp/loginForm.jsp"><fmt:message key="signup"/></a>
             </li>
             <li>
-                <form action="controller" class="input-line">
+                <form action="controller" method="get" class="input-line">
                     <input type="hidden" name="command" value="find"/>
                     <input type="text" class="text-input" name="movie-to-find"
                            placeholder="<fmt:message key="search"/>">
