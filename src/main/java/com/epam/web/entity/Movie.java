@@ -21,7 +21,8 @@ public class Movie extends Entity {
 
     }
 
-    public Movie(String title) {
+    public Movie(int id, String title) {
+        this.id = id;
         this.title = title;
     }
 

@@ -3,7 +3,7 @@
 //import java.sql.*;
 //
 //public class Test {
-//    static final String DB_URL = "jdbc:mysql://localhost:3306/?user=root";
+//    static final String DB_URL = "dbConnection:mysql://localhost:3306/?user=root";
 //    static final String USER = "root";
 //    static final String PASSWORD = "mockturtle";
 //    static  final String SQL = "SELECT first_name, last_name FROM movie_rating.media_person";

@@ -2,6 +2,7 @@ package com.epam.web.controller;
 
 import com.epam.web.command.ActionCommand;
 import com.epam.web.factory.ActionFactory;
+import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
@@ -25,6 +26,7 @@ public class Controller extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
+        //SessionRequestContent requestContent = new SessionRequestContent(request);
     }
 
     @Override
@@ -33,10 +35,12 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page = null;
+        String page;
         ActionFactory client = new ActionFactory();
-        ActionCommand command = client.defineCommand(request);
-        page = command.execute(request);
+        SessionRequestContent requestContent = new SessionRequestContent(request);
+        ActionCommand command = client.defineCommand(requestContent);
+        page = command.execute(requestContent);
+        requestContent.insertValues(request);
         if (page != null) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
             dispatcher.forward(request, response);

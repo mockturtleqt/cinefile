@@ -10,7 +10,11 @@ public class SessionRequestContent {
     private Map<String, String[]> requestParameters = new HashMap<>();
     private Map<String, Object> sessionAttributes = new HashMap<>();
 
-    public void extractValues(HttpServletRequest request) {
+    public SessionRequestContent(HttpServletRequest request) {
+        extractValues(request);
+    }
+
+    private void extractValues(HttpServletRequest request) {
         requestParameters = request.getParameterMap();
         extractRequestAttributes(request);
         extractSessionAttributes(request);

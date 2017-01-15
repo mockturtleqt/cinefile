@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.epam.web.jdbc.SQLQueries.SQL_SELECT_MOVIE;
+import static com.epam.web.dbConnection.SQLQueries.SQL_SELECT_MOVIE;
 
 public class MovieDAO extends AbstractDAO<Movie> {
     private static final Logger logger = LogManager.getLogger();
@@ -29,7 +29,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
             preparedStatement.setString(1, "%" + titleToFind + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                int id = resultSet.getInt("movie_id");
+                int id = resultSet.getInt("id");
                 String title = resultSet.getString("title");
                 String description = resultSet.getString("description");
                 String poster = resultSet.getString("poster");

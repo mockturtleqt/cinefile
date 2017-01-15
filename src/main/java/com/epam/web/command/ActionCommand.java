@@ -1,7 +1,7 @@
 package com.epam.web.command;
 
-import javax.servlet.http.HttpServletRequest;
+import com.epam.web.requestContent.SessionRequestContent;
 
 public interface ActionCommand {
-    String execute(HttpServletRequest request);
+    String execute(SessionRequestContent requestContent);
 }

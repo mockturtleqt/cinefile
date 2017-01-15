@@ -20,6 +20,11 @@ public class Review extends Entity {
         this.body = body;
     }
 
+    public Review(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
+
     public String getDate() {
         return date;
     }

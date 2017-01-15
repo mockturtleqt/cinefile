@@ -1,7 +1,7 @@
 package com.epam.web.dao;
 
-import com.epam.web.entity.Review;
 import com.epam.web.entity.User;
+import com.epam.web.entity.type.RoleType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,10 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import static com.epam.web.jdbc.SQLQueries.SQL_SELECT_USER;
+import static com.epam.web.dbConnection.SQLQueries.SQL_SELECT_USER;
 
 public class UserDAO extends AbstractDAO<User> {
     private static final Logger logger = LogManager.getLogger();
@@ -31,7 +29,7 @@ public class UserDAO extends AbstractDAO<User> {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                String role = resultSet.getString("role");
+                RoleType role = RoleType.valueOf(resultSet.getString("role").toUpperCase());
                 user = new User(login, password);
                 user.setRole(role);
             }

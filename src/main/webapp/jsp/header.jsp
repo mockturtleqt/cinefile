@@ -26,7 +26,6 @@
                         <option value="en_US">English</option>
                         <option value="ru_RU">Русский</option>
                     </select>
-                    <%--<button class="language-btn" type="submit"><i class="fa fa-globe"></i></button>--%>
                 </form>
             </li>
             <li>

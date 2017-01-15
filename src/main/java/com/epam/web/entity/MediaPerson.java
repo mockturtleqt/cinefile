@@ -21,7 +21,7 @@ public class MediaPerson extends Entity {
 
     }
 
-    public MediaPerson(String firstName, String lastName) {
+    public MediaPerson(int id, String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
