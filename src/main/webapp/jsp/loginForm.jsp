@@ -47,8 +47,8 @@
         <h2><fmt:message key="registration.greeting.pt1"/></h2>
         <p><fmt:message key="registration.greeting.pt2"/></p>
     </div>
-    <form class="registration-form" action="controller" method="post">
-        <input type="hidden" name="command" value="sign-in-user">
+    <form class="registration-form" action="/controller" method="post">
+        <input type="hidden" name="command" value="sign_up">
         <div class="field required">
             <input type="text" class="login" name="login"
                    placeholder="<fmt:message key="username"/>"

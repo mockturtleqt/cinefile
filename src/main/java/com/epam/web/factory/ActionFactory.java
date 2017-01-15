@@ -10,9 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class ActionFactory {
+    private static final String COMMAND = "command";
+    private static final String WRONG_ACTION = "wrongAction";
+    private static final String WRONG_ACTION_MSG = "message.wrongaction";
     public ActionCommand defineCommand(SessionRequestContent requestContent) {
         ActionCommand current = new EmptyCommand();
-        String[] action = requestContent.getRequestParameters().get("command");
+        String[] action = requestContent.getRequestParameters().get(COMMAND);
         if (action == null || action[0].isEmpty()) {
             return current;
         }
@@ -22,7 +25,7 @@ public class ActionFactory {
             current = currentEnum.getCurrentCommand();
         } catch (IllegalArgumentException e) {
             Map<String, Object> requestAttributes = requestContent.getRequestAttributes();
-            requestAttributes.put("wrongAction", action[0] + MessageManager.getProperty("message.wrongaction"));
+            requestAttributes.put(WRONG_ACTION, action[0] + MessageManager.getProperty(WRONG_ACTION_MSG));
             requestContent.setRequestAttributes(requestAttributes);
         }
         return current;

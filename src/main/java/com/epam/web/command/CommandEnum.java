@@ -7,6 +7,12 @@ public enum CommandEnum {
         }
     },
 
+    SIGN_UP {
+        {
+            this.command = new SignUpCommand();
+        }
+    },
+
     LOGOUT {
         {
             this.command = new LogoutCommand();

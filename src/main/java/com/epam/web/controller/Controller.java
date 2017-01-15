@@ -15,12 +15,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Locale;
 
 
 @WebServlet(name = "Controller", urlPatterns = {"/controller"})
 public class Controller extends HttpServlet {
+    private static final String INDEX_PAGE_PATH = "path.page.index";
+    private static final String NULLPAGE = "nullpage";
+    private static final String NULLPAGE_MSG = "message.nullpage";
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -45,8 +46,8 @@ public class Controller extends HttpServlet {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
             dispatcher.forward(request, response);
         } else {
-            page = ConfigurationManager.getProperty("path.page.index");
-            request.getSession().setAttribute("nullpage", MessageManager.getProperty("message.nullpage"));
+            page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
+            request.getSession().setAttribute(NULLPAGE, MessageManager.getProperty(NULLPAGE_MSG));
             response.sendRedirect(request.getContextPath() + page);
         }
     }
