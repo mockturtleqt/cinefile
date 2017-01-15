@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +36,15 @@
                 <a href="#"><fmt:message key="celebs"/></a>
             </li>
             <li>
-                <a href="../jsp/loginForm.jsp"><fmt:message key="signup"/></a>
+                <c:set var="user" value="${user}"/>
+                <c:choose>
+                    <c:when test="${not empty user}">
+                        <a href="../jsp/result.jsp">${user}</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="../jsp/loginForm.jsp"><fmt:message key="signup"/></a>
+                    </c:otherwise>
+                </c:choose>
             </li>
             <li>
                 <form action="controller" method="get" class="input-line">

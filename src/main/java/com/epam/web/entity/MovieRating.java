@@ -1,6 +1,7 @@
 package com.epam.web.entity;
 
-public class MovieRating {
+public class MovieRating extends Entity {
+    private int id;
     private int userId;
     private int movieId;
     private float rate;

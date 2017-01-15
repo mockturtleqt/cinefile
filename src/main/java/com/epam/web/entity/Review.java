@@ -1,6 +1,7 @@
 package com.epam.web.entity;
 
-public class Review {
+public class Review extends Entity {
+    private int id;
     private int userId;
     private int movieId;
     private String title;
@@ -11,10 +12,13 @@ public class Review {
     public Review() {
 
     }
-     public Review(String title, String body) {
-         this.title = title;
-         this.body = body;
-     }
+
+    public Review(int userId, int movieId, String title, String body) {
+        this.userId = userId;
+        this.movieId = movieId;
+        this.title = title;
+        this.body = body;
+    }
 
     public String getDate() {
         return date;

@@ -7,6 +7,7 @@ import java.time.Period;
 import java.util.List;
 
 public class Movie extends Entity {
+    private int id;
     private String title;
     private Period duration;
     private LocalDate releaseDate;
@@ -20,8 +21,7 @@ public class Movie extends Entity {
 
     }
 
-    public Movie(int id, String title) {
-        super(id);
+    public Movie(String title) {
         this.title = title;
     }
 

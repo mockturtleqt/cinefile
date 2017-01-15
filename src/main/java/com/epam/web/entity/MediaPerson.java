@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class MediaPerson extends Entity {
+    private int id;
     private String firstName;
     private String lastName;
     private String bio;
@@ -20,8 +21,7 @@ public class MediaPerson extends Entity {
 
     }
 
-    public MediaPerson(int id, String firstName, String lastName) {
-        super(id);
+    public MediaPerson(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }

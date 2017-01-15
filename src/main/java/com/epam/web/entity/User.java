@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User extends Entity {
-    private String role;
+    private int id;
+    private RoleType role;
     private String login;
     private String password;
     private String email;
@@ -30,11 +31,11 @@ public class User extends Entity {
         this.password = password;
     }
 
-    public String getRole() {
+    public RoleType getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(RoleType role) {
         this.role = role;
     }
 

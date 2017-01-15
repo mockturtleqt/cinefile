@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 
 public class LoginCommand implements ActionCommand {
@@ -28,8 +29,9 @@ public class LoginCommand implements ActionCommand {
             String password = request.getParameter(PASSWORD);
             User user = userDAO.findUser(login, password);
             if (user != null) {
-                request.setAttribute("user", login);
-                page = ConfigurationManager.getProperty("path.page.result");
+                HttpSession session = request.getSession();
+                session.setAttribute("user", login);
+                page = ConfigurationManager.getProperty("path.page.index");
             } else {
                 request.setAttribute("errorLoginPassMsg", MessageManager.getProperty("message.loginerror"));
                 page = ConfigurationManager.getProperty("path.page.login");
