@@ -38,28 +38,16 @@ public class SessionRequestContent {
         }
     }
 
-    public Map<String, Object> getRequestAttributes() {
-        return requestAttributes;
+    public String getParameter(String parameterName) {
+        return requestParameters.get(parameterName)[0];
     }
 
-    public void setRequestAttributes(Map<String, Object> requestAttributes) {
-        this.requestAttributes = requestAttributes;
+    public void setAttribute(String attributeName, Object attributeValue) {
+        requestAttributes.put(attributeName, attributeValue);
     }
 
-    public Map<String, String[]> getRequestParameters() {
-        return requestParameters;
-    }
-
-    public void setRequestParameters(Map<String, String[]> requestParameters) {
-        this.requestParameters = requestParameters;
-    }
-
-    public Map<String, Object> getSessionAttributes() {
-        return sessionAttributes;
-    }
-
-    public void setSessionAttributes(Map<String, Object> sessionAttributes) {
-        this.sessionAttributes = sessionAttributes;
+    public void setSessionAttribute(String attributeName, Object attributeValue) {
+        sessionAttributes.put(attributeName, attributeValue);
     }
 
     private void extractSessionAttributes(HttpServletRequest request) {

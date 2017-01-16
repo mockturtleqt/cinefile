@@ -30,20 +30,16 @@ public class LoginCommand implements ActionCommand {
             ConnectionPool connectionPool = ConnectionPool.getInstance();
             Connection connection = connectionPool.getConnection();
             UserDAO userDAO = new UserDAO(connection);
-            String[] login = requestContent.getRequestParameters().get(LOGIN_PARAM);
-            String[] password = requestContent.getRequestParameters().get(PASSWORD_PARAM);
-            Map<String, Object> sessionAttributes = requestContent.getSessionAttributes();
-            if (login != null && password != null) {
-                User user = userDAO.findUser(login[0], password[0]);
-                if (user != null) {
-                    sessionAttributes.put(USER_ATTR, login[0]);
-                    page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
-                } else {
-                    sessionAttributes.put(LOGIN_ERROR_ATTR, MessageManager.getProperty(LOGIN_ERROR_MSG));
-                    page = ConfigurationManager.getProperty(LOGIN_PAGE_PATH);
-                }
+            String login = requestContent.getParameter(LOGIN_PARAM);
+            String password = requestContent.getParameter(PASSWORD_PARAM);
+            User user = userDAO.findUser(login, password);
+            if (user != null) {
+                requestContent.setSessionAttribute(USER_ATTR, login);
+                page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
+            } else {
+                requestContent.setSessionAttribute(LOGIN_ERROR_ATTR, MessageManager.getProperty(LOGIN_ERROR_MSG));
+                page = ConfigurationManager.getProperty(LOGIN_PAGE_PATH);
             }
-            requestContent.setSessionAttributes(sessionAttributes);
             connectionPool.closeConnection(connection);
 
         } catch (InterruptedException e) {

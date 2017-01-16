@@ -13,7 +13,7 @@ import java.sql.Connection;
 import java.util.Map;
 
 public class SignUpCommand implements ActionCommand {
-    private static final String USER_ATTRIBUTE = "user";
+    private static final String USER_ATTR = "user";
     private static final String INDEX_PAGE_PATH = "path.page.index";
     private static final String LOGIN_PARAM = "login";
     private static final String PASSWORD_PARAM = "password";
@@ -29,9 +29,7 @@ public class SignUpCommand implements ActionCommand {
             UserDAO userDAO = new UserDAO(connection);
             User user = createUser(requestContent);
             userDAO.addUser(user);
-            Map<String, Object> sessionAttributes = requestContent.getSessionAttributes();
-            sessionAttributes.put(USER_ATTRIBUTE, user.getLogin());
-            requestContent.setSessionAttributes(sessionAttributes);
+            requestContent.setSessionAttribute(USER_ATTR, user.getLogin());
             page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
             connectionPool.closeConnection(connection);
         } catch (InterruptedException e) {
@@ -41,21 +39,20 @@ public class SignUpCommand implements ActionCommand {
     }
 
     private User createUser(SessionRequestContent requestContent) {
-        Map<String, String[]> requestParameters = requestContent.getRequestParameters();
-        String[] login = requestParameters.get(LOGIN_PARAM);
-        String[] password = requestParameters.get(PASSWORD_PARAM);
-        String[] email = requestParameters.get(EMAIL_PARAM);
-        String[] firstName = requestParameters.get(FIRST_NAME_PARAM);
-        String[] lastName = requestParameters.get(LAST_NAME_PARAM);
-        User user = new User(login[0], password[0]);
-        if (!email[0].isEmpty()) {
-            user.setEmail(email[0]);
+        String login = requestContent.getParameter(LOGIN_PARAM);
+        String password = requestContent.getParameter(PASSWORD_PARAM);
+        String email = requestContent.getParameter(EMAIL_PARAM);
+        String firstName = requestContent.getParameter(FIRST_NAME_PARAM);
+        String lastName = requestContent.getParameter(LAST_NAME_PARAM);
+        User user = new User(login, password);
+        if (!email.isEmpty()) {
+            user.setEmail(email);
         }
-        if (!firstName[0].isEmpty()) {
-            user.setFirstName(firstName[0]);
+        if (!firstName.isEmpty()) {
+            user.setFirstName(firstName);
         }
-        if (!lastName[0].isEmpty()) {
-            user.setLastName(lastName[0]);
+        if (!lastName.isEmpty()) {
+            user.setLastName(lastName);
         }
         return user;
     }
