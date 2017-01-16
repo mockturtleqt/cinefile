@@ -10,23 +10,32 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
     private static final String DATABASE = "database";
     private static final String DB_URL = "db.url";
     private static final String DB_USER = "db.user";
     private static final String DB_PASSWORD = "db.password";
+    private static final int POOL_SIZE = 10;
     private static final Logger logger = LogManager.getLogger();
+    private static final Lock lock = new ReentrantLock();
     private static ConnectionPool instance;
-    private BlockingQueue<Connection> connections = new ArrayBlockingQueue<>(10);
+    private BlockingQueue<Connection> connections = new ArrayBlockingQueue<>(POOL_SIZE);
 
     private ConnectionPool() {
         initializeConnections();
     }
 
     public static ConnectionPool getInstance() {
-        if (instance == null) {
-            instance = new ConnectionPool();
+        try {
+            lock.lock();
+            if (instance == null) {
+                instance = new ConnectionPool();
+            }
+        } finally {
+            lock.unlock();
         }
         return instance;
     }
@@ -46,7 +55,7 @@ public class ConnectionPool {
             String user = resource.getString(DB_USER);
             String password = resource.getString(DB_PASSWORD);
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < POOL_SIZE; i++) {
                 connections.put(this.getConnection(dbUrl, user, password));
             }
         } catch (SQLException | InterruptedException e) {
