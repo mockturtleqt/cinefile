@@ -19,15 +19,16 @@ import java.io.IOException;
 
 @WebServlet(name = "Controller", urlPatterns = {"/controller"})
 public class Controller extends HttpServlet {
+
     private static final String INDEX_PAGE_PATH = "path.page.index";
     private static final String NULLPAGE = "nullpage";
     private static final String NULLPAGE_MSG = "message.nullpage";
+
     private static final Logger logger = LogManager.getLogger();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
-        //SessionRequestContent requestContent = new SessionRequestContent(request);
     }
 
     @Override

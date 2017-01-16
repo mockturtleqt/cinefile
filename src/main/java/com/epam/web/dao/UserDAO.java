@@ -16,8 +16,10 @@ import static com.epam.web.dbConnection.SQLQueries.SQL_INSERT_USER;
 import static com.epam.web.dbConnection.SQLQueries.SQL_SELECT_USER;
 
 public class UserDAO extends AbstractDAO<User> {
-    private static final String ROLE = "role";
+
     private static final Logger logger = LogManager.getLogger();
+
+    private static final String ROLE = "role";
 
     public UserDAO(Connection connection) {
         super(connection);

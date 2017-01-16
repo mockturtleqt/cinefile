@@ -11,10 +11,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
-import java.util.Map;
 
 public class LoginCommand implements ActionCommand {
+
     private static final Logger logger = LogManager.getLogger();
+
     private static final String LOGIN_PARAM = "known-login";
     private static final String PASSWORD_PARAM = "known-password";
     private static final String USER_ATTR = "user";
@@ -29,9 +30,11 @@ public class LoginCommand implements ActionCommand {
         try {
             ConnectionPool connectionPool = ConnectionPool.getInstance();
             Connection connection = connectionPool.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
+
             String login = requestContent.getParameter(LOGIN_PARAM);
             String password = requestContent.getParameter(PASSWORD_PARAM);
+
+            UserDAO userDAO = new UserDAO(connection);
             User user = userDAO.findUser(login, password);
             if (user != null) {
                 requestContent.setSessionAttribute(USER_ATTR, login);
@@ -40,6 +43,7 @@ public class LoginCommand implements ActionCommand {
                 requestContent.setSessionAttribute(LOGIN_ERROR_ATTR, MessageManager.getProperty(LOGIN_ERROR_MSG));
                 page = ConfigurationManager.getProperty(LOGIN_PAGE_PATH);
             }
+
             connectionPool.closeConnection(connection);
 
         } catch (InterruptedException e) {

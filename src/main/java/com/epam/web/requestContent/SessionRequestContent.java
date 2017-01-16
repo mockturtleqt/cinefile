@@ -14,30 +14,6 @@ public class SessionRequestContent {
         extractValues(request);
     }
 
-    private void extractValues(HttpServletRequest request) {
-        requestParameters = request.getParameterMap();
-        extractRequestAttributes(request);
-        extractSessionAttributes(request);
-    }
-
-    public void insertValues(HttpServletRequest request) {
-        for (Map.Entry<String, Object> requestAttribute : requestAttributes.entrySet()) {
-            request.setAttribute(requestAttribute.getKey(), requestAttribute.getValue());
-        }
-        for (Map.Entry<String, Object> sessionAttribute : sessionAttributes.entrySet()) {
-            request.getSession().setAttribute(sessionAttribute.getKey(), sessionAttribute.getValue());
-        }
-    }
-
-    private void extractRequestAttributes(HttpServletRequest request) {
-        Enumeration attributeNames = request.getAttributeNames();
-        while (attributeNames.hasMoreElements()) {
-            String name = (String) attributeNames.nextElement();
-            Object value = request.getAttribute(name);
-            requestAttributes.put(name, value);
-        }
-    }
-
     public String getParameter(String parameterName) {
         return requestParameters.get(parameterName)[0];
     }
@@ -50,6 +26,30 @@ public class SessionRequestContent {
         sessionAttributes.put(attributeName, attributeValue);
     }
 
+    public void insertValues(HttpServletRequest request) {
+        for (Map.Entry<String, Object> requestAttribute : requestAttributes.entrySet()) {
+            request.setAttribute(requestAttribute.getKey(), requestAttribute.getValue());
+        }
+        for (Map.Entry<String, Object> sessionAttribute : sessionAttributes.entrySet()) {
+            request.getSession().setAttribute(sessionAttribute.getKey(), sessionAttribute.getValue());
+        }
+    }
+
+    private void extractValues(HttpServletRequest request) {
+        requestParameters = request.getParameterMap();
+        extractRequestAttributes(request);
+        extractSessionAttributes(request);
+    }
+
+    private void extractRequestAttributes(HttpServletRequest request) {
+        Enumeration attributeNames = request.getAttributeNames();
+        while (attributeNames.hasMoreElements()) {
+            String name = (String) attributeNames.nextElement();
+            Object value = request.getAttribute(name);
+            requestAttributes.put(name, value);
+        }
+    }
+
     private void extractSessionAttributes(HttpServletRequest request) {
         Enumeration attributeNames = request.getSession().getAttributeNames();
         while (attributeNames.hasMoreElements()) {
@@ -57,7 +57,6 @@ public class SessionRequestContent {
             Object value = request.getSession().getAttribute(name);
             sessionAttributes.put(name, value);
         }
-
     }
 
 }

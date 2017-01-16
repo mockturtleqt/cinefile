@@ -14,14 +14,17 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
+
+    private static final Logger logger = LogManager.getLogger();
+
     private static final String DATABASE = "database";
     private static final String DB_URL = "db.url";
     private static final String DB_USER = "db.user";
     private static final String DB_PASSWORD = "db.password";
     private static final int POOL_SIZE = 10;
-    private static final Logger logger = LogManager.getLogger();
     private static final Lock lock = new ReentrantLock();
     private static ConnectionPool instance;
+
     private BlockingQueue<Connection> connections = new ArrayBlockingQueue<>(POOL_SIZE);
 
     private ConnectionPool() {
@@ -73,10 +76,10 @@ public class ConnectionPool {
     }
 
     @Override
-    protected void finalize() throws Throwable{
+    protected void finalize() throws Throwable {
         super.finalize();
         try {
-            for (Connection connection: connections) {
+            for (Connection connection : connections) {
                 connection.close();
             }
         } catch (SQLException e) {

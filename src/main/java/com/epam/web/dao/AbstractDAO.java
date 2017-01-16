@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 public abstract class AbstractDAO<T extends Entity> {
     private static final Logger logger = LogManager.getLogger();
