@@ -23,18 +23,16 @@ public class FindMovieCommand implements ActionCommand {
 
     public String execute(SessionRequestContent requestContent) {
         try {
-            ConnectionPool connectionPool = ConnectionPool.getInstance();
-            Connection connection = connectionPool.getConnection();
-
             String movieToFind = requestContent.getParameter(MOVIE_TO_FIND_PARAM);
 
+            Connection connection = this.getConnection();
             MovieDAO movieDAO = new MovieDAO(connection);
             List<Movie> movieList = movieDAO.findMovie(movieToFind);
 
             requestContent.setAttribute(QUERY_NAME_ATTR, "Results for " + movieToFind + ":");
             requestContent.setAttribute(MOVIE_ATTR, movieList);
 
-            connectionPool.closeConnection(connection);
+            this.closeConnection(connection);
 
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, e);

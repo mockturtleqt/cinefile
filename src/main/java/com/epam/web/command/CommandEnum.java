@@ -3,7 +3,7 @@ package com.epam.web.command;
 public enum CommandEnum {
     LOGIN {
         {
-            this.command = new LoginCommand();
+            this.command = new LogInCommand();
         }
     },
 

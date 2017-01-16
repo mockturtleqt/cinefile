@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 
-public class LoginCommand implements ActionCommand {
+public class LogInCommand implements ActionCommand {
 
     private static final Logger logger = LogManager.getLogger();
 
