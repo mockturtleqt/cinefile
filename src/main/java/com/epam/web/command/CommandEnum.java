@@ -25,6 +25,12 @@ public enum CommandEnum {
         }
     },
 
+    FIND_TOP_MOVIES {
+        {
+            this.command = new FindTopMoviesCommand();
+        }
+    },
+
     SHOW_MOVIE_PAGE {
         {
             this.command = new ShowMoviePageCommand();

@@ -14,13 +14,11 @@
 <c:import url="header.jsp"/>
 <section class="section main">
     <div class="section-title">
-        <h2>
-            ${queryName}
-        </h2>
+        <h2><fmt:message key="top.movies.msg"/></h2>
     </div>
     <section class="section-movies">
         <c:forEach var="movie" items="${movie}">
-            <ul>
+            <ol>
                 <li>
                     <div class="movie">
                         <a href="controller?command=show_movie_page&title=${movie.title}">
@@ -36,7 +34,7 @@
                         <p class="description"><c:out value="${movie.description}"/></p>
                     </div>
                 </li>
-            </ul>
+            </ol>
         </c:forEach>
     </section>
 </section>

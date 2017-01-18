@@ -42,4 +42,18 @@ public class MovieService extends AbstractService<Movie> {
         }
         return movies;
     }
+
+    public List<Movie> findTopMovies() throws InterruptedException {
+        List<Movie> movies = null;
+        ProxyConnection connection = null;
+        try {
+            connection = super.getConnection();
+
+            MovieDAO movieDAO = new MovieDAO(connection);
+            movies = movieDAO.findTopMovies();
+        } finally {
+            super.returnConnection(connection);
+        }
+        return movies;
+    }
 }

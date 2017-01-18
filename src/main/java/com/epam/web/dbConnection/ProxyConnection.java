@@ -27,6 +27,16 @@ public class ProxyConnection {
         return preparedStatement;
     }
 
+    public Statement createStatement() {
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        }
+        return statement;
+    }
+
     public void closeStatement(Statement statement) {
         try {
             statement.close();

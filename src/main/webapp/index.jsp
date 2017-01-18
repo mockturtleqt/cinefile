@@ -1,34 +1,3 @@
-<%--<%@page contentType="text/html" pageEncoding="utf-8" %>--%>
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
-<%--<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
-<%--<html>--%>
-<%--<head>--%>
-    <%--<title>Index</title>--%>
-<%--</head>--%>
-<%--<body>--%>
-<%--&lt;%&ndash;<c:set var="locale" value="${pageContext.request.locale}"/>&ndash;%&gt;--%>
-<%--<fmt:setLocale value="${locale}"/>--%>
-<%--<form action="controller">--%>
-    <%--<input type="hidden" name="command" value="change_language">--%>
-    <%--<select name="language">--%>
-        <%--<option value="en_US">English</option>--%>
-        <%--<option value="ru_RU">Русский</option>--%>
-    <%--</select>--%>
-    <%--<button type="submit"><fmt:message key="welcome"/></button>--%>
-<%--</form>--%>
-
-<%--&lt;%&ndash;Preferred locale: ${locale.displayName}&ndash;%&gt;--%>
-<%--&lt;%&ndash;<br/>&ndash;%&gt;--%>
-<%--&lt;%&ndash;Country: ${locale.displayCountry}&ndash;%&gt;--%>
-<%--&lt;%&ndash;<br/>&ndash;%&gt;--%>
-<%--&lt;%&ndash;Language: ${locale.displayLanguage}&ndash;%&gt;--%>
-<%--&lt;%&ndash;<hr/>&ndash;%&gt;--%>
-
-<%--<br/>--%>
-<%--<a href="jsp/login.jsp">login</a>--%>
-<%--&lt;%&ndash;<jsp:forward page="jsp/login.jsp"/>&ndash;%&gt;--%>
-<%--</body>--%>
-<%--</html>--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -41,11 +10,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="home">
+<jsp:forward page="controller?command=find_top_movies"/>
 <fmt:setLocale value="${locale}"/>
 <c:import url="jsp/header.jsp"/>
 
 <section class="section main">
     <div class="section-title">
+        <a href="controller?command=find_top_movies">
+            true top
+        </a>
         <h2><fmt:message key="top.movies.msg"/></h2>
     </div>
     <section class="section-movies">
