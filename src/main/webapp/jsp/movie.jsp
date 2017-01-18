@@ -19,20 +19,46 @@
     <section class="section-movies">
         <div class="movie">
 
-            <div class="poster">
-                <a href="#">
-                    <img src="${moviePage.poster}"
-                         alt="${moviePage.title}"/>
-                </a>
-            </div>
+            <c:choose>
+                <c:when test="${not empty moviePage.poster}">
+                    <a href="../jsp/result.jsp">${user}</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="../jsp/loginForm.jsp"><fmt:message key="signup"/></a>
+                </c:otherwise>
+            </c:choose>
 
-            <p class="description">
-                ${moviePage.description}
-            </p>
+            <c:if test="${not empty moviePage.poster}">
+                <div class="poster">
+                    <a href="#">
+                        <img src="${moviePage.poster}"
+                             alt="${moviePage.title}"/>
+                    </a>
+                </div>
+            </c:if>
 
-            <p>Rating:
-                ${moviePage.rating}
-            </p>
+            <c:if test="${not empty moviePage.description}">
+                <p class="description">
+                        ${moviePage.description}
+                </p>
+            </c:if>
+
+            <c:if test="${not empty moviePage.duration}">
+                <p>Duration: ${moviePage.duration}</p>
+            </c:if>
+
+            <c:if test="${not empty moviePage.releaseDate}">
+                <p>Release date: ${moviePage.releaseDate}</p>
+            </c:if>
+
+            <c:if test="${not empty moviePage.genre}">
+                <p>Genre: ${moviePage.genre}</p>
+            </c:if>
+
+            <c:if test="${not empty moviePage.rating}">
+                <p>Rating: ${moviePage.rating}</p>
+            </c:if>
+
         </div>
     </section>
 </section>
