@@ -37,8 +37,6 @@ public class MovieService extends AbstractService<Movie> {
 
             MovieDAO movieDAO = new MovieDAO(connection);
             movies = movieDAO.findAll(title);
-
-            super.returnConnection(connection);
         } finally {
             super.returnConnection(connection);
         }

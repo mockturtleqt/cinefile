@@ -17,10 +17,10 @@ public class ShowMoviePageCommand implements ActionCommand {
         String page = null;
 
         try {
-            String title = content.getParameter("movie.title");
+            String title = content.getParameter("title");
             MovieService movieService = new MovieService();
             Movie movie = movieService.find(title);
-            content.setAttribute("movie", movie);
+            content.setAttribute("moviePage", movie);
             page = ConfigurationManager.getProperty(MOVIE_PAGE_PATH);
 
         } catch (InterruptedException e) {

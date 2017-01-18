@@ -13,26 +13,29 @@
 <c:import url="header.jsp"/>
 <section class="section main">
     <section class="section-movies">
-        <c:set var="movie" value="${movie}">
-            <ul>
-                <li>
-                    <div class="movie">
-                        <a href="#">
-                            <c:set var="movieTitle" value="movie.title"/>
-                            <h4 class="title"><c:out value="${movieTitle}"/></h4>
-                        </a>
+        <jsp:useBean id="moviePage" scope="page" class="com.epam.web.entity.Movie"/>
+        <div class="movie">
+            <a href="#">
+                <h4 class="title">
+                    <jsp:getProperty name="moviePage" property="title"/>
+                </h4>
+            </a>
 
-                        <div class="poster">
-                            <a href="#">
-                                <img src="${movie.poster}" alt="${movie.title}"/>
-                            </a>
-                        </div>
+            <div class="poster">
+                <a href="#">
+                    <img src="<jsp:getProperty name="moviePage" property="poster"/>"
+                         alt="<jsp:getProperty name="moviePage" property="title"/>"/>
+                </a>
+            </div>
 
-                        <p class="description"><c:out value="${movie.description}"/> </p>
-                    </div>
-                </li>
-            </ul>
-        </c:set>
+            <p class="description">
+                <jsp:getProperty name="moviePage" property="description"/>
+            </p>
+
+            <p>Rating:
+                <jsp:getProperty name="moviePage" property="rating"/>
+            </p>
+        </div>
     </section>
 </section>
 <c:import url="footer.jsp"/>
