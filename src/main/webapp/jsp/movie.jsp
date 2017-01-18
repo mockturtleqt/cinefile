@@ -12,28 +12,26 @@
 
 <c:import url="header.jsp"/>
 <section class="section main">
+    <jsp:useBean id="moviePage" scope="request" class="com.epam.web.entity.Movie"/>
+    <div class="section-title">
+        <h2>${moviePage.title}</h2>
+    </div>
     <section class="section-movies">
-        <jsp:useBean id="moviePage" scope="page" class="com.epam.web.entity.Movie"/>
         <div class="movie">
-            <a href="#">
-                <h4 class="title">
-                    <jsp:getProperty name="moviePage" property="title"/>
-                </h4>
-            </a>
 
             <div class="poster">
                 <a href="#">
-                    <img src="<jsp:getProperty name="moviePage" property="poster"/>"
-                         alt="<jsp:getProperty name="moviePage" property="title"/>"/>
+                    <img src="${moviePage.poster}"
+                         alt="${moviePage.title}"/>
                 </a>
             </div>
 
             <p class="description">
-                <jsp:getProperty name="moviePage" property="description"/>
+                ${moviePage.description}
             </p>
 
             <p>Rating:
-                <jsp:getProperty name="moviePage" property="rating"/>
+                ${moviePage.rating}
             </p>
         </div>
     </section>
