@@ -9,15 +9,12 @@ public class Review extends Entity {
     private boolean isDeleted;
     private String date;
 
-    public Review() {
-
+    public int getId() {
+        return id;
     }
 
-    public Review(int userId, int movieId, String title, String body) {
-        this.userId = userId;
-        this.movieId = movieId;
-        this.title = title;
-        this.body = body;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Review(String title, String body) {

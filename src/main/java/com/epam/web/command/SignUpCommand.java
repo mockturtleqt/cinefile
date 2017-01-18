@@ -1,15 +1,12 @@
 package com.epam.web.command;
 
-import com.epam.web.dao.UserDAO;
-import com.epam.web.dbConnection.ConnectionPool;
 import com.epam.web.entity.User;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
+import com.epam.web.service.UserService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.sql.Connection;
 
 public class SignUpCommand implements ActionCommand {
 
@@ -23,21 +20,16 @@ public class SignUpCommand implements ActionCommand {
     private static final String FIRST_NAME_PARAM = "first-name";
     private static final String LAST_NAME_PARAM = "last-name";
 
+    @Override
     public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            ConnectionPool connectionPool = ConnectionPool.getInstance();
-            Connection connection = connectionPool.getConnection();
-
-            User user = createUser(requestContent);
-            UserDAO userDAO = new UserDAO(connection);
-            userDAO.addUser(user);
+            User user = this.createUser(requestContent);
+            UserService userService = new UserService();
+            userService.add(user);
 
             requestContent.setSessionAttribute(USER_ATTR, user.getLogin());
             page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
-
-            connectionPool.closeConnection(connection);
-
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, e);
         }
@@ -51,7 +43,9 @@ public class SignUpCommand implements ActionCommand {
         String firstName = requestContent.getParameter(FIRST_NAME_PARAM);
         String lastName = requestContent.getParameter(LAST_NAME_PARAM);
 
-        User user = new User(login, password);
+        User user = new User();
+        user.setLogin(login);
+        user.setPassword(password);
 
         if (!email.isEmpty()) {
             user.setEmail(email);

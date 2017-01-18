@@ -1,15 +1,35 @@
 package com.epam.web.dbConnection;
 
 public class SQLQueries {
-    public final static String SQL_SELECT_MOVIE = "SELECT \n" +
+    public final static String SQL_SELECT_ALL_MOVIES_BY_TITLE = "SELECT \n" +
             "    `movie`.`id`,\n" +
             "    `movie`.`title`,\n" +
+            "    `movie`.`duration`,\n" +
+            "    `movie`.`release_date`,\n" +
             "    `movie`.`description`,\n" +
-            "    `movie`.`poster`\n" +
+            "    `movie`.`poster`,\n" +
+            "    `movie`.`rating`,\n" +
+            "    `movie`.`genre`\n" +
             "FROM\n" +
             "    `movie_rating`.`movie`\n" +
             "WHERE\n" +
-            "    UPPER(`movie`.`title`) LIKE ?";
+            "    UPPER(`movie`.`title`) LIKE ?\n" +
+            "        AND `movie`.`is_deleted` = 0";
+
+    public final static String SQL_SELECT_MOVIE_BY_TITLE = "SELECT \n" +
+            "    `movie`.`id`,\n" +
+            "    `movie`.`title`,\n" +
+            "    `movie`.`duration`,\n" +
+            "    `movie`.`release_date`,\n" +
+            "    `movie`.`description`,\n" +
+            "    `movie`.`poster`,\n" +
+            "    `movie`.`rating`,\n" +
+            "    `movie`.`genre`\n" +
+            "FROM\n" +
+            "    `movie_rating`.`movie`\n" +
+            "WHERE\n" +
+            "    `movie`.`title` = ?\n" +
+            "        AND `movie`.`is_deleted` = 0";
 
     public final static String SQL_INSERT_USER = "INSERT INTO\n" +
             "    `movie_rating`.`user`(`login`, `password`, `email`, `first_name`, `last_name`)\n" +

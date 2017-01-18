@@ -7,14 +7,12 @@ public class MovieRating extends Entity {
     private float rate;
     private boolean isDeleted;
 
-    public MovieRating() {
-
+    public int getId() {
+        return id;
     }
 
-    public MovieRating(int userId, int movieId, float rate) {
-        this.userId = userId;
-        this.movieId = movieId;
-        this.rate = rate;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getUserId() {

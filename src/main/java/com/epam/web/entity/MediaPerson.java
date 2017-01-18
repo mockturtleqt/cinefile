@@ -17,13 +17,12 @@ public class MediaPerson extends Entity {
     private String picture;
     private boolean isDeleted;
 
-    public MediaPerson() {
-
+    public int getId() {
+        return id;
     }
 
-    public MediaPerson(int id, String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {

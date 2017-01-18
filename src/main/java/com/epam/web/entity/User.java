@@ -22,13 +22,12 @@ public class User extends Entity {
     private boolean isDeleted;
     private List<Review> reviews;
 
-    public User() {
-
+    public int getId() {
+        return id;
     }
 
-    public User(String login, String password) {
-        this.login = login;
-        this.password = password;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public RoleType getRole() {

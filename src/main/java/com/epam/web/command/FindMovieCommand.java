@@ -1,15 +1,14 @@
 package com.epam.web.command;
 
-import com.epam.web.dao.MovieDAO;
-import com.epam.web.dbConnection.ConnectionPool;
 import com.epam.web.entity.Movie;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
+import com.epam.web.service.MovieService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.message.ParameterizedMessage;
 
-import java.sql.Connection;
 import java.util.List;
 
 public class FindMovieCommand implements ActionCommand {
@@ -22,21 +21,20 @@ public class FindMovieCommand implements ActionCommand {
     private static final String BASE_PAGE_PATH = "path.page.base";
 
     public String execute(SessionRequestContent requestContent) {
+        String page = null;
         try {
-            String movieToFind = requestContent.getParameter(MOVIE_TO_FIND_PARAM);
+            String movieTitle = requestContent.getParameter(MOVIE_TO_FIND_PARAM);
 
-            Connection connection = this.getConnection();
-            MovieDAO movieDAO = new MovieDAO(connection);
-            List<Movie> movieList = movieDAO.findMovie(movieToFind);
+            MovieService movieService = new MovieService();
+            List<Movie> movieList = movieService.findAll(movieTitle);
 
-            requestContent.setAttribute(QUERY_NAME_ATTR, "Results for " + movieToFind + ":");
+            requestContent.setAttribute(QUERY_NAME_ATTR, "Results for " + movieTitle + ":");
             requestContent.setAttribute(MOVIE_ATTR, movieList);
-
-            this.closeConnection(connection);
-
+            page = ConfigurationManager.getProperty(BASE_PAGE_PATH);
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, e);
         }
-        return ConfigurationManager.getProperty(BASE_PAGE_PATH);
+
+        return page;
     }
 }

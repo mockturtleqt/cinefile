@@ -47,7 +47,7 @@
             </li>
             <li>
                 <form action="controller" method="get" class="input-line">
-                    <input type="hidden" name="command" value="find"/>
+                    <input type="hidden" name="command" value="find_movies_by_name"/>
                     <input type="text" class="text-input" name="movie-to-find"
                            placeholder="<fmt:message key="search"/>">
                     <button class="find-btn"><i class="fa fa-search"></i></button>

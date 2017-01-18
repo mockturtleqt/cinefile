@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="debug">
     <Properties>
-        <Property name="filepath">D:\java_epam\training\web1\log</Property>
+        <Property name="filepath">D:\java_epam\training\cinefile\log</Property>
         <Property name="pattern">%d{yyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n</Property>
     </Properties>
 

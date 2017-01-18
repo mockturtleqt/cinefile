@@ -2,28 +2,29 @@ package com.epam.web.entity;
 
 import com.epam.web.entity.type.GenreType;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Date;
 import java.util.List;
 
 public class Movie extends Entity {
     private int id;
     private String title;
-    private Period duration;
-    private LocalDate releaseDate;
+    private Time duration;
+    private Date releaseDate;
     private String description;
     private String poster;
     private float rating;
     private List<GenreType> genre;
     private boolean isDeleted;
 
-    public Movie() {
-
+    public int getId() {
+        return id;
     }
 
-    public Movie(int id, String title) {
+    public void setId(int id) {
         this.id = id;
-        this.title = title;
     }
 
     public String getTitle() {
@@ -34,19 +35,19 @@ public class Movie extends Entity {
         this.title = title;
     }
 
-    public Period getDuration() {
+    public Time getDuration() {
         return duration;
     }
 
-    public void setDuration(Period duration) {
+    public void setDuration(Time duration) {
         this.duration = duration;
     }
 
-    public LocalDate getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 
