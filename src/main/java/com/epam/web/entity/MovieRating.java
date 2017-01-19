@@ -6,6 +6,15 @@ public class MovieRating extends Entity {
     private int movieId;
     private float rate;
     private boolean isDeleted;
+    private String movieTitle;
+
+    public String getMovieTitle() {
+        return movieTitle;
+    }
+
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
+    }
 
     public int getId() {
         return id;

@@ -21,6 +21,15 @@ public class User extends Entity {
     private String picture;
     private boolean isDeleted;
     private List<Review> reviews;
+    private List<MovieRating> ratings;
+
+    public List<MovieRating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<MovieRating> ratings) {
+        this.ratings = ratings;
+    }
 
     public int getId() {
         return id;

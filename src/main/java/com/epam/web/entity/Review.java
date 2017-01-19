@@ -1,5 +1,8 @@
 package com.epam.web.entity;
 
+
+import java.util.Date;
+
 public class Review extends Entity {
     private int id;
     private int userId;
@@ -7,7 +10,25 @@ public class Review extends Entity {
     private String title;
     private String body;
     private boolean isDeleted;
-    private String date;
+    private Date date;
+    private String userLogin;
+    private String movieTitle;
+
+    public String getMovieTitle() {
+        return movieTitle;
+    }
+
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
 
     public int getId() {
         return id;
@@ -17,16 +38,11 @@ public class Review extends Entity {
         this.id = id;
     }
 
-    public Review(String title, String body) {
-        this.title = title;
-        this.body = body;
-    }
-
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

@@ -16,6 +16,15 @@ public class MediaPerson extends Entity {
     private LocalDate birthday;
     private String picture;
     private boolean isDeleted;
+    private List<Movie> movies;
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
 
     public int getId() {
         return id;

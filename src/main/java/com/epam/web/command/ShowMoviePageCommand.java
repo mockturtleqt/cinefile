@@ -11,15 +11,16 @@ import org.apache.logging.log4j.Logger;
 public class ShowMoviePageCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger();
     private static final String MOVIE_PAGE_PATH = "path.page.movie";
+    private static final String ID = "id";
 
     @Override
     public String execute(SessionRequestContent content) {
         String page = null;
 
         try {
-            String title = content.getParameter("title");
+            int id = Integer.valueOf(content.getParameter(ID));
             MovieService movieService = new MovieService();
-            Movie movie = movieService.find(title);
+            Movie movie = movieService.findById(id);
             content.setAttribute("moviePage", movie);
             page = ConfigurationManager.getProperty(MOVIE_PAGE_PATH);
 

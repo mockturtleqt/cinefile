@@ -4,9 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Result</title>
+    <title>Movies</title>
     <meta charset="utf-8">
-    <link href="css/style.css" rel="stylesheet"/>
+    <link href="../css/style.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="home">
@@ -23,7 +23,7 @@
             <ul>
                 <li>
                     <div class="movie">
-                        <a href="controller?command=show_movie_page&title=${movie.title}">
+                        <a href="controller?command=show_movie_page&id=${movie.id}">
                             <h4 class="title"><c:out value="${movie.title}"/></h4>
                         </a>
 

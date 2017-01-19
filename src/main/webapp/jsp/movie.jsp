@@ -1,32 +1,25 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
+<jsp:useBean id="moviePage" scope="request" class="com.epam.web.entity.Movie"/>
 <head>
-    <title>Result</title>
+    <title>${moviePage.title}</title>
     <meta charset="utf-8">
-    <link href="css/style.css" rel="stylesheet"/>
+    <%--<link href="../css/moviePage.css" rel="stylesheet"/>--%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="home">
+<fmt:setLocale value="${locale}"/>
 
 <c:import url="header.jsp"/>
 <section class="section main">
-    <jsp:useBean id="moviePage" scope="request" class="com.epam.web.entity.Movie"/>
     <div class="section-title">
         <h2>${moviePage.title}</h2>
     </div>
     <section class="section-movies">
         <div class="movie">
-
-            <c:choose>
-                <c:when test="${not empty moviePage.poster}">
-                    <a href="../jsp/result.jsp">${user}</a>
-                </c:when>
-                <c:otherwise>
-                    <a href="../jsp/loginForm.jsp"><fmt:message key="signup"/></a>
-                </c:otherwise>
-            </c:choose>
 
             <c:if test="${not empty moviePage.poster}">
                 <div class="poster">
@@ -43,23 +36,54 @@
                 </p>
             </c:if>
 
-            <c:if test="${not empty moviePage.duration}">
-                <p>Duration: ${moviePage.duration}</p>
-            </c:if>
-
             <c:if test="${not empty moviePage.releaseDate}">
-                <p>Release date: ${moviePage.releaseDate}</p>
+                <p><strong><fmt:message key="release.date"/>: </strong>${moviePage.releaseDate}</p>
             </c:if>
 
             <c:if test="${not empty moviePage.genre}">
-                <p>Genre: ${moviePage.genre}</p>
+                <p><strong><fmt:message key="genre"/>: </strong>
+                    <c:forEach var="genre" items="${moviePage.genre}">
+                        ${genre},
+                    </c:forEach>
+                </p>
             </c:if>
 
             <c:if test="${not empty moviePage.rating}">
-                <p>Rating: ${moviePage.rating}</p>
+                <p><strong><fmt:message key="rating"/>: </strong>${moviePage.rating}</p>
+            </c:if>
+
+            <c:if test="${not empty moviePage.crew}">
+                <p><strong><fmt:message key="crew"/>: </strong></p>
+                <c:forEach var="mediaPerson" items="${moviePage.crew}">
+                    <div class="crew">
+                        <p>
+                            <c:out value="${mediaPerson.firstName}"/>
+                            <c:out value="${mediaPerson.lastName}"/>
+                            <br>
+                        </p>
+                    </div>
+                </c:forEach>
+            </c:if>
+
+            <c:if test="${not empty moviePage.reviews}">
+                <p><strong><fmt:message key="reviews"/> : </strong></p>
+                <c:forEach var="review" items="${moviePage.reviews}">
+                    <div class="review" style="background: #d0cecd">
+                        <h4><c:out value="${review.userLogin}"/></h4>
+                        <h3><c:out value="${review.title}"/></h3>
+                        <p>
+                            <c:out value="${review.body}"/>
+                            <br/>
+                            <c:out value="${review.date}"/>
+                            <br>
+                            <br>
+                        </p>
+                    </div>
+                </c:forEach>
             </c:if>
 
         </div>
+        <a href="#"><fmt:message key="back"/></a>
     </section>
 </section>
 <c:import url="footer.jsp"/>

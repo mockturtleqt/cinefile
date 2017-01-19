@@ -1,0 +1,21 @@
+.review {
+    background-color: #d0cecd
+}
+
+.section-title {
+    text-align: center;
+    padding-top: 30px;
+    margin: auto;
+    width: 70%;
+    font-size: 50px;
+}
+
+.section-movies {
+    margin: auto;
+    width: 60%;
+}
+
+.poster img {
+    width: 70%;
+    height: 70%;
+}
