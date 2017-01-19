@@ -10,13 +10,13 @@ import org.apache.logging.log4j.Logger;
 public class UserService extends AbstractService<User> {
     private static final Logger logger = LogManager.getLogger();
 
-    public User find(String login, String password) throws InterruptedException {
+    public User findByLoginAndPassword(String login, String password) throws InterruptedException {
         User user = null;
         ProxyConnection connection = null;
         try {
             connection = super.getConnection();
             UserDAO userDAO = new UserDAO(connection);
-            user = userDAO.find(login, password);
+            user = userDAO.findByLoginAndPassword(login, password);
         } finally {
             super.returnConnection(connection);
         }

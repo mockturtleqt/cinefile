@@ -28,7 +28,7 @@ public class SignUpCommand implements ActionCommand {
             UserService userService = new UserService();
             userService.add(user);
 
-            requestContent.setSessionAttribute(USER_ATTR, user.getLogin());
+            requestContent.setSessionAttribute(USER_ATTR, user);
             page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, e);

@@ -34,7 +34,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
     }
 
     public Movie findById(int id) {
-        Movie movie = null;
+        Movie movie = new Movie();
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.getPreparedStatement(SQL_SELECT_MOVIE_BY_ID);

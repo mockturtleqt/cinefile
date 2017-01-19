@@ -29,10 +29,10 @@ public class LogInCommand implements ActionCommand {
             String password = requestContent.getParameter(PASSWORD_PARAM);
 
             UserService userService = new UserService();
-            User user = userService.find(login, password);
+            User user = userService.findByLoginAndPassword(login, password);
 
             if (user != null) {
-                requestContent.setSessionAttribute(USER_ATTR, login);
+                requestContent.setSessionAttribute(USER_ATTR, user);
                 page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
             } else {
                 requestContent.setSessionAttribute(LOGIN_ERROR_ATTR, MessageManager.getProperty(LOGIN_ERROR_MSG));

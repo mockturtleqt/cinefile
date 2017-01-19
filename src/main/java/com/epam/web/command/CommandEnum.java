@@ -37,6 +37,12 @@ public enum CommandEnum {
         }
     },
 
+    SHOW_USER_PAGE_COMMAND {
+        {
+            this.command = new ShowUserPageCommand();
+        }
+    },
+
     FIND_MOVIES_BY_NAME {
         {
             this.command = new FindMovieCommand();

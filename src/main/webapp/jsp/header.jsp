@@ -38,7 +38,7 @@
                 <c:set var="user" value="${user}"/>
                 <c:choose>
                     <c:when test="${not empty user}">
-                        <a href="../jsp/result.jsp">${user}</a>
+                        <a href="controller?command=show_user_page&id=${user.id}">${user.login}</a>
                     </c:when>
                     <c:otherwise>
                         <a href="../jsp/loginForm.jsp"><fmt:message key="signup"/></a>
