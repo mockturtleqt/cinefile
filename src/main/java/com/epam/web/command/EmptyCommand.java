@@ -5,7 +5,7 @@ import com.epam.web.resource.ConfigurationManager;
 
 public class EmptyCommand implements ActionCommand {
 
-    private static final String ERROR_PAGE_PATH = "page.path.error";
+    private static final String ERROR_PAGE_PATH = "path.page.error";
 
     @Override
     public String execute(SessionRequestContent requestContent) {

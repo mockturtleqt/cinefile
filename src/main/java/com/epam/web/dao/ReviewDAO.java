@@ -21,7 +21,8 @@ public class ReviewDAO extends AbstractDAO<Review> {
     private static final String BODY = "body";
     private static final String CREATION_DATE = "creation_date";
     private static final String LOGIN = "login";
-    private static final String USER_ID = "userId";
+    private static final String USER_ID = "user_id";
+    private static final String MOVIE_ID = "movie_id";
     private static final String MOVIE_TITLE = "movieTitle";
     private static final Logger logger = LogManager.getLogger();
 
@@ -43,7 +44,6 @@ public class ReviewDAO extends AbstractDAO<Review> {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Review review = this.createReviewFromResultSet(resultSet);
-                review.setUserId(resultSet.getInt(USER_ID));
                 review.setMovieTitle(resultSet.getString(MOVIE_TITLE));
                 reviews.add(review);
             }
@@ -81,6 +81,8 @@ public class ReviewDAO extends AbstractDAO<Review> {
         review.setTitle(resultSet.getString(TITLE));
         review.setBody(resultSet.getString(BODY));
         review.setDate(resultSet.getDate(CREATION_DATE));
+        review.setUserId(resultSet.getInt(USER_ID));
+        review.setMovieId(resultSet.getInt(MOVIE_ID));
         return review;
     }
 }

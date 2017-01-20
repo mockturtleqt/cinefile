@@ -34,7 +34,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
     }
 
     public Movie findById(int id) {
-        Movie movie = new Movie();
+        Movie movie = null;
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.getPreparedStatement(SQL_SELECT_MOVIE_BY_ID);
@@ -59,6 +59,24 @@ public class MovieDAO extends AbstractDAO<Movie> {
         try {
             preparedStatement = connection.getPreparedStatement(SQL_SELECT_ALL_MOVIES_BY_TITLE);
             preparedStatement.setString(1, "%" + movieTitle + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                movieList.add(this.createMovieFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return movieList;
+    }
+
+    public List<Movie> findByMediaPersonId(int id) {
+        List<Movie> movieList = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_SELECT_MOVIES_BY_MEDIA_PERSON_ID);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 movieList.add(this.createMovieFromResultSet(resultSet));
@@ -101,9 +119,9 @@ public class MovieDAO extends AbstractDAO<Movie> {
         movie.setPoster(resultSet.getString(POSTER));
         movie.setRating(resultSet.getFloat(RATING));
 
-        String genresAsStrings = resultSet.getString(GENRE);
+        String genresString = resultSet.getString(GENRE);
         List<GenreType> genres = new ArrayList<>();
-        for (String genre : genresAsStrings.split(",")) {
+        for (String genre : genresString.split(",")) {
             genres.add(GenreType.valueOf(genre.toUpperCase()));
         }
 

@@ -12,6 +12,10 @@
         <exception-type>java.lang.RuntimeException</exception-type>
         <location>/jsp/error/error.jsp</location>
     </error-page>
+    <error-page>
+        <exception-type>com.epam.web.exception.NoSuchPageException</exception-type>
+        <location>/jsp/error/error.jsp</location>
+    </error-page>
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
         <param-value>localization.locale</param-value>

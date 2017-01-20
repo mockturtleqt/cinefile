@@ -39,7 +39,7 @@
             </c:if>
 
             <c:if test="${not empty userPage.email}">
-                <p><strong><fmt:message key="email"/>: </strong>${userPage.email}</p>
+                <p><strong><fmt:message key="user.email"/>: </strong>${userPage.email}</p>
             </c:if>
 
             <c:if test="${not empty userPage.gender}">
@@ -54,7 +54,8 @@
                 <p><strong><fmt:message key="reviews"/> : </strong></p>
                 <c:forEach var="review" items="${userPage.reviews}">
                     <div class="review" style="background: #d0cecd">
-                        <h4><c:out value="${review.movieTitle}"/> </h4>
+                        <h4><a href="controller?command=show_movie_page&movieId=${review.movieId}"><c:out
+                                value="${review.movieTitle}"/></a></h4>
                         <h3><c:out value="${review.title}"/></h3>
                         <p>
                             <c:out value="${review.body}"/>
@@ -72,7 +73,8 @@
                 <c:forEach var="rating" items="${userPage.ratings}">
                     <div class="rating">
                         <p>
-                                ${rating.movieTitle}: ${rating.rate}
+                            <a href="controller?command=show_movie_page&movieId=${rating.movieId}">${rating.movieTitle}</a>
+                            : ${rating.rate}
                             <br>
                         </p>
                     </div>

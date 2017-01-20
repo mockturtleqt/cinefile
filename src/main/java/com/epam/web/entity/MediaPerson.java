@@ -4,6 +4,7 @@ import com.epam.web.entity.type.GenderType;
 import com.epam.web.entity.type.OccupationType;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public class MediaPerson extends Entity {
@@ -13,7 +14,7 @@ public class MediaPerson extends Entity {
     private String bio;
     private List<OccupationType> occupation;
     private GenderType gender;
-    private LocalDate birthday;
+    private Date birthday;
     private String picture;
     private boolean isDeleted;
     private List<Movie> movies;
@@ -74,11 +75,11 @@ public class MediaPerson extends Entity {
         this.gender = gender;
     }
 
-    public LocalDate getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 

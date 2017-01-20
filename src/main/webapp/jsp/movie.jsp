@@ -57,8 +57,10 @@
                 <c:forEach var="mediaPerson" items="${moviePage.crew}">
                     <div class="crew">
                         <p>
-                            <c:out value="${mediaPerson.firstName}"/>
-                            <c:out value="${mediaPerson.lastName}"/>
+                            <a href="controller?command=show_media_person_page&mediaPersonId=${mediaPerson.id}">
+                                <c:out value="${mediaPerson.firstName}"/>
+                                <c:out value="${mediaPerson.lastName}"/>
+                            </a>
                             <br>
                         </p>
                     </div>
@@ -69,7 +71,8 @@
                 <p><strong><fmt:message key="reviews"/> : </strong></p>
                 <c:forEach var="review" items="${moviePage.reviews}">
                     <div class="review" style="background: #d0cecd">
-                        <h4><c:out value="${review.userLogin}"/></h4>
+                        <h4><a href="controller?command=show_user_page&userId=${review.userId}"><c:out
+                                value="${review.userLogin}"/></a></h4>
                         <h3><c:out value="${review.title}"/></h3>
                         <p>
                             <c:out value="${review.body}"/>

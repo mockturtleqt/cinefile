@@ -37,7 +37,13 @@ public enum CommandEnum {
         }
     },
 
-    SHOW_USER_PAGE_COMMAND {
+    SHOW_MEDIA_PERSON_PAGE {
+        {
+            this.command = new ShowMediaPersonPageCommand();
+        }
+    },
+
+    SHOW_USER_PAGE {
         {
             this.command = new ShowUserPageCommand();
         }

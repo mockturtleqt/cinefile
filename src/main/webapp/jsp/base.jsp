@@ -23,7 +23,7 @@
             <ul>
                 <li>
                     <div class="movie">
-                        <a href="controller?command=show_movie_page&id=${movie.id}">
+                        <a href="controller?command=show_movie_page&movieId=${movie.id}">
                             <h4 class="title"><c:out value="${movie.title}"/></h4>
                         </a>
 

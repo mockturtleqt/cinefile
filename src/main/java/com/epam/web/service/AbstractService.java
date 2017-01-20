@@ -10,14 +10,12 @@ public abstract class AbstractService<T extends Entity> {
 
     public ProxyConnection getConnection() throws InterruptedException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
-        Connection connection = connectionPool.getConnection();
-        return new ProxyConnection(connection);
+        return connectionPool.getConnection();
     }
 
     public void returnConnection(ProxyConnection proxyConnection) throws InterruptedException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
-        Connection connection = proxyConnection.getConnection();
-        connectionPool.returnConnection(connection);
+        connectionPool.returnConnection(proxyConnection);
     }
 
     public abstract boolean add(T entity) throws InterruptedException;

@@ -7,6 +7,7 @@ import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.MediaPerson;
 import com.epam.web.entity.Movie;
 import com.epam.web.entity.Review;
+import com.epam.web.exception.NoSuchPageException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,7 @@ public class MovieService extends AbstractService<Movie> {
         return true;
     }
 
-    public Movie findById(int id) throws InterruptedException {
+    public Movie findById(int id) throws InterruptedException, NoSuchPageException {
         ProxyConnection connection = null;
         Movie movie = null;
         try {
@@ -29,15 +30,15 @@ public class MovieService extends AbstractService<Movie> {
             MovieDAO movieDAO = new MovieDAO(connection);
             movie = movieDAO.findById(id);
 
-            MediaPersonDAO mediaPersonDAO = new MediaPersonDAO(connection);
-            List<MediaPerson> crew = new ArrayList<>();
-            crew = mediaPersonDAO.findByMovieId(id);
-            movie.setCrew(crew);
+            if (movie != null) {
+                MediaPersonDAO mediaPersonDAO = new MediaPersonDAO(connection);
+                movie.setCrew(mediaPersonDAO.findByMovieId(id));
 
-            ReviewDAO reviewDAO = new ReviewDAO(connection);
-            List<Review> reviews = new ArrayList<>();
-            reviews = reviewDAO.findByMovieId(id);
-            movie.setReviews(reviews);
+                ReviewDAO reviewDAO = new ReviewDAO(connection);
+                movie.setReviews(reviewDAO.findByMovieId(id));
+            } else {
+                throw new NoSuchPageException();
+            }
 
         } finally {
             super.returnConnection(connection);
@@ -46,7 +47,7 @@ public class MovieService extends AbstractService<Movie> {
     }
 
     public List<Movie> findAll(String title) throws InterruptedException {
-        List<Movie> movies = null;
+        List<Movie> movies = new ArrayList<>();
         ProxyConnection connection = null;
         try {
             connection = super.getConnection();
@@ -60,7 +61,7 @@ public class MovieService extends AbstractService<Movie> {
     }
 
     public List<Movie> findTopMovies() throws InterruptedException {
-        List<Movie> movies = null;
+        List<Movie> movies = new ArrayList<>();
         ProxyConnection connection = null;
         try {
             connection = super.getConnection();

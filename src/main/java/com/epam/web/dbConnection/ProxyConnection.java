@@ -48,4 +48,8 @@ public class ProxyConnection {
     public Connection getConnection() {
         return connection;
     }
+
+    public void close() throws SQLException {
+        connection.close();
+    }
 }

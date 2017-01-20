@@ -59,7 +59,9 @@
                 <c:forEach var="movie" items="${mediaPersonPage.movies}">
                     <div class="movie">
                         <p>
-                            <c:out value="${movie.title}"/>
+                            <a href="controller?command=show_movie_page&movieId=${movie.id}">
+                                <c:out value="${movie.title}"/>
+                            </a>
                             <br>
                         </p>
                     </div>

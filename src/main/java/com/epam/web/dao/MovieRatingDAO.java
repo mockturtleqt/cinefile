@@ -23,7 +23,8 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
     private static final String BODY = "body";
     private static final String CREATION_DATE = "creation_date";
     private static final String LOGIN = "login";
-    private static final String USER_ID = "userId";
+    private static final String USER_ID = "user_id";
+    private static final String MOVIE_ID = "movie_id";
     private static final String MOVIE_TITLE = "movieTitle";
     private static final Logger logger = LogManager.getLogger();
 
@@ -61,6 +62,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
         rating.setRate(resultSet.getFloat(RATE));
         rating.setMovieTitle(resultSet.getString(MOVIE_TITLE));
         rating.setUserId(resultSet.getInt(USER_ID));
+        rating.setMovieId(resultSet.getInt(MOVIE_ID));
         return rating;
     }
 }

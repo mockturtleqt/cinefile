@@ -38,7 +38,7 @@ public class UserDAO extends AbstractDAO<User> {
 
     public User findById(int id) {
         PreparedStatement preparedStatement = null;
-        User user = new User();
+        User user = null;
         try {
             preparedStatement = connection.getPreparedStatement(SQL_SELECT_USER_BY_ID);
             preparedStatement.setInt(1, id);
@@ -55,7 +55,7 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     public User findByLoginAndPassword(String login, String password) {
-        User user = new User();
+        User user = null;
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.getPreparedStatement(SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD);
@@ -96,14 +96,14 @@ public class UserDAO extends AbstractDAO<User> {
     private User createUserFromResultSet(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setId(resultSet.getInt(ID));
-        user.setRole(RoleType.valueOf(resultSet.getString(ROLE)));
+        user.setRole(RoleType.valueOf(resultSet.getString(ROLE).toUpperCase()));
         user.setLogin(resultSet.getString(LOGIN));
         user.setPassword(resultSet.getString(PASSWORD));
         user.setEmail(resultSet.getString(EMAIL));
         user.setBanned(resultSet.getBoolean(IS_BANNED));
         user.setFirstName(resultSet.getString(FIRST_NAME));
         user.setLastName(resultSet.getString(LAST_NAME));
-        user.setGender(GenderType.valueOf(resultSet.getString(GENDER)));
+        user.setGender(GenderType.valueOf(resultSet.getString(GENDER).toUpperCase()));
         user.setBirthday(resultSet.getDate(BIRTHDAY));
         user.setPicture(resultSet.getString(PICTURE));
         return user;

@@ -1,10 +1,12 @@
 package com.epam.web.controller;
 
 import com.epam.web.command.ActionCommand;
+import com.epam.web.exception.NoSuchPageException;
 import com.epam.web.factory.ActionFactory;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.resource.MessageManager;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,7 +39,7 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page;
+        String page = null;
         ActionFactory client = new ActionFactory();
         SessionRequestContent requestContent = new SessionRequestContent(request);
         ActionCommand command = client.defineCommand(requestContent);

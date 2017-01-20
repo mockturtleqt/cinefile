@@ -1,5 +1,6 @@
 package com.epam.web.command;
 
+import com.epam.web.exception.NoSuchPageException;
 import com.epam.web.requestContent.SessionRequestContent;
 
 public interface ActionCommand {
