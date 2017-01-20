@@ -87,6 +87,7 @@
 
         <input type="submit" class="sign-up-btn" value="<fmt:message key="signup.btn"/>">
     </form>
+    <a href="${previous_page}"><fmt:message key="back"/></a>
 </div>
 </body>
 </html>

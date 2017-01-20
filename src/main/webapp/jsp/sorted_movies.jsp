@@ -36,6 +36,7 @@
                 </li>
             </ol>
         </c:forEach>
+        <a href="${previous_page}"><fmt:message key="back"/></a>
     </section>
 </section>
 <c:import url="footer.jsp"/>

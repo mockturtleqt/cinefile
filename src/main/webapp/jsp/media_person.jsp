@@ -69,7 +69,7 @@
             </c:if>
 
         </div>
-        <a href="#"><fmt:message key="back"/></a>
+        <a href="${previous_page}"><fmt:message key="back"/></a>
     </section>
 </section>
 <c:import url="footer.jsp"/>

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SessionRequestContent {
+
     private Map<String, Object> requestAttributes = new HashMap<>();
     private Map<String, String[]> requestParameters = new HashMap<>();
     private Map<String, Object> sessionAttributes = new HashMap<>();
