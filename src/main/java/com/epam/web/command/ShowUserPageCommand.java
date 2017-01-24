@@ -1,6 +1,7 @@
 package com.epam.web.command;
 
 import com.epam.web.entity.User;
+import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.service.UserService;
@@ -23,7 +24,7 @@ public class ShowUserPageCommand implements ActionCommand {
             User user = userService.findById(id);
             content.setAttribute(USER, user);
             page = ConfigurationManager.getProperty(USER_PAGE_PATH);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | NoSuchRequestParameterException e) {
             logger.log(Level.ERROR, e);
         }
         return page;

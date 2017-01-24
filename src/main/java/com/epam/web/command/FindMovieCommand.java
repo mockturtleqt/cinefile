@@ -1,6 +1,7 @@
 package com.epam.web.command;
 
 import com.epam.web.entity.Movie;
+import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.service.MovieService;
@@ -31,7 +32,7 @@ public class FindMovieCommand implements ActionCommand {
             requestContent.setAttribute(QUERY_NAME_ATTR, "Results for " + movieTitle + ":");
             requestContent.setAttribute(MOVIE_ATTR, movieList);
             page = ConfigurationManager.getProperty(BASE_PAGE_PATH);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | NoSuchRequestParameterException e) {
             logger.log(Level.ERROR, e);
         }
 

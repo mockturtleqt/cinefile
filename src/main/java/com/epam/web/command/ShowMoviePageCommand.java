@@ -2,6 +2,7 @@ package com.epam.web.command;
 
 import com.epam.web.entity.Movie;
 import com.epam.web.exception.NoSuchPageException;
+import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.service.MovieService;
@@ -26,7 +27,7 @@ public class ShowMoviePageCommand implements ActionCommand {
             content.setAttribute("moviePage", movie);
             page = ConfigurationManager.getProperty(MOVIE_PAGE_PATH);
 
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | NoSuchRequestParameterException e) {
             logger.log(Level.ERROR, e);
         } catch (NoSuchPageException e) {
             logger.log(Level.ERROR, e);

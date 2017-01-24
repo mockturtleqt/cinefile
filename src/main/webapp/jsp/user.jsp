@@ -9,9 +9,11 @@
     <meta charset="utf-8">
     <%--<link href="../css/moviePage.css" rel="stylesheet"/>--%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="../js/updateReview.js"></script>
 </head>
 <body class="home">
-<fmt:setLocale value="${locale}"/>
+<fmt:setLocale value="${sessionScope.locale}"/>
 
 <c:import url="header.jsp"/>
 <section class="section main">
@@ -56,6 +58,18 @@
                     <div class="review" style="background: #d0cecd">
                         <h4><a href="controller?command=show_movie_page&movieId=${review.movieId}"><c:out
                                 value="${review.movieTitle}"/></a></h4>
+                        <form action="controller" method="post">
+                            <input type="hidden" name="command" value="delete_review"/>
+                            <input type="hidden" name="reviewId" value="${review.id}"/>
+                            <input type="submit" value="Delete"/>
+                        </form>
+                        <input type="button" class="edit-btn" value="Edit"/>
+                        <form action="controller" method="post" class="edit-review-form">
+                            <input type="hidden" name="reviewId" value="${review.id}"/>
+                            <input type="hidden" name="command" value="update_review"/>
+                            <input type="hidden" name="review"/>
+                            <input type="submit" class="save-btn" name="save-btn" value="Save"/>
+                        </form>
                         <h3><c:out value="${review.title}"/></h3>
                         <p>
                             <c:out value="${review.body}"/>
@@ -82,7 +96,7 @@
             </c:if>
 
         </div>
-        <a href="${previous_page}"><fmt:message key="back"/></a>
+        <a href="${requestScope.previous_page}"><fmt:message key="back"/></a>
     </section>
 </section>
 <c:import url="footer.jsp"/>

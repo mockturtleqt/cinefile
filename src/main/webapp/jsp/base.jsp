@@ -15,11 +15,11 @@
 <section class="section main">
     <div class="section-title">
         <h2>
-            ${queryName}
+            ${requestScope.queryName}
         </h2>
     </div>
     <section class="section-movies">
-        <c:forEach var="movie" items="${movie}">
+        <c:forEach var="movie" items="${requestScope.movie}">
             <ul>
                 <li>
                     <div class="movie">
@@ -38,7 +38,7 @@
                 </li>
             </ul>
         </c:forEach>
-        <a href="${previous_page}"><fmt:message key="back"/></a>
+        <a href="${requestScope.previous_page}"><fmt:message key="back"/></a>
     </section>
 </section>
 <c:import url="footer.jsp"/>

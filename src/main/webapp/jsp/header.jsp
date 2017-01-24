@@ -37,8 +37,9 @@
             </li>
             <li>
                 <jsp:useBean id="user" scope="session" class="com.epam.web.entity.User"/>
+                <%--<c:set var="user" value="${sessionScope.user}"/>--%>
                 <c:choose>
-                    <c:when test="${not empty user}">
+                    <c:when test="${not empty user.login}">
                         <a href="controller?command=show_user_page&userId=${user.id}">${user.login}</a>
                     </c:when>
                     <c:otherwise>

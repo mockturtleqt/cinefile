@@ -2,6 +2,7 @@ package com.epam.web.command;
 
 import com.epam.web.entity.MediaPerson;
 import com.epam.web.exception.NoSuchPageException;
+import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.service.MediaPersonService;
@@ -30,7 +31,7 @@ public class ShowMediaPersonPageCommand implements ActionCommand {
 
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, e);
-        } catch (NoSuchPageException e) {
+        } catch (NoSuchPageException | NoSuchRequestParameterException e) {
             page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
             logger.log(Level.ERROR, e);
         }

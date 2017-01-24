@@ -11,6 +11,7 @@
 </head>
 <body class="home">
 <jsp:forward page="controller?command=find_top_movies"/>
+<%--${pageContext.request.characterEncoding}--%>
 <%--<fmt:setLocale value="${locale}"/>--%>
 <%--<c:import url="jsp/header.jsp"/>--%>
 

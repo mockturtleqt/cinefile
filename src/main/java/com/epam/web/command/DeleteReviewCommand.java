@@ -1,5 +1,6 @@
 package com.epam.web.command;
 
+import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.memento.Memento;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.service.ReviewService;
@@ -19,7 +20,7 @@ public class DeleteReviewCommand implements ActionCommand {
             reviewService.deleteById(id);
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | NoSuchRequestParameterException e) {
             logger.log(Level.ERROR, e);
         }
 

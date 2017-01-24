@@ -1,6 +1,7 @@
 package com.epam.web.command;
 
 import com.epam.web.entity.User;
+import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.service.UserService;
@@ -31,13 +32,13 @@ public class SignUpCommand implements ActionCommand {
 
             requestContent.setSessionAttribute(USER_ATTR, user);
             page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | NoSuchRequestParameterException e) {
             logger.log(Level.ERROR, e);
         }
         return page;
     }
 
-    private User convertToUser(SessionRequestContent requestContent) {
+    private User convertToUser(SessionRequestContent requestContent) throws NoSuchRequestParameterException {
         String login = requestContent.getParameter(LOGIN_PARAM);
         String password = requestContent.getParameter(PASSWORD_PARAM);
         String email = requestContent.getParameter(EMAIL_PARAM);

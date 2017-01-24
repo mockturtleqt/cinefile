@@ -1,5 +1,7 @@
 package com.epam.web.requestContent;
 
+import com.epam.web.exception.NoSuchRequestParameterException;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -15,8 +17,12 @@ public class SessionRequestContent {
         extractValues(request);
     }
 
-    public String getParameter(String parameterName) {
-        return requestParameters.get(parameterName)[0];
+    public String getParameter(String parameterName) throws NoSuchRequestParameterException {
+        if (requestParameters.get(parameterName).length != 0) {
+            return requestParameters.get(parameterName)[0];
+        } else {
+            throw new NoSuchRequestParameterException(parameterName);
+        }
     }
 
     public void setAttribute(String attributeName, Object attributeValue) {
