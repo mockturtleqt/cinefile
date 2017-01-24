@@ -21,11 +21,13 @@ public class UserService extends AbstractService<User> {
             UserDAO userDAO = new UserDAO(connection);
             user = userDAO.findById(id);
 
-            ReviewDAO reviewDAO = new ReviewDAO(connection);
-            user.setReviews(reviewDAO.findByUserId(id));
+            if (user != null) {
+                ReviewDAO reviewDAO = new ReviewDAO(connection);
+                user.setReviews(reviewDAO.findByUserId(id));
 
-            MovieRatingDAO movieRatingDAO = new MovieRatingDAO(connection);
-            user.setRatings(movieRatingDAO.findByUserId(id));
+                MovieRatingDAO movieRatingDAO = new MovieRatingDAO(connection);
+                user.setRatings(movieRatingDAO.findByUserId(id));
+            }
         } finally {
             super.returnConnection(connection);
         }

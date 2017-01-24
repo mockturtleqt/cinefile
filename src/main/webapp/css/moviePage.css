@@ -1,5 +1,35 @@
+.review-title-input {
+    width: 600px;
+    height: 30px;
+    display: block;
+    padding: 5px;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+.review-body-input {
+    width: 600px;
+    height: 100px;
+    display: block;
+    padding: 5px;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+.leave-review-btn {
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: block;
+}
+
 .review {
     background-color: #d0cecd
+}
+
+.save-btn {
+    display: none;
 }
 
 .section-title {

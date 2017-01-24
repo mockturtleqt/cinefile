@@ -21,6 +21,15 @@ public class Movie extends Entity {
     private boolean isDeleted;
     private List<Review> reviews;
     private List<MediaPerson> crew;
+    private List<Integer> reviewersIds;
+
+    public List<Integer> getReviewersIds() {
+        return reviewersIds;
+    }
+
+    public void setReviewersIds(List<Integer> reviewersIds) {
+        this.reviewersIds = reviewersIds;
+    }
 
     public List<MediaPerson> getCrew() {
         return crew;

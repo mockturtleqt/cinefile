@@ -53,6 +53,24 @@ public enum CommandEnum {
         {
             this.command = new FindMovieCommand();
         }
+    },
+
+    ADD_REVIEW {
+        {
+            this.command = new AddReviewCommand();
+        }
+    },
+
+    UPDATE_REVIEW {
+        {
+            this.command = new UpdateReviewCommand();
+        }
+    },
+
+    DELETE_REVIEW {
+        {
+            this.command = new DeleteReviewCommand();
+        }
     };
 
     ActionCommand command;

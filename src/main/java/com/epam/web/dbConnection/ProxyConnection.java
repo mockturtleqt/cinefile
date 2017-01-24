@@ -17,6 +17,7 @@ public class ProxyConnection {
         this.connection = connection;
     }
 
+
     public PreparedStatement getPreparedStatement(String SQLQuery) {
         PreparedStatement preparedStatement = null;
         try {

@@ -20,12 +20,13 @@ public class SignUpCommand implements ActionCommand {
     private static final String FIRST_NAME_PARAM = "first-name";
     private static final String LAST_NAME_PARAM = "last-name";
 
+    private UserService userService = new UserService();
+
     @Override
     public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            User user = this.createUser(requestContent);
-            UserService userService = new UserService();
+            User user = this.convertToUser(requestContent);
             userService.add(user);
 
             requestContent.setSessionAttribute(USER_ATTR, user);
@@ -36,7 +37,7 @@ public class SignUpCommand implements ActionCommand {
         return page;
     }
 
-    private User createUser(SessionRequestContent requestContent) {
+    private User convertToUser(SessionRequestContent requestContent) {
         String login = requestContent.getParameter(LOGIN_PARAM);
         String password = requestContent.getParameter(PASSWORD_PARAM);
         String email = requestContent.getParameter(EMAIL_PARAM);

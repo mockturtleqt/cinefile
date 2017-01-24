@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="Home">
-<fmt:setLocale value="${locale}"/>
+<fmt:setLocale value="${sessionScope.locale}"/>
 <header class="main-header">
     <nav class="site-nav">
         <ul class="site-links">
@@ -21,8 +21,9 @@
             <li>
                 <form action="controller" method="get">
                     <input type="hidden" name="command" value="change_language">
-                    <select class="language-select" name="language" onchange="this.form.submit()">
-                        <option selected disabled><fmt:message key="language"/> </option>
+                    <select title="language-select" class="language-select" name="language"
+                            onchange="this.form.submit()">
+                        <option selected disabled><fmt:message key="language"/></option>
                         <option value="en_US">English</option>
                         <option value="ru_RU">Русский</option>
                     </select>
@@ -35,7 +36,7 @@
                 <a href="#"><fmt:message key="celebs"/></a>
             </li>
             <li>
-                <c:set var="user" value="${user}"/>
+                <jsp:useBean id="user" scope="session" class="com.epam.web.entity.User"/>
                 <c:choose>
                     <c:when test="${not empty user}">
                         <a href="controller?command=show_user_page&userId=${user.id}">${user.login}</a>

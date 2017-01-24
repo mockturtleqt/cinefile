@@ -1,4 +1,4 @@
-var password = document.getElementById("password")
+var password = document.getElementById("password");
 var confirm_password = document.getElementById("confirm-password");
 
 function validatePassword() {
@@ -9,6 +9,6 @@ function validatePassword() {
     }
 }
 
-password.onchange = validatePassword;
-confirm_password.onkeyup = validatePassword;
+password.onchange = validatePassword();
+confirm_password.onkeyup = validatePassword();
 

@@ -1,6 +1,8 @@
 package com.epam.web.entity;
 
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 public class Review extends Entity {
@@ -10,7 +12,7 @@ public class Review extends Entity {
     private String title;
     private String body;
     private boolean isDeleted;
-    private Date date;
+    private LocalDate date;
     private String userLogin;
     private String movieTitle;
 
@@ -38,11 +40,11 @@ public class Review extends Entity {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

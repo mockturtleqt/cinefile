@@ -1,7 +1,7 @@
 package com.epam.web.dbConnection;
 
 public class SQLQueries {
-    public final static String SQL_SELECT_ALL_MOVIES_BY_TITLE = "SELECT \n" +
+    public static final String SQL_SELECT_ALL_MOVIES_BY_TITLE = "SELECT \n" +
             "    `movie`.`id`,\n" +
             "    `movie`.`title`,\n" +
             "    `movie`.`release_date`,\n" +
@@ -15,7 +15,7 @@ public class SQLQueries {
             "    UPPER(`movie`.`title`) LIKE ?\n" +
             "        AND `movie`.`is_deleted` = 0";
 
-    public final static String SQL_SELECT_MOVIE_BY_TITLE = "SELECT \n" +
+    public static final String SQL_SELECT_MOVIE_BY_TITLE = "SELECT \n" +
             "    `movie`.`id`,\n" +
             "    `movie`.`title`,\n" +
             "    `movie`.`release_date`,\n" +
@@ -29,7 +29,7 @@ public class SQLQueries {
             "    `movie`.`title` = ?\n" +
             "        AND `movie`.`is_deleted` = 0";
 
-    public final static String SQL_SELECT_MOVIE_BY_ID = "SELECT \n" +
+    public static final String SQL_SELECT_MOVIE_BY_ID = "SELECT \n" +
             "    `movie`.`id`,\n" +
             "    `movie`.`title`,\n" +
             "    `movie`.`release_date`,\n" +
@@ -43,7 +43,7 @@ public class SQLQueries {
             "    `movie`.`id` = ?\n" +
             "        AND `movie`.`is_deleted` = 0";
 
-    public final static String SQL_SELECT_MOVIES_BY_MEDIA_PERSON_ID = "SELECT \n" +
+    public static final String SQL_SELECT_MOVIES_BY_MEDIA_PERSON_ID = "SELECT \n" +
             "    `movie`.`id`,\n" +
             "    `movie`.`title`,\n" +
             "    `movie`.`release_date`,\n" +
@@ -96,7 +96,7 @@ public class SQLQueries {
             "        AND `review`.`is_deleted` = 0\n" +
             "        AND `movie`.`is_deleted` = 0";
 
-    public final static String SQL_SELECT_RATINGS_BY_USER_ID = "SELECT \n" +
+    public static final String SQL_SELECT_RATINGS_BY_USER_ID = "SELECT \n" +
             "    `movie_rating`.`user_id`,\n" +
             "    `movie_rating`.`movie_id`,\n" +
             "    `movie_rating`.`id`,\n" +
@@ -111,7 +111,7 @@ public class SQLQueries {
             "        AND `movie_rating`.`is_deleted` = 0\n" +
             "        AND `movie`.`is_deleted` = 0";
 
-    public final static String SQL_SELECT_TOP_10_MOVIES = "SELECT \n" +
+    public static final String SQL_SELECT_TOP_10_MOVIES = "SELECT \n" +
             "    `movie`.`id`,\n" +
             "    `movie`.`title`,\n" +
             "    `movie`.`release_date`,\n" +
@@ -126,7 +126,7 @@ public class SQLQueries {
             "ORDER BY `movie`.`rating` DESC\n" +
             "LIMIT 10";
 
-    public final static String SQL_SELECT_MEDIA_PEOPLE_BY_MOVIE_ID = "SELECT \n" +
+    public static final String SQL_SELECT_MEDIA_PEOPLE_BY_MOVIE_ID = "SELECT \n" +
             "    `media_person`.`id`,\n" +
             "    `media_person`.`bio`,\n" +
             "    `media_person`.`occupation`,\n" +
@@ -179,11 +179,38 @@ public class SQLQueries {
             "    `user`.`id` = ?\n" +
             "        AND `user`.`is_deleted` = 0";
 
-    public final static String SQL_INSERT_USER = "INSERT INTO\n" +
+    //    public final static String SQL_INSERT_REVIEW = "INSERT INTO\n" +
+//            "    `movie_rating`.`review`(`title`, `body`, `user_id`, `movie_id`, `creation_date`)\n" +
+//            "     VALUES (?, ?, ?, ?, ?)";
+    public static final String SQL_INSERT_REVIEW = "INSERT INTO\n" +
+            "    `movie_rating`.`review`(`title`, `body`, `user_id`, `movie_id`)\n" +
+            "     VALUES (?, ?, ?, ?)";
+
+    public static final String SQL_DELETE_REVIEW_BY_ID = "UPDATE `movie_rating`.`review` \n" +
+            "SET \n" +
+            "    `is_deleted` = 1\n" +
+            "WHERE\n" +
+            "    `id` = ?";
+
+    public static final String SQL_DELETE_MOVIE_BY_ID = "UPDATE `movie_rating`.`movie` \n" +
+            "SET \n" +
+            "    `is_deleted` = 1\n" +
+            "WHERE\n" +
+            "    `id` = ?";
+
+    public static final String SQL_UPDATE_REVIEW = "UPDATE `movie_rating`.`review` \n" +
+            "SET \n" +
+            "    `review`.`title` = ?,\n" +
+            "    `review`.`body` = ?,\n" +
+            "    `review`.`creation_date` = ?\n" +
+            "WHERE\n" +
+            "    `id` = ?";
+
+    public static final String SQL_INSERT_USER = "INSERT INTO\n" +
             "    `movie_rating`.`user`(`login`, `password`, `email`, `first_name`, `last_name`)\n" +
             "     VALUES (?, ?, ?, ?, ?)";
 
-    public final static String SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD = "SELECT \n" +
+    public static final String SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD = "SELECT \n" +
             "    `user`.`id`,\n" +
             "    `user`.`role`,\n" +
             "    `user`.`login`,\n" +

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="home">
-<fmt:setLocale value="${locale}"/>
+<fmt:setLocale value="${sessionScope.locale}"/>
 
 <c:import url="header.jsp"/>
 <section class="section main">
@@ -69,7 +69,7 @@
             </c:if>
 
         </div>
-        <a href="${previous_page}"><fmt:message key="back"/></a>
+        <a href="${requestScope.previous_page}"><fmt:message key="back"/></a>
     </section>
 </section>
 <c:import url="footer.jsp"/>

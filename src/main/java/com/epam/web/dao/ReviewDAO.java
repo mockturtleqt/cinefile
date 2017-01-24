@@ -6,14 +6,15 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.epam.web.dbConnection.SQLQueries.SQL_SELECT_REVIEWS_BY_MOVIE_ID;
-import static com.epam.web.dbConnection.SQLQueries.SQL_SELECT_REVIEWS_BY_USER_ID;
+import static com.epam.web.dbConnection.SQLQueries.*;
 
 public class ReviewDAO extends AbstractDAO<Review> {
     private static final String ID = "id";
@@ -32,6 +33,58 @@ public class ReviewDAO extends AbstractDAO<Review> {
 
     public boolean add(Review review) {
         boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_INSERT_REVIEW);
+            preparedStatement.setString(1, review.getTitle());
+            preparedStatement.setString(2, review.getBody());
+            preparedStatement.setInt(3, review.getUserId());
+            preparedStatement.setInt(4, review.getMovieId());
+            preparedStatement.executeUpdate();
+            success = true;
+//            preparedStatement.setDate(5, java.sql.Date.valueOf(review.getDate()));
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return success;
+    }
+
+    public boolean update(Review review) {
+        boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_UPDATE_REVIEW);
+            preparedStatement.setString(1, review.getTitle());
+            preparedStatement.setString(2, review.getBody());
+            LocalDate localDate = review.getDate();
+            Date date = (localDate != null) ? Date.valueOf(localDate) : null;
+            preparedStatement.setDate(3, date);
+            preparedStatement.setInt(4, review.getId());
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return success;
+    }
+
+    public boolean deleteById(int id) {
+        boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_DELETE_REVIEW_BY_ID);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
         return success;
     }
 
@@ -80,7 +133,10 @@ public class ReviewDAO extends AbstractDAO<Review> {
         review.setId(resultSet.getInt(ID));
         review.setTitle(resultSet.getString(TITLE));
         review.setBody(resultSet.getString(BODY));
-        review.setDate(resultSet.getDate(CREATION_DATE));
+        Date creationDate = resultSet.getDate(CREATION_DATE);
+        if (creationDate != null) {
+            review.setDate(creationDate.toLocalDate());
+        }
         review.setUserId(resultSet.getInt(USER_ID));
         review.setMovieId(resultSet.getInt(MOVIE_ID));
         return review;
