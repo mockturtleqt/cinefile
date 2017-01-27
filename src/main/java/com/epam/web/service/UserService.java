@@ -13,6 +13,19 @@ import org.apache.logging.log4j.Logger;
 public class UserService extends AbstractService<User> {
     private static final Logger logger = LogManager.getLogger();
 
+    public boolean create(User user) throws InterruptedException {
+        ProxyConnection connection = null;
+        boolean success = false;
+        try {
+            connection = super.getConnection();
+            UserDAO userDAO = new UserDAO(connection);
+            success = userDAO.create(user);
+        } finally {
+            super.returnConnection(connection);
+        }
+        return success;
+    }
+
     public User findById(int id) throws InterruptedException {
         User user = null;
         ProxyConnection connection = null;
@@ -45,18 +58,5 @@ public class UserService extends AbstractService<User> {
             super.returnConnection(connection);
         }
         return user;
-    }
-
-    public boolean add(User user) throws InterruptedException {
-        ProxyConnection connection = null;
-        boolean success = false;
-        try {
-            connection = super.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            success = userDAO.add(user);
-        } finally {
-            super.returnConnection(connection);
-        }
-        return success;
     }
 }

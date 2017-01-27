@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.epam.web.dbConnection.SQLQueries.*;
+import static com.epam.web.dbConnection.query.SQLReviewQuery.*;
 
 public class ReviewDAO extends AbstractDAO<Review> {
     private static final String ID = "id";
@@ -31,7 +31,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
         super(connection);
     }
 
-    public boolean add(Review review) {
+    public boolean create(Review review) {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -40,15 +40,35 @@ public class ReviewDAO extends AbstractDAO<Review> {
             preparedStatement.setString(2, review.getBody());
             preparedStatement.setInt(3, review.getUserId());
             preparedStatement.setInt(4, review.getMovieId());
+            LocalDate localDate = review.getDate();
+            Date date = (localDate != null) ? Date.valueOf(localDate) : null;
+            preparedStatement.setDate(5, date);
             preparedStatement.executeUpdate();
             success = true;
-//            preparedStatement.setDate(5, java.sql.Date.valueOf(review.getDate()));
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
         return success;
+    }
+
+    public Review findById(int id) {
+        PreparedStatement preparedStatement = null;
+        Review review = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_SELECT_REVIEW_BY_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                review = this.createReviewFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return review;
     }
 
     public boolean update(Review review) {

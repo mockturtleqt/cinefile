@@ -14,7 +14,7 @@ public class MediaPerson extends Entity {
     private String bio;
     private List<OccupationType> occupation;
     private GenderType gender;
-    private Date birthday;
+    private LocalDate birthday;
     private String picture;
     private boolean isDeleted;
     private List<Movie> movies;
@@ -75,11 +75,11 @@ public class MediaPerson extends Entity {
         this.gender = gender;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

@@ -3,6 +3,7 @@ package com.epam.web.entity;
 import com.epam.web.entity.type.GenderType;
 import com.epam.web.entity.type.RoleType;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,7 @@ public class User extends Entity {
     private String firstName;
     private String lastName;
     private GenderType gender;
-    private Date birthday;
+    private LocalDate birthday;
     private String picture;
     private boolean isDeleted;
     private List<Review> reviews;
@@ -118,11 +119,11 @@ public class User extends Entity {
         this.gender = gender;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

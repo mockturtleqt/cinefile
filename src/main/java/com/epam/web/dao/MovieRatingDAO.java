@@ -2,7 +2,6 @@ package com.epam.web.dao;
 
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.MovieRating;
-import com.epam.web.entity.Review;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,8 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.epam.web.dbConnection.SQLQueries.SQL_SELECT_RATINGS_BY_USER_ID;
-import static com.epam.web.dbConnection.SQLQueries.SQL_SELECT_REVIEWS_BY_USER_ID;
+import static com.epam.web.dbConnection.query.SQLMovieRatingQuery.*;
 
 public class MovieRatingDAO extends AbstractDAO<MovieRating> {
     private static final String ID = "id";
@@ -32,8 +30,72 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
         super(connection);
     }
 
-    public boolean add(MovieRating movieRating) {
+    public MovieRating findById(int id) {
+        PreparedStatement preparedStatement = null;
+        MovieRating movieRating = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_SELECT_MOVIE_RATING_BY_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                movieRating = this.createRatingFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return movieRating;
+    }
+
+    public boolean create(MovieRating movieRating) {
         boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_INSERT_MOVIE_RATING);
+            preparedStatement.setInt(1, movieRating.getUserId());
+            preparedStatement.setInt(2, movieRating.getMovieId());
+            preparedStatement.setFloat(3, movieRating.getRate());
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return success;
+    }
+
+    public boolean update(MovieRating movieRating) {
+        boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_UPDATE_MOVIE_RATING);
+            preparedStatement.setFloat(1, movieRating.getRate());
+            preparedStatement.setInt(4, movieRating.getId());
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return success;
+    }
+
+    public boolean deleteById(int id) {
+        boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_DELETE_MOVIE_RATING_BY_ID);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
         return success;
     }
 
@@ -46,6 +108,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 MovieRating rating = this.createRatingFromResultSet(resultSet);
+                rating.setMovieTitle(resultSet.getString(MOVIE_TITLE));
                 ratings.add(rating);
             }
         } catch (SQLException e) {
@@ -60,7 +123,6 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
         MovieRating rating = new MovieRating();
         rating.setId(resultSet.getInt(ID));
         rating.setRate(resultSet.getFloat(RATE));
-        rating.setMovieTitle(resultSet.getString(MOVIE_TITLE));
         rating.setUserId(resultSet.getInt(USER_ID));
         rating.setMovieId(resultSet.getInt(MOVIE_ID));
         return rating;

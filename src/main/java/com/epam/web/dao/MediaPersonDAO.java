@@ -2,22 +2,23 @@ package com.epam.web.dao;
 
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.MediaPerson;
-import com.epam.web.entity.Review;
 import com.epam.web.entity.type.GenderType;
 import com.epam.web.entity.type.OccupationType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.epam.web.dbConnection.SQLQueries.SQL_SELECT_MEDIA_PEOPLE_BY_MOVIE_ID;
-import static com.epam.web.dbConnection.SQLQueries.SQL_SELECT_MEDIA_PERSON_BY_ID;
-import static com.epam.web.dbConnection.SQLQueries.SQL_SELECT_REVIEWS_BY_MOVIE_ID;
+import static com.epam.web.dbConnection.query.SQLMediaPersonQuery.SQL_DELETE_MEDIA_PERSON_BY_ID;
+import static com.epam.web.dbConnection.query.SQLMediaPersonQuery.SQL_SELECT_MEDIA_PEOPLE_BY_MOVIE_ID;
+import static com.epam.web.dbConnection.query.SQLMediaPersonQuery.SQL_SELECT_MEDIA_PERSON_BY_ID;
 
 public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
     private static final String ID = "id";
@@ -34,8 +35,25 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
         super(connection);
     }
 
-    public boolean add(MediaPerson mediaPerson) {
+    public boolean create(MediaPerson mediaPerson) {
+
         return true;
+    }
+
+    public boolean deleteById(int id) {
+        boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_DELETE_MEDIA_PERSON_BY_ID);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return success;
     }
 
     public MediaPerson findById(int id) {
@@ -89,7 +107,9 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
         mediaPerson.setOccupation(occupations);
 
         mediaPerson.setGender(GenderType.valueOf(resultSet.getString(GENDER).toUpperCase()));
-        mediaPerson.setBirthday(resultSet.getDate(BIRTHDAY));
+        Date date = resultSet.getDate(BIRTHDAY);
+        LocalDate localDate = (date != null) ? date.toLocalDate() : null;
+        mediaPerson.setBirthday(localDate);
         mediaPerson.setPicture(resultSet.getString(PICTURE));
         return mediaPerson;
     }

@@ -18,5 +18,5 @@ public abstract class AbstractService<T extends Entity> {
         connectionPool.returnConnection(proxyConnection);
     }
 
-    public abstract boolean add(T entity) throws InterruptedException;
+    public abstract boolean create(T entity) throws InterruptedException;
 }

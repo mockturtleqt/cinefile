@@ -2,25 +2,21 @@ package com.epam.web.dao;
 
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Movie;
-import com.epam.web.entity.Review;
 import com.epam.web.entity.type.GenreType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.epam.web.dbConnection.SQLQueries.*;
+import static com.epam.web.dbConnection.query.SQLMovieQuery.*;
 
 public class MovieDAO extends AbstractDAO<Movie> {
     private static final String ID = "id";
     private static final String TITLE = "title";
-    private static final String DURATION = "duration";
     private static final String RELEASE_DATE = "release_date";
     private static final String DESCRIPTION = "description";
     private static final String POSTER = "poster";
@@ -31,6 +27,38 @@ public class MovieDAO extends AbstractDAO<Movie> {
 
     public MovieDAO(ProxyConnection connection) {
         super(connection);
+    }
+
+    public boolean create(Movie movie) {
+        boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_INSERT_MOVIE);
+            preparedStatement.setString(1, movie.getTitle());
+            LocalDate localDate = movie.getReleaseDate();
+            Date date = (localDate != null) ? Date.valueOf(localDate) : null;
+            preparedStatement.setDate(2, date);
+            preparedStatement.setString(3, movie.getDescription());
+            preparedStatement.setString(4, movie.getPoster());
+            preparedStatement.setFloat(5, movie.getRating());
+            List<GenreType> genres = movie.getGenre();
+            StringBuilder genresAsString = new StringBuilder();
+            for (int i = 0; i < genres.size(); i++) {
+                genresAsString.append(genres.get(i));
+                //So that we won't have a comma after the last genre
+                if (i != genres.size() - 2) {
+                    genresAsString.append(",");
+                }
+            }
+            preparedStatement.setString(6, genresAsString.toString());
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return success;
     }
 
     public Movie findById(int id) {
@@ -50,6 +78,22 @@ public class MovieDAO extends AbstractDAO<Movie> {
             connection.closeStatement(preparedStatement);
         }
         return movie;
+    }
+
+    public boolean deleteById(int id) {
+        boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_DELETE_MOVIE_BY_ID);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return success;
     }
 
     public List<Movie> findAll(String movieTitle) {
@@ -106,15 +150,13 @@ public class MovieDAO extends AbstractDAO<Movie> {
         return movieList;
     }
 
-    public boolean add(Movie movie) {
-        return true;
-    }
-
     private Movie createMovieFromResultSet(ResultSet resultSet) throws SQLException {
         Movie movie = new Movie();
         movie.setId(resultSet.getInt(ID));
         movie.setTitle(resultSet.getString(TITLE));
-        movie.setReleaseDate(resultSet.getDate(RELEASE_DATE));
+        Date date = resultSet.getDate(RELEASE_DATE);
+        LocalDate localDate = (date != null) ? date.toLocalDate() : null;
+        movie.setReleaseDate(localDate);
         movie.setDescription(resultSet.getString(DESCRIPTION));
         movie.setPoster(resultSet.getString(POSTER));
         movie.setRating(resultSet.getFloat(RATING));
@@ -128,4 +170,6 @@ public class MovieDAO extends AbstractDAO<Movie> {
         movie.setGenre(genres);
         return movie;
     }
+
+
 }

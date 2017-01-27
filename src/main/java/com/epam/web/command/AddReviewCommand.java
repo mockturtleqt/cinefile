@@ -10,21 +10,28 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDate;
+
 public class AddReviewCommand implements ActionCommand {
+    private static final String REVIEW_TITLE_INPUT = "review-title-input";
+    private static final String REVIEW_BODY_INPUT = "review-body-input";
+    private static final String MOVIE_ID = "movie-id";
+    private static final String USER_ID = "user-id";
     private static final Logger logger = LogManager.getLogger();
 
     public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            String title = requestContent.getParameter("review-title-input");
-            String body = requestContent.getParameter("review-body-input");
-            int movieId = Integer.valueOf(requestContent.getParameter("movie-id"));
-            int userId = Integer.valueOf(requestContent.getParameter("user-id"));
+            String title = requestContent.getParameter(REVIEW_TITLE_INPUT);
+            String body = requestContent.getParameter(REVIEW_BODY_INPUT);
+            int movieId = Integer.valueOf(requestContent.getParameter(MOVIE_ID));
+            int userId = Integer.valueOf(requestContent.getParameter(USER_ID));
             Review review = new Review();
             review.setTitle(title);
             review.setBody(body);
             review.setUserId(userId);
             review.setMovieId(movieId);
+            review.setDate(LocalDate.now());
 
             ReviewService reviewService = new ReviewService();
             reviewService.add(review);

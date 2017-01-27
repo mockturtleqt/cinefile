@@ -18,7 +18,7 @@ import java.util.List;
 public class MovieService extends AbstractService<Movie> {
     private static final Logger logger = LogManager.getLogger();
 
-    public boolean add(Movie movie) {
+    public boolean create(Movie movie) {
         return true;
     }
 

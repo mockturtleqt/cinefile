@@ -7,7 +7,7 @@ import com.epam.web.entity.MediaPerson;
 import com.epam.web.exception.NoSuchPageException;
 
 public class MediaPersonService extends AbstractService<MediaPerson> {
-    public boolean add(MediaPerson mediaPerson) {
+    public boolean create(MediaPerson mediaPerson) {
         boolean success = false;
         return success;
     }

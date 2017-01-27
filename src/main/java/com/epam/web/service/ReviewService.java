@@ -5,13 +5,14 @@ import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Review;
 
 public class ReviewService extends AbstractService<Review> {
-    public boolean add(Review review) throws InterruptedException {
+
+    public boolean create(Review review) throws InterruptedException {
         boolean success = false;
         ProxyConnection connection = null;
         try {
             connection = super.getConnection();
             ReviewDAO reviewDAO = new ReviewDAO(connection);
-            success = reviewDAO.add(review);
+            success = reviewDAO.create(review);
         } finally {
             super.returnConnection(connection);
         }

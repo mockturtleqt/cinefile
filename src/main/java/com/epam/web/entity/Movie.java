@@ -12,8 +12,7 @@ import java.util.List;
 public class Movie extends Entity {
     private int id;
     private String title;
-    private LocalTime duration;
-    private Date releaseDate;
+    private LocalDate releaseDate;
     private String description;
     private String poster;
     private float rating;
@@ -63,19 +62,11 @@ public class Movie extends Entity {
         this.title = title;
     }
 
-    public LocalTime getDuration() {
-        return duration;
-    }
-
-    public void setDuration(LocalTime duration) {
-        this.duration = duration;
-    }
-
-    public Date getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 

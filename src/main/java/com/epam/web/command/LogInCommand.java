@@ -2,6 +2,7 @@ package com.epam.web.command;
 
 import com.epam.web.entity.User;
 import com.epam.web.exception.NoSuchRequestParameterException;
+import com.epam.web.memento.Memento;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.resource.MessageManager;
@@ -34,7 +35,8 @@ public class LogInCommand implements ActionCommand {
 
             if (user != null) {
                 requestContent.setSessionAttribute(USER_ATTR, user);
-                page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
+                Memento memento = Memento.getInstance();
+                page = memento.getPreviousPage();
             } else {
                 requestContent.setSessionAttribute(LOGIN_ERROR_ATTR, MessageManager.getProperty(LOGIN_ERROR_MSG));
                 page = ConfigurationManager.getProperty(LOGIN_PAGE_PATH);

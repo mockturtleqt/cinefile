@@ -7,7 +7,7 @@
 <head>
     <title>${userPage.login}</title>
     <meta charset="utf-8">
-    <%--<link href="../css/moviePage.css" rel="stylesheet"/>--%>
+    <link href="../css/moviePage.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="../js/updateReview.js"></script>
@@ -70,10 +70,11 @@
                             <input type="hidden" name="review"/>
                             <input type="submit" class="save-btn" name="save-btn" value="Save"/>
                         </form>
-                        <h3><c:out value="${review.title}"/></h3>
-                        <p>
+                        <h3 class="review-title"><c:out value="${review.title}"/></h3>
+                        <p class="review-body">
                             <c:out value="${review.body}"/>
-                            <br/>
+                        </p>
+                        <p>
                             <c:out value="${review.date}"/>
                             <br>
                             <br>

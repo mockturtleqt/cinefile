@@ -15,13 +15,15 @@ public class ChangeLanguageCommand implements ActionCommand {
     private static final String LOCALE_ATTR = "locale";
 
     public String execute(SessionRequestContent requestContent) {
-        Memento memento = Memento.getInstance();
+        String page = null;
         try {
             String locale = requestContent.getParameter(LANGUAGE_PARAM);
             requestContent.setSessionAttribute(LOCALE_ATTR, locale);
+            Memento memento = Memento.getInstance();
+            page = memento.getPreviousPage();
         } catch (NoSuchRequestParameterException e) {
             logger.log(Level.ERROR, e);
         }
-        return memento.getPreviousPage();
+        return page;
     }
 }

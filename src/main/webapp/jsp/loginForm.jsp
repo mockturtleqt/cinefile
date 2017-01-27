@@ -19,7 +19,7 @@
                 <a href="../index.jsp" class="site-name">Cinefile</a>
             </li>
             <li>
-                <form class="input-line" action="controller" method="post">
+                <form class="input-line" action="/controller" method="post">
                     <input type="hidden" name="command" value="login">
                     <input type="text" class="login text-input" name="known-login"
                            placeholder=
@@ -47,7 +47,7 @@
         <h2><fmt:message key="registration.greeting.pt1"/></h2>
         <p><fmt:message key="registration.greeting.pt2"/></p>
     </div>
-    <form class="registration-form" action="controller" method="post">
+    <form class="registration-form" action="/controller" method="post">
         <input type="hidden" name="command" value="sign_up">
         <div class="field required">
             <input type="text" class="login" name="login"
