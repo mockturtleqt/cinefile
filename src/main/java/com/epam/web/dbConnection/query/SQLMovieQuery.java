@@ -86,4 +86,14 @@ public class SQLMovieQuery {
             "    `is_deleted` = 1\n" +
             "WHERE\n" +
             "    `id` = ?";
+
+    public static final String SQL_UPDATE_MOVIE = "UPDATE `movie_rating`.`movie` \n" +
+            "SET \n" +
+            "    `movie`.`title` = ?,\n" +
+            "    `movie`.`release_date` = ?,\n" +
+            "    `movie`.`description` = ?,\n" +
+            "    `movie`.`poster` = ?,\n" +
+            "    `movie`.`genre` = ?\n" +
+            "WHERE\n" +
+            "    `id` = ?";
 }

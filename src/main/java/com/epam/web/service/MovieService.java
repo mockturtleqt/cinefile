@@ -18,8 +18,17 @@ import java.util.List;
 public class MovieService extends AbstractService<Movie> {
     private static final Logger logger = LogManager.getLogger();
 
-    public boolean create(Movie movie) {
-        return true;
+    public boolean create(Movie movie) throws InterruptedException {
+        ProxyConnection connection = null;
+        boolean success = false;
+        try {
+            connection = super.getConnection();
+            MovieDAO movieDAO = new MovieDAO(connection);
+            success = movieDAO.create(movie);
+        } finally {
+            super.returnConnection(connection);
+        }
+        return success;
     }
 
     public Movie findById(int id) throws InterruptedException, NoSuchPageException {
@@ -44,6 +53,32 @@ public class MovieService extends AbstractService<Movie> {
             super.returnConnection(connection);
         }
         return movie;
+    }
+
+    public boolean update(Movie movie) throws InterruptedException {
+        ProxyConnection connection = null;
+        boolean success = false;
+        try {
+            connection = super.getConnection();
+            MovieDAO movieDAO = new MovieDAO(connection);
+            success = movieDAO.update(movie);
+        } finally {
+            super.returnConnection(connection);
+        }
+        return success;
+    }
+
+    public boolean deleteById(int id) throws InterruptedException {
+        boolean success = false;
+        ProxyConnection connection = null;
+        try {
+            connection = super.getConnection();
+            MovieDAO movieDAO = new MovieDAO(connection);
+            success = movieDAO.deleteById(id);
+        } finally {
+            super.returnConnection(connection);
+        }
+        return success;
     }
 
     public List<Movie> findAll(String title) throws InterruptedException {

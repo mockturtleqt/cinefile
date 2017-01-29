@@ -23,6 +23,15 @@ public class User extends Entity {
     private boolean isDeleted;
     private List<Review> reviews;
     private List<MovieRating> ratings;
+    private int userRating;
+
+    public int getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(int userRating) {
+        this.userRating = userRating;
+    }
 
     public List<MovieRating> getRatings() {
         return ratings;
@@ -87,11 +96,11 @@ public class User extends Entity {
         this.email = email;
     }
 
-    public boolean isBanned() {
+    public boolean getIsBanned() {
         return isBanned;
     }
 
-    public void setBanned(boolean banned) {
+    public void setIsBanned(boolean banned) {
         isBanned = banned;
     }
 

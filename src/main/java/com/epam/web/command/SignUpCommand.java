@@ -2,6 +2,7 @@ package com.epam.web.command;
 
 import com.epam.web.entity.User;
 import com.epam.web.exception.NoSuchRequestParameterException;
+import com.epam.web.exception.ValidationException;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.service.UserService;
@@ -28,11 +29,11 @@ public class SignUpCommand implements ActionCommand {
         String page = null;
         try {
             User user = this.convertToUser(requestContent);
-            userService.add(user);
+            userService.create(user);
 
             requestContent.setSessionAttribute(USER_ATTR, user);
             page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
-        } catch (InterruptedException | NoSuchRequestParameterException e) {
+        } catch (InterruptedException | NoSuchRequestParameterException | ValidationException e) {
             logger.log(Level.ERROR, e);
         }
         return page;

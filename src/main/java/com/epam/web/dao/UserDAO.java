@@ -78,6 +78,29 @@ public class UserDAO extends AbstractDAO<User> {
         return user;
     }
 
+    public boolean update(User user) {
+        boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_UPDATE_USER);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getFirstName());
+            preparedStatement.setString(3, user.getLastName());
+            preparedStatement.setString(4, safeEnumToString(user.getGender()));
+            preparedStatement.setDate(5, safeLocalDateToSqlDate(user.getBirthday()));
+            preparedStatement.setString(6, user.getPicture());
+            preparedStatement.setInt(7, user.getId());
+
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return success;
+    }
+
     public boolean deleteById(int id) {
         boolean success = false;
         PreparedStatement preparedStatement = null;
@@ -111,6 +134,27 @@ public class UserDAO extends AbstractDAO<User> {
             connection.closeStatement(preparedStatement);
         }
         return user;
+    }
+
+    public boolean hasRatedThisMovie(int movieId, int userId) {
+        boolean hasRated = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_SELECT_USERS_WHO_RATED_THIS_MOVIE);
+            preparedStatement.setInt(1, movieId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                if (userId == resultSet.getInt(ID)) {
+                    hasRated = true;
+                    break;
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return hasRated;
     }
 
     public boolean updateUserRating(int movieId) {
@@ -150,7 +194,7 @@ public class UserDAO extends AbstractDAO<User> {
         user.setLogin(resultSet.getString(LOGIN));
         user.setPassword(resultSet.getString(PASSWORD));
         user.setEmail(resultSet.getString(EMAIL));
-        user.setBanned(resultSet.getBoolean(IS_BANNED));
+        user.setIsBanned(resultSet.getBoolean(IS_BANNED));
         user.setFirstName(resultSet.getString(FIRST_NAME));
         user.setLastName(resultSet.getString(LAST_NAME));
         user.setGender(GenderType.valueOf(resultSet.getString(GENDER).toUpperCase()));
@@ -158,6 +202,7 @@ public class UserDAO extends AbstractDAO<User> {
         LocalDate localDate = (date != null) ? date.toLocalDate() : null;
         user.setBirthday(localDate);
         user.setPicture(resultSet.getString(PICTURE));
+        user.setUserRating(resultSet.getInt(USER_RATING));
         return user;
     }
 

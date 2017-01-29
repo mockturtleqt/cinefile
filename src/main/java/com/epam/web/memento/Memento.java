@@ -7,7 +7,8 @@ public class Memento {
     private static Memento instance = null;
     private String currentPage = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
 
-    private Memento() {}
+    private Memento() {
+    }
 
     public static Memento getInstance() {
         if (instance == null) {

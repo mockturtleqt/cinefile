@@ -16,9 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.epam.web.dbConnection.query.SQLMediaPersonQuery.SQL_DELETE_MEDIA_PERSON_BY_ID;
-import static com.epam.web.dbConnection.query.SQLMediaPersonQuery.SQL_SELECT_MEDIA_PEOPLE_BY_MOVIE_ID;
-import static com.epam.web.dbConnection.query.SQLMediaPersonQuery.SQL_SELECT_MEDIA_PERSON_BY_ID;
+import static com.epam.web.dbConnection.query.SQLMediaPersonQuery.*;
 
 public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
     private static final String ID = "id";
@@ -36,16 +34,18 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
     }
 
     public boolean create(MediaPerson mediaPerson) {
-
-        return true;
-    }
-
-    public boolean deleteById(int id) {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = connection.getPreparedStatement(SQL_DELETE_MEDIA_PERSON_BY_ID);
-            preparedStatement.setInt(1, id);
+            preparedStatement = connection.getPreparedStatement(SQL_INSERT_MEDIA_PERSON);
+            preparedStatement.setString(1, mediaPerson.getFirstName());
+            preparedStatement.setString(2, mediaPerson.getLastName());
+            preparedStatement.setString(3, mediaPerson.getBio());
+            preparedStatement.setString(4, listToString(mediaPerson.getOccupation()));
+            preparedStatement.setString(5, safeEnumToString(mediaPerson.getGender()));
+            preparedStatement.setDate(6, safeLocalDateToSqlDate(mediaPerson.getBirthday()));
+            preparedStatement.setString(7, mediaPerson.getPicture());
+
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
@@ -72,6 +72,46 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             connection.closeStatement(preparedStatement);
         }
         return mediaPerson;
+    }
+
+    public boolean update(MediaPerson mediaPerson) {
+        boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_UPDATE_MEDIA_PERSON);
+            preparedStatement.setString(1, mediaPerson.getFirstName());
+            preparedStatement.setString(2, mediaPerson.getLastName());
+            preparedStatement.setString(3, mediaPerson.getBio());
+            preparedStatement.setString(4, listToString(mediaPerson.getOccupation()));
+            preparedStatement.setString(5, safeEnumToString(mediaPerson.getGender()));
+            preparedStatement.setDate(6, safeLocalDateToSqlDate(mediaPerson.getBirthday()));
+            preparedStatement.setString(7, mediaPerson.getPicture());
+            preparedStatement.setInt(8, mediaPerson.getId());
+
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return success;
+    }
+
+    public boolean deleteById(int id) {
+        boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_DELETE_MEDIA_PERSON_BY_ID);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return success;
     }
 
     public List<MediaPerson> findByMovieId(int id) {

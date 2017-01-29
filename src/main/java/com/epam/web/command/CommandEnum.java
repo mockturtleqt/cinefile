@@ -55,15 +55,69 @@ public enum CommandEnum {
         }
     },
 
-    ADD_REVIEW {
+    CREATE_REVIEW {
         {
-            this.command = new AddReviewCommand();
+            this.command = new CreateReviewCommand();
+        }
+    },
+
+    CREATE_MEDIA_PERSON {
+        {
+            this.command = new CreateMediaPersonCommand();
+        }
+    },
+
+    CREATE_MOVIE {
+        {
+            this.command = new CreateMovieCommand();
+        }
+    },
+
+    UPDATE_MEDIA_PERSON {
+        {
+            this.command = new UpdateMediaPersonCommand();
+        }
+    },
+
+    UPDATE_MOVIE {
+        {
+            this.command = new UpdateMovieCommand();
+        }
+    },
+
+    UPDATE_USER {
+        {
+            this.command = new UpdateUserCommand();
         }
     },
 
     UPDATE_REVIEW {
         {
             this.command = new UpdateReviewCommand();
+        }
+    },
+
+    RATE_MOVIE {
+        {
+            this.command = new RateMovieCommand();
+        }
+    },
+
+    SHOW_EDIT_MOVIE_FORM {
+        {
+            this.command = new ShowEditMovieFormCommand();
+        }
+    },
+
+    SHOW_EDIT_USER_FORM {
+        {
+            this.command = new ShowEditUserFormCommand();
+        }
+    },
+
+    SHOW_EDIT_MEDIA_PERSON_FORM {
+        {
+            this.command = new ShowEditMediaPersonFormCommand();
         }
     },
 

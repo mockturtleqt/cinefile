@@ -8,21 +8,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SessionRequestContent {
-
     private Map<String, Object> requestAttributes = new HashMap<>();
     private Map<String, String[]> requestParameters = new HashMap<>();
     private Map<String, Object> sessionAttributes = new HashMap<>();
+    private HttpServletRequest request;
 
     public SessionRequestContent(HttpServletRequest request) {
+        this.request = request;
         extractValues(request);
     }
 
+    public void removeSessionAttribute(String attribute) {
+        sessionAttributes.remove(attribute);
+        request.getSession().removeAttribute(attribute);
+    }
+
     public String getParameter(String parameterName) throws NoSuchRequestParameterException {
-        if (requestParameters.get(parameterName).length != 0) {
+        if (requestParameters.get(parameterName) != null) {
             return requestParameters.get(parameterName)[0];
         } else {
             throw new NoSuchRequestParameterException(parameterName);
         }
+    }
+
+    public String[] getParameters(String parameterName) throws NoSuchRequestParameterException {
+        return requestParameters.get(parameterName);
     }
 
     public void setAttribute(String attributeName, Object attributeValue) {

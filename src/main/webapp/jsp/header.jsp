@@ -35,18 +35,25 @@
             <li>
                 <a href="#"><fmt:message key="celebs"/></a>
             </li>
-            <li>
-                <jsp:useBean id="user" scope="session" class="com.epam.web.entity.User"/>
-                <%--<c:set var="user" value="${sessionScope.user}"/>--%>
-                <c:choose>
-                    <c:when test="${not empty user.login}">
+
+            <%--<jsp:useBean id="user" scope="session" class="com.epam.web.entity.User"/>--%>
+            <c:set var="user" value="${sessionScope.user}"/>
+            <c:choose>
+                <c:when test="${not empty user.login}">
+                    <li>
                         <a href="controller?command=show_user_page&userId=${user.id}">${user.login}</a>
-                    </c:when>
-                    <c:otherwise>
+                    </li>
+                    <li>
+                        <a href="controller?command=logout"><fmt:message key="logout"/></a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li>
                         <a href="../jsp/loginForm.jsp"><fmt:message key="signup"/></a>
-                    </c:otherwise>
-                </c:choose>
-            </li>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+
             <li>
                 <form action="controller" method="get" class="input-line">
                     <input type="hidden" name="command" value="find_movies_by_name"/>

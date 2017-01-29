@@ -7,8 +7,17 @@ import com.epam.web.entity.MediaPerson;
 import com.epam.web.exception.NoSuchPageException;
 
 public class MediaPersonService extends AbstractService<MediaPerson> {
-    public boolean create(MediaPerson mediaPerson) {
+
+    public boolean create(MediaPerson mediaPerson) throws InterruptedException {
+        ProxyConnection connection = null;
         boolean success = false;
+        try {
+            connection = super.getConnection();
+            MediaPersonDAO mediaPersonDAO = new MediaPersonDAO(connection);
+            success = mediaPersonDAO.create(mediaPerson);
+        } finally {
+            super.returnConnection(connection);
+        }
         return success;
     }
 
@@ -31,5 +40,31 @@ public class MediaPersonService extends AbstractService<MediaPerson> {
             super.returnConnection(connection);
         }
         return mediaPerson;
+    }
+
+    public boolean update(MediaPerson mediaPerson) throws InterruptedException {
+        ProxyConnection connection = null;
+        boolean success = false;
+        try {
+            connection = super.getConnection();
+            MediaPersonDAO mediaPersonDAO = new MediaPersonDAO(connection);
+            success = mediaPersonDAO.update(mediaPerson);
+        } finally {
+            super.returnConnection(connection);
+        }
+        return success;
+    }
+
+    public boolean deleteById(int id) throws InterruptedException {
+        boolean success = false;
+        ProxyConnection connection = null;
+        try {
+            connection = super.getConnection();
+            MediaPersonDAO mediaPersonDAO = new MediaPersonDAO(connection);
+            success = mediaPersonDAO.deleteById(id);
+        } finally {
+            super.returnConnection(connection);
+        }
+        return success;
     }
 }

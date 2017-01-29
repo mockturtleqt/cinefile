@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 
-public class AddReviewCommand implements ActionCommand {
+public class CreateReviewCommand implements ActionCommand {
     private static final String REVIEW_TITLE_INPUT = "review-title-input";
     private static final String REVIEW_BODY_INPUT = "review-body-input";
     private static final String MOVIE_ID = "movie-id";
@@ -22,24 +22,23 @@ public class AddReviewCommand implements ActionCommand {
     public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            String title = requestContent.getParameter(REVIEW_TITLE_INPUT);
-            String body = requestContent.getParameter(REVIEW_BODY_INPUT);
-            int movieId = Integer.valueOf(requestContent.getParameter(MOVIE_ID));
-            int userId = Integer.valueOf(requestContent.getParameter(USER_ID));
-            Review review = new Review();
-            review.setTitle(title);
-            review.setBody(body);
-            review.setUserId(userId);
-            review.setMovieId(movieId);
-            review.setDate(LocalDate.now());
-
             ReviewService reviewService = new ReviewService();
-            reviewService.add(review);
+            reviewService.create(convertToReview(requestContent));
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
         } catch (InterruptedException | NoSuchRequestParameterException e) {
             logger.log(Level.ERROR, e);
         }
         return page;
+    }
+
+    private Review convertToReview(SessionRequestContent requestContent) throws NoSuchRequestParameterException {
+        Review review = new Review();
+        review.setTitle(requestContent.getParameter(REVIEW_TITLE_INPUT));
+        review.setBody(requestContent.getParameter(REVIEW_BODY_INPUT));
+        review.setMovieId(Integer.valueOf(requestContent.getParameter(MOVIE_ID)));
+        review.setUserId(Integer.valueOf(requestContent.getParameter(USER_ID)));
+        review.setDate(LocalDate.now());
+        return review;
     }
 }

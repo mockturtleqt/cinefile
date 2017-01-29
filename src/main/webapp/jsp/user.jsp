@@ -32,6 +32,10 @@
                 </div>
             </c:if>
 
+            <c:if test="${not empty userPage.userRating}">
+                <p><strong><fmt:message key="user.rating"/>: </strong>${userPage.userRating}</p>
+            </c:if>
+
             <c:if test="${not empty userPage.firstName}">
                 <p><strong><fmt:message key="first.name"/>: </strong>${userPage.firstName}</p>
             </c:if>
@@ -51,25 +55,27 @@
             <c:if test="${not empty userPage.birthday}">
                 <p><strong><fmt:message key="birthday"/>: </strong>${userPage.birthday}</p>
             </c:if>
-
             <c:if test="${not empty userPage.reviews}">
                 <p><strong><fmt:message key="reviews"/> : </strong></p>
                 <c:forEach var="review" items="${userPage.reviews}">
                     <div class="review" style="background: #d0cecd">
                         <h4><a href="controller?command=show_movie_page&movieId=${review.movieId}"><c:out
                                 value="${review.movieTitle}"/></a></h4>
-                        <form action="controller" method="post">
-                            <input type="hidden" name="command" value="delete_review"/>
-                            <input type="hidden" name="reviewId" value="${review.id}"/>
-                            <input type="submit" value="Delete"/>
-                        </form>
-                        <input type="button" class="edit-btn" value="Edit"/>
-                        <form action="controller" method="post" class="edit-review-form">
-                            <input type="hidden" name="reviewId" value="${review.id}"/>
-                            <input type="hidden" name="command" value="update_review"/>
-                            <input type="hidden" name="review"/>
-                            <input type="submit" class="save-btn" name="save-btn" value="Save"/>
-                        </form>
+
+                        <c:if test="${not empty sessionScope.user.role}">
+                            <form action="controller" method="post">
+                                <input type="hidden" name="command" value="delete_review"/>
+                                <input type="hidden" name="reviewId" value="${review.id}"/>
+                                <input type="submit" value="Delete"/>
+                            </form>
+                            <input type="button" class="edit-btn" value="Edit"/>
+                            <form action="controller" method="post" class="edit-review-form">
+                                <input type="hidden" name="reviewId" value="${review.id}"/>
+                                <input type="hidden" name="command" value="update_review"/>
+                                <input type="hidden" name="review"/>
+                                <input type="submit" class="save-btn" name="save-btn" value="Save"/>
+                            </form>
+                        </c:if>
                         <h3 class="review-title"><c:out value="${review.title}"/></h3>
                         <p class="review-body">
                             <c:out value="${review.body}"/>

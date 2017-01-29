@@ -40,9 +40,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
             preparedStatement.setString(2, review.getBody());
             preparedStatement.setInt(3, review.getUserId());
             preparedStatement.setInt(4, review.getMovieId());
-            LocalDate localDate = review.getDate();
-            Date date = (localDate != null) ? Date.valueOf(localDate) : null;
-            preparedStatement.setDate(5, date);
+            preparedStatement.setDate(5, safeLocalDateToSqlDate(review.getDate()));
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
@@ -78,9 +76,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
             preparedStatement = connection.getPreparedStatement(SQL_UPDATE_REVIEW);
             preparedStatement.setString(1, review.getTitle());
             preparedStatement.setString(2, review.getBody());
-            LocalDate localDate = review.getDate();
-            Date date = (localDate != null) ? Date.valueOf(localDate) : null;
-            preparedStatement.setDate(3, date);
+            preparedStatement.setDate(3, safeLocalDateToSqlDate(review.getDate()));
             preparedStatement.setInt(4, review.getId());
             preparedStatement.executeUpdate();
             success = true;

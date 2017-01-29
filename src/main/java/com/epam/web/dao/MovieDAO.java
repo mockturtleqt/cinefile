@@ -35,22 +35,12 @@ public class MovieDAO extends AbstractDAO<Movie> {
         try {
             preparedStatement = connection.getPreparedStatement(SQL_INSERT_MOVIE);
             preparedStatement.setString(1, movie.getTitle());
-            LocalDate localDate = movie.getReleaseDate();
-            Date date = (localDate != null) ? Date.valueOf(localDate) : null;
-            preparedStatement.setDate(2, date);
+            preparedStatement.setDate(2, safeLocalDateToSqlDate(movie.getReleaseDate()));
             preparedStatement.setString(3, movie.getDescription());
             preparedStatement.setString(4, movie.getPoster());
             preparedStatement.setFloat(5, movie.getRating());
-            List<GenreType> genres = movie.getGenre();
-            StringBuilder genresAsString = new StringBuilder();
-            for (int i = 0; i < genres.size(); i++) {
-                genresAsString.append(genres.get(i));
-                //So that we won't have a comma after the last genre
-                if (i != genres.size() - 2) {
-                    genresAsString.append(",");
-                }
-            }
-            preparedStatement.setString(6, genresAsString.toString());
+            preparedStatement.setString(6, listToString(movie.getGenre()));
+
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
@@ -78,6 +68,28 @@ public class MovieDAO extends AbstractDAO<Movie> {
             connection.closeStatement(preparedStatement);
         }
         return movie;
+    }
+
+    public boolean update(Movie movie) {
+        boolean success = false;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_UPDATE_MOVIE);
+            preparedStatement.setString(1, movie.getTitle());
+            preparedStatement.setDate(2, safeLocalDateToSqlDate(movie.getReleaseDate()));
+            preparedStatement.setString(3, movie.getDescription());
+            preparedStatement.setString(4, movie.getPoster());
+            preparedStatement.setString(5, listToString(movie.getGenre()));
+            preparedStatement.setInt(6, movie.getId());
+
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return success;
     }
 
     public boolean deleteById(int id) {

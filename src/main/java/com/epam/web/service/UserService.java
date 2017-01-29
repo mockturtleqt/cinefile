@@ -6,6 +6,8 @@ import com.epam.web.dao.UserDAO;
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.MovieRating;
 import com.epam.web.entity.User;
+import com.epam.web.exception.ValidationException;
+import com.epam.web.validation.UserValidation;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,13 +15,18 @@ import org.apache.logging.log4j.Logger;
 public class UserService extends AbstractService<User> {
     private static final Logger logger = LogManager.getLogger();
 
-    public boolean create(User user) throws InterruptedException {
+    public boolean create(User user) throws InterruptedException, ValidationException {
         ProxyConnection connection = null;
         boolean success = false;
         try {
             connection = super.getConnection();
             UserDAO userDAO = new UserDAO(connection);
-            success = userDAO.create(user);
+            UserValidation userValidation = new UserValidation();
+            if (userValidation.isValid(user)) {
+                success = userDAO.create(user);
+            } else {
+                throw new ValidationException();
+            }
         } finally {
             super.returnConnection(connection);
         }
@@ -45,6 +52,32 @@ public class UserService extends AbstractService<User> {
             super.returnConnection(connection);
         }
         return user;
+    }
+
+    public boolean update(User user) throws InterruptedException {
+        ProxyConnection connection = null;
+        boolean success = false;
+        try {
+            connection = super.getConnection();
+            UserDAO userDAO = new UserDAO(connection);
+            success = userDAO.update(user);
+        } finally {
+            super.returnConnection(connection);
+        }
+        return success;
+    }
+
+    public boolean deleteById(int id) throws InterruptedException {
+        boolean success = false;
+        ProxyConnection connection = null;
+        try {
+            connection = super.getConnection();
+            UserDAO userDAO = new UserDAO(connection);
+            success = userDAO.deleteById(id);
+        } finally {
+            super.returnConnection(connection);
+        }
+        return success;
     }
 
     public User findByLoginAndPassword(String login, String password) throws InterruptedException {

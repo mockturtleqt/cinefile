@@ -41,4 +41,20 @@ public class SQLMediaPersonQuery {
             "    `is_deleted` = 1\n" +
             "WHERE\n" +
             "    `id` = ?";
+
+    public static final String SQL_INSERT_MEDIA_PERSON = "INSERT INTO\n" +
+            "    `movie_rating`.`media_person`(`first_name`, `last_name`, `bio`, `occupation`, `gender`, `birthday`, `picture`)\n" +
+            "     VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    public static final String SQL_UPDATE_MEDIA_PERSON = "UPDATE `movie_rating`.`media_person` \n" +
+            "SET \n" +
+            "    `media_person`.`first_name` = ?,\n" +
+            "    `media_person`.`last_name` = ?,\n" +
+            "    `media_person`.`bio` = ?,\n" +
+            "    `media_person`.`occupation` = ?,\n" +
+            "    `media_person`.`gender` = ?,\n" +
+            "    `media_person`.`birthday` = ?,\n" +
+            "    `media_person`.`picture` = ?\n" +
+            "WHERE\n" +
+            "    `id` = ?";
 }

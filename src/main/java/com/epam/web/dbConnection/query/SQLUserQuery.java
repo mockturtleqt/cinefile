@@ -12,6 +12,7 @@ public class SQLUserQuery {
             "    `user`.`gender`,\n" +
             "    `user`.`birthday`,\n" +
             "    `user`.`picture`,\n" +
+            "    `user`.`user_rating`,\n" +
             "    `user`.`is_banned`\n" +
             "FROM\n" +
             "    `movie_rating`.`user`\n" +
@@ -26,11 +27,11 @@ public class SQLUserQuery {
             "    `movie`.`rating`,\n" +
             "    `movie_rating`.`rate`\n" +
             "FROM\n" +
-            "    `movie_rating`\n" +
+            "    `movie_rating`.`movie_rating`\n" +
             "        INNER JOIN\n" +
-            "    `user` ON `movie_rating`.`user_id` = `user`.`id`\n" +
+            "    `movie_rating`.`user` ON `movie_rating`.`user_id` = `user`.`id`\n" +
             "        INNER JOIN\n" +
-            "    `movie` ON `movie_rating`.`movie_id` = `movie`.`id`\n" +
+            "    `movie_rating`.`movie` ON `movie_rating`.`movie_id` = `movie`.`id`\n" +
             "WHERE\n" +
             "    `movie_rating`.`movie_id` = ?\n" +
             "        AND `movie_rating`.`is_deleted` = 0\n";
@@ -50,6 +51,7 @@ public class SQLUserQuery {
             "    `user`.`gender`,\n" +
             "    `user`.`birthday`,\n" +
             "    `user`.`picture`,\n" +
+            "    `user`.`user_rating`,\n" +
             "    `user`.`is_banned`\n" +
             "FROM\n" +
             "    `movie_rating`.`user`\n" +
@@ -67,6 +69,23 @@ public class SQLUserQuery {
     public static final String SQL_DELETE_USER_BY_ID = "UPDATE `movie_rating`.`user` \n" +
             "SET \n" +
             "    `is_deleted` = 1\n" +
+            "WHERE\n" +
+            "    `id` = ?";
+
+    public static final String SQL_UPDATE_USER = "UPDATE `movie_rating`.`user` \n" +
+            "SET \n" +
+            "    `user`.`email` = ?,\n" +
+            "    `user`.`first_name` = ?,\n" +
+            "    `user`.`last_name` = ?,\n" +
+            "    `user`.`gender` = ?,\n" +
+            "    `user`.`birthday` = ?,\n" +
+            "    `user`.`picture` = ?\n" +
+            "WHERE\n" +
+            "    `id` = ?";
+
+    public static final String SQL_BAN_USER = "UPDATE `movie_rating`.`user` \n" +
+            "SET \n" +
+            "    `is_banned` = 1\n" +
             "WHERE\n" +
             "    `id` = ?";
 }

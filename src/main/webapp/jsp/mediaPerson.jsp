@@ -19,6 +19,9 @@
     <div class="section-title">
         <h2>${mediaPersonPage.firstName} ${mediaPersonPage.lastName}</h2>
     </div>
+
+    <a href="controller?command=show_edit_media_person_form&mediaPersonId=${mediaPersonPage.id}">Edit media person</a>
+
     <section class="section-movies">
         <div class="movie">
 

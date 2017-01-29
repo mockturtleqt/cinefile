@@ -19,6 +19,19 @@ public class ReviewService extends AbstractService<Review> {
         return success;
     }
 
+    public Review findById(int id) throws InterruptedException {
+        ProxyConnection connection = null;
+        Review review = null;
+        try {
+            connection = super.getConnection();
+            ReviewDAO reviewDAO = new ReviewDAO(connection);
+            review = reviewDAO.findById(id);
+        } finally {
+            super.returnConnection(connection);
+        }
+        return review;
+    }
+
     public boolean update(Review review) throws InterruptedException {
         boolean success = false;
         ProxyConnection connection = null;

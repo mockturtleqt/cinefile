@@ -72,7 +72,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
         try {
             preparedStatement = connection.getPreparedStatement(SQL_UPDATE_MOVIE_RATING);
             preparedStatement.setFloat(1, movieRating.getRate());
-            preparedStatement.setInt(4, movieRating.getId());
+            preparedStatement.setInt(2, movieRating.getId());
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
