@@ -12,6 +12,7 @@
 </head>
 <body class="home">
 <fmt:setLocale value="${sessionScope.locale}"/>
+<c:import url="../header.jsp"/>
 <div class="edit-page">
     <div class="greeting">
         <h2>Edit movie</h2>
@@ -78,5 +79,6 @@
         <a href="${requestScope.previous_page}"><fmt:message key="back"/></a>
     </div>
 </div>
+<c:import url="../footer.jsp"/>
 </body>
 </html>

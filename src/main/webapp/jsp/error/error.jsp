@@ -1,15 +1,15 @@
 <%--<%@ page isErrorPage="true" contentType="text/html;charset=UTF-8" language="java" %>--%>
 <%--<html>--%>
 <%--<head>--%>
-    <%--<title>Title</title>--%>
+<%--<title>Title</title>--%>
 <%--</head>--%>
 <%--<body>--%>
 
-    <%--Request from ${pageContext.errorData.requestURI} is failed <br/>--%>
-    <%--Servlet name ${pageContext.errorData.servletName} <br/>--%>
-    <%--Status code ${pageContext.errorData.statusCode} <br/>--%>
-    <%--Exception ${pageContext.exception} <br/>--%>
-    <%--Message from exception ${pageContext.exception.message}--%>
+<%--Request from ${pageContext.errorData.requestURI} is failed <br/>--%>
+<%--Servlet name ${pageContext.errorData.servletName} <br/>--%>
+<%--Status code ${pageContext.errorData.statusCode} <br/>--%>
+<%--Exception ${pageContext.exception} <br/>--%>
+<%--Message from exception ${pageContext.exception.message}--%>
 <%--</body>--%>
 <%--</html>--%>
 <%@ page isErrorPage="true" contentType="text/html;charset=UTF-8" language="java" %>
@@ -20,29 +20,28 @@
 <head>
     <title>Error</title>
     <meta charset="utf-8">
-    <%--<link href="../css/moviePage.css" rel="stylesheet"/>--%>
+    <link href="../../css/errorPage.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="home">
-<fmt:setLocale value="${locale}"/>
+<fmt:setLocale value="${sessionScope.locale}"/>
 
 <c:import url="../header.jsp"/>
 <section class="section main">
 
     <div class="section-title">
-        <h2>Error occurred!<br/></h2>
+        <h4><fmt:message key="error.short.msg"/><br/></h4>
     </div>
     <section class="section-movies">
         <div class="movie">
-
-            Request from ${pageContext.errorData.requestURI} is failed <br/>
-            Servlet name ${pageContext.errorData.servletName} <br/>
-            Status code ${pageContext.errorData.statusCode} <br/>
-            Exception ${pageContext.exception} <br/>
-            Message from exception ${pageContext.exception.message}
-
+            <p><fmt:message key="error.long.msg"/></p>
+            ${requestScope.errorMsg}<br/>
         </div>
-        <a href="#"><fmt:message key="back"/></a>
+        <div class="depressed-cat">
+            <img src="http://download-telegram.ru/wp-content/uploads/2015/06/Pusheen-30.png">
+        </div>
+        <a href="/index.jsp"><fmt:message key="index.page.path"/></a><br/>
+        <a href="${requestScope.previous_page}"><fmt:message key="back"/></a>
     </section>
 </section>
 <c:import url="../footer.jsp"/>

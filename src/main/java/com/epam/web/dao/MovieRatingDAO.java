@@ -3,6 +3,7 @@ package com.epam.web.dao;
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.MovieRating;
 import com.epam.web.exception.DAOException;
+import com.epam.web.resource.MessageManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +26,11 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
     private static final String USER_ID = "user_id";
     private static final String MOVIE_ID = "movie_id";
     private static final String MOVIE_TITLE = "movieTitle";
+    private static final String CREATE_MOVIE_RATING_ERROR_MSG = "msg.create.movie.rating.error";
+    private static final String FIND_MOVIE_RATING_ERROR_MSG = "msg.find.movie.rating.error";
+    private static final String DELETE_MOVIE_RATING_ERROR_MSG = "msg.delete.movie.rating.error";
+    private static final String UPDATE_MOVIE_RATING_ERROR_MSG = "msg.update.movie.rating.error";
+
     private static final Logger logger = LogManager.getLogger();
 
     public MovieRatingDAO(ProxyConnection connection) {
@@ -42,7 +48,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
                 movieRating = this.createRatingFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_MOVIE_RATING_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -60,7 +66,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(CREATE_MOVIE_RATING_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -77,7 +83,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(UPDATE_MOVIE_RATING_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -93,7 +99,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(DELETE_MOVIE_RATING_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -113,11 +119,49 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
                 ratings.add(rating);
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_MOVIE_RATING_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
         return ratings;
+    }
+
+    public List<MovieRating> findByMovieId(int id) throws DAOException {
+        PreparedStatement preparedStatement = null;
+        List<MovieRating> ratings = new ArrayList<>();
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_SELECT_RATINGS_BY_MOVIE_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                MovieRating rating = this.createRatingFromResultSet(resultSet);
+                ratings.add(rating);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(MessageManager.getProperty(FIND_MOVIE_RATING_ERROR_MSG), e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return ratings;
+    }
+
+    public MovieRating findByUserIdAndMovieId(int userId, int movieId) throws DAOException {
+        PreparedStatement preparedStatement = null;
+        MovieRating rating = null;
+        try {
+            preparedStatement = connection.getPreparedStatement(SQL_SELECT_MOVIE_RATING_BY_USER_ID_AND_MOVIE_ID);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, movieId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                rating = this.createRatingFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(MessageManager.getProperty(FIND_MOVIE_RATING_ERROR_MSG), e);
+        } finally {
+            connection.closeStatement(preparedStatement);
+        }
+        return rating;
     }
 
     private MovieRating createRatingFromResultSet(ResultSet resultSet) throws SQLException {

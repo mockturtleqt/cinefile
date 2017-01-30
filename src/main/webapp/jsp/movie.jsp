@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <!DOCTYPE html>
 <html>
 <jsp:useBean id="moviePage" scope="request" class="com.epam.web.entity.Movie"/>
@@ -25,7 +26,10 @@
         <h2>${moviePage.title}</h2>
     </div>
 
-    <a href="controller?command=show_edit_movie_form&movieId=${moviePage.id}">Edit movie</a>
+    <c:set var="admin" value="ADMIN"/>
+    <c:if test="${user.role == admin}">
+        <a href="controller?command=show_edit_movie_form&movieId=${moviePage.id}">Edit movie</a>
+    </c:if>
 
     <section class="section-movies">
         <div class="movie">
@@ -56,9 +60,13 @@
 
             <c:if test="${not empty moviePage.rating}">
                 <p><strong><fmt:message key="rating"/>: </strong>
-                <p id="movieRatingP">${moviePage.rating}</p></p>
+                <p id="movieRate">${moviePage.rating}</p></p>
             </c:if>
 
+            <c:set var="userRate" value="${ctg:getUserRate(moviePage.ratingList, user.id)}"/>
+            <c:if test="${not empty userRate}">
+                <p>Your rate: ${userRate.rate}</p>
+            </c:if>
             <form action="controller" method="post" class="movieRatingForm">
                 <fieldset class="rating">
                     <input type="radio" id="star10" name="rating" value="10"/>
@@ -67,41 +75,51 @@
 
                     <input type="radio" id="star9" name="rating" value="9"/>
                     <label class="full" for="star9"
-                           title="Awesome - 9 stars">9</label>
+                           title="Really good - 9 stars">9</label>
 
                     <input type="radio" id="star8" name="rating" value="8"/>
                     <label class="full" for="star8"
-                           title="Awesome - 8 stars">8</label>
+                           title="Pretty good - 8 stars">8</label>
 
                     <input type="radio" id="star7" name="rating" value="7"/>
                     <label class="full" for="star7"
-                           title="Awesome - 5 stars">7</label>
+                           title="I'd watch it again with a beer - 7 stars">7</label>
 
                     <input type="radio" id="star6" name="rating" value="6"/>
                     <label class="full" for="star6"
-                           title="Awesome - 5 stars">6</label>
+                           title="Not so bad - 6 stars">6</label>
 
                     <input type="radio" id="star5" name="rating" value="5"/>
                     <label class="full" for="star5"
-                           title="Awesome - 5 stars">5</label>
+                           title="Kinda bad - 5 stars">5</label>
 
                     <input type="radio" id="star4" name="rating" value="4"/>
                     <label class="full" for="star4"
-                           title="Pretty good - 4 stars">4</label>
+                           title="Bad - 4 stars">4</label>
 
                     <input type="radio" id="star3" name="rating" value="3"/>
                     <label class="full" for="star3"
-                           title="Meh - 3 stars">3</label>
+                           title="Really bad - 3 stars">3</label>
 
                     <input type="radio" id="star2" name="rating" value="2"/>
                     <label class="full" for="star2"
-                           title="Kinda bad - 2 stars">2</label>
+                           title="Lame - 2 stars">2</label>
 
                     <input type="radio" id="star1" name="rating" value="1"/>
                     <label class="full" for="star1"
                            title="Sucks big time - 1 star">1</label>
                 </fieldset>
-                <input type="hidden" name="command" value="rate_movie"/>
+
+                <c:choose>
+                    <c:when test="${empty userRate}">
+                        <input type="hidden" name="command" value="create_movie_rating"/>
+                    </c:when>
+                    <c:otherwise>
+                        <input type="hidden" name="command" value="update_movie_rating"/>
+                    </c:otherwise>
+                </c:choose>
+
+                <input type="hidden" name="movieRatingId" value="${userRate.id}"/>
                 <input type="hidden" name="movieId" value="${moviePage.id}"/>
                 <input type="hidden" name="userId" id="userId" value="${user.id}"/>
             </form>

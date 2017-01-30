@@ -27,4 +27,9 @@
         <function-class>com.epam.web.customTag.ContainsFunction</function-class>
         <function-signature>boolean equalsGender(com.epam.web.entity.type.GenderType,com.epam.web.entity.type.GenderType)</function-signature>
     </function>
+    <function>
+        <name>getUserRate</name>
+        <function-class>com.epam.web.customTag.ContainsFunction</function-class>
+        <function-signature>com.epam.web.entity.MovieRating getUserRate(java.util.List,int)</function-signature>
+    </function>
 </taglib>

@@ -4,6 +4,7 @@ import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Movie;
 import com.epam.web.entity.type.GenreType;
 import com.epam.web.exception.DAOException;
+import com.epam.web.resource.MessageManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,6 +24,10 @@ public class MovieDAO extends AbstractDAO<Movie> {
     private static final String POSTER = "poster";
     private static final String RATING = "rating";
     private static final String GENRE = "genre";
+    private static final String CREATE_MOVIE_ERROR_MSG = "msg.create.movie.error";
+    private static final String FIND_MOVIE_ERROR_MSG = "msg.find.movie.error";
+    private static final String DELETE_MOVIE_ERROR_MSG = "msg.delete.movie.error";
+    private static final String UPDATE_MOVIE_ERROR_MSG = "msg.update.movie.error";
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -45,7 +50,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(CREATE_MOVIE_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -64,7 +69,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
             }
 
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_MOVIE_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -86,7 +91,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(UPDATE_MOVIE_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -102,7 +107,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(DELETE_MOVIE_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -119,7 +124,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
                 movieList.add(this.createMovieFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_MOVIE_ERROR_MSG), e);
         } finally {
             connection.closeStatement(statement);
         }
@@ -138,7 +143,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
                 movieList.add(this.createMovieFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_MOVIE_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -156,7 +161,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
                 movieList.add(this.createMovieFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_MOVIE_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -173,7 +178,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
                 movieList.add(this.createMovieFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_MOVIE_ERROR_MSG), e);
         } finally {
             connection.closeStatement(statement);
         }

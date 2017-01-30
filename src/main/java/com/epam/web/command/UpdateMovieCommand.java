@@ -3,8 +3,10 @@ package com.epam.web.command;
 import com.epam.web.entity.Movie;
 import com.epam.web.entity.type.GenreType;
 import com.epam.web.exception.NoSuchRequestParameterException;
+import com.epam.web.exception.ServiceException;
 import com.epam.web.memento.Memento;
 import com.epam.web.requestContent.SessionRequestContent;
+import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.service.MovieService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -21,19 +23,23 @@ public class UpdateMovieCommand implements ActionCommand {
     private static final String DESCRIPTION_PARAM = "description";
     private static final String GENRE_PARAM = "genre";
     private static final String POSTER_PARAM = "poster";
+    private static final String ERROR_PAGE_PATH = "path.page.error";
+    private static final String ERROR_ATTR = "errorMsg";
 
     private static final Logger logger = LogManager.getLogger();
 
     private MovieService movieService = new MovieService();
 
     public String execute(SessionRequestContent requestContent) {
-        String page = null;
+        String page;
         try {
             movieService.update(convertToMovie(requestContent));
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
-        } catch (NoSuchRequestParameterException | InterruptedException e) {
-            logger.log(Level.ERROR, e);
+        } catch (ServiceException | NoSuchRequestParameterException | InterruptedException e) {
+            logger.log(Level.ERROR, e, e);
+            requestContent.setAttribute(ERROR_ATTR, e.getMessage());
+            page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
         }
         return page;
     }

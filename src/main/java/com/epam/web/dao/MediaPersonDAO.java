@@ -5,6 +5,7 @@ import com.epam.web.entity.MediaPerson;
 import com.epam.web.entity.type.GenderType;
 import com.epam.web.entity.type.OccupationType;
 import com.epam.web.exception.DAOException;
+import com.epam.web.resource.MessageManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +26,11 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
     private static final String GENDER = "gender";
     private static final String BIRTHDAY = "birthday";
     private static final String PICTURE = "picture";
+    private static final String CREATE_MEDIA_PERSON_ERROR_MSG = "msg.create.media.person.error";
+    private static final String FIND_MEDIA_PERSON_ERROR_MSG = "msg.find.media.person.error";
+    private static final String DELETE_MEDIA_PERSON_ERROR_MSG = "msg.delete.media.person.error";
+    private static final String UPDATE_MEDIA_PERSON_ERROR_MSG = "msg.update.media.person.error";
+
     private static final Logger logger = LogManager.getLogger();
 
     public MediaPersonDAO(ProxyConnection connection) {
@@ -47,7 +53,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(CREATE_MEDIA_PERSON_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -65,7 +71,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
                 mediaPerson = this.createMediaPersonFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_MEDIA_PERSON_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -89,7 +95,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(UPDATE_MEDIA_PERSON_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -105,7 +111,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(DELETE_MEDIA_PERSON_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -122,7 +128,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
                 mediaPeople.add(this.createMediaPersonFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_MEDIA_PERSON_ERROR_MSG), e);
         } finally {
             connection.closeStatement(statement);
         }
@@ -140,7 +146,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
                 crew.add(this.createMediaPersonFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_MEDIA_PERSON_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }

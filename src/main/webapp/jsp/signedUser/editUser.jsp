@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +11,7 @@
 </head>
 <body class="home">
 <fmt:setLocale value="${sessionScope.locale}"/>
+<c:import url="../header.jsp"/>
 <div class="edit-page">
     <div class="greeting">
         <h2>Edit user</h2>
@@ -65,5 +67,6 @@
         <a href="${requestScope.previous_page}"><fmt:message key="back"/></a>
     </div>
 </div>
+<c:import url="../footer.jsp"/>
 </body>
 </html>

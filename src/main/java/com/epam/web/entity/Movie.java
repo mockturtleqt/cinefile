@@ -21,6 +21,15 @@ public class Movie extends Entity {
     private List<Review> reviews;
     private List<MediaPerson> crew;
     private List<Integer> reviewersIds;
+    private List<MovieRating> ratingList;
+
+    public List<MovieRating> getRatingList() {
+        return ratingList;
+    }
+
+    public void setRatingList(List<MovieRating> ratingList) {
+        this.ratingList = ratingList;
+    }
 
     public List<Integer> getReviewersIds() {
         return reviewersIds;

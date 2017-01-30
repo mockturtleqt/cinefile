@@ -2,6 +2,7 @@ package com.epam.web.command;
 
 import com.epam.web.entity.User;
 import com.epam.web.exception.NoSuchRequestParameterException;
+import com.epam.web.exception.ServiceException;
 import com.epam.web.exception.ValidationException;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
@@ -18,6 +19,8 @@ public class SignUpCommand implements ActionCommand {
     private static final String EMAIL_PARAM = "email";
     private static final String FIRST_NAME_PARAM = "first-name";
     private static final String LAST_NAME_PARAM = "last-name";
+    private static final String ERROR_PAGE_PATH = "path.page.error";
+    private static final String ERROR_ATTR = "errorMsg";
 
     private final static Logger logger = LogManager.getLogger();
 
@@ -25,15 +28,17 @@ public class SignUpCommand implements ActionCommand {
 
     @Override
     public String execute(SessionRequestContent requestContent) {
-        String page = null;
+        String page;
         try {
             User user = this.convertToUser(requestContent);
             userService.create(user);
 
             requestContent.setSessionAttribute(USER_ATTR, user);
             page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
-        } catch (InterruptedException | NoSuchRequestParameterException | ValidationException e) {
-            logger.log(Level.ERROR, e);
+        } catch (ServiceException | InterruptedException | NoSuchRequestParameterException | ValidationException e) {
+            logger.log(Level.ERROR, e, e);
+            requestContent.setAttribute(ERROR_ATTR, e.getMessage());
+            page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
         }
         return page;
     }

@@ -34,7 +34,8 @@ public class DatabaseInitializer {
             password = resource.getString(DB_PASSWORD);
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            logger.log(Level.FATAL, e, e);
+            throw new RuntimeException("Cannot register db driver.", e);
         }
     }
 
@@ -42,8 +43,8 @@ public class DatabaseInitializer {
         try {
             return DriverManager.getConnection(dbUrl, user, password);
         } catch (SQLException e) {
-            logger.log(Level.FATAL, e);
-            throw new RuntimeException(e);
+            logger.log(Level.FATAL, e, e);
+            throw new RuntimeException("Cannot connect to database.", e);
         }
     }
 

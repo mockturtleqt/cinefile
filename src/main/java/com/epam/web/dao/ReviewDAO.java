@@ -3,6 +3,7 @@ package com.epam.web.dao;
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Review;
 import com.epam.web.exception.DAOException;
+import com.epam.web.resource.MessageManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,6 +27,11 @@ public class ReviewDAO extends AbstractDAO<Review> {
     private static final String USER_ID = "user_id";
     private static final String MOVIE_ID = "movie_id";
     private static final String MOVIE_TITLE = "movieTitle";
+    private static final String CREATE_REVIEW_ERROR_MSG = "msg.create.review.error";
+    private static final String FIND_REVIEW_ERROR_MSG = "msg.find.review.error";
+    private static final String DELETE_REVIEW_ERROR_MSG = "msg.delete.review.error";
+    private static final String UPDATE_REVIEW_ERROR_MSG = "msg.update.review.error";
+
     private static final Logger logger = LogManager.getLogger();
 
     public ReviewDAO(ProxyConnection connection) {
@@ -45,7 +51,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(CREATE_REVIEW_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -63,7 +69,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
                 review = this.createReviewFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_REVIEW_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -82,7 +88,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(UPDATE_REVIEW_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -98,7 +104,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(DELETE_REVIEW_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -118,7 +124,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
                 reviews.add(review);
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_REVIEW_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
@@ -138,7 +144,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
                 reviews.add(review);
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_REVIEW_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }

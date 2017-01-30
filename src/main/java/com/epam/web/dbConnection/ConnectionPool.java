@@ -62,12 +62,18 @@ public class ConnectionPool {
         try {
             safeCloseLock.lock();
             for (ProxyConnection connection : connections) {
-                connection.close();
+                closeConnection(connection);
             }
-        } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
         } finally {
             safeCloseLock.unlock();
+        }
+    }
+
+    private void closeConnection(ProxyConnection connection) {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
         }
     }
 }

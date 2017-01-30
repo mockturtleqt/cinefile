@@ -12,6 +12,7 @@
 </head>
 <body class="home">
 <fmt:setLocale value="${sessionScope.locale}"/>
+<jsp:useBean id="user" class="com.epam.web.entity.User" scope="session"/>
 
 <c:import url="header.jsp"/>
 <section class="section main">
@@ -20,7 +21,10 @@
         <h2>${mediaPersonPage.firstName} ${mediaPersonPage.lastName}</h2>
     </div>
 
-    <a href="controller?command=show_edit_media_person_form&mediaPersonId=${mediaPersonPage.id}">Edit media person</a>
+    <c:set var="admin" value="ADMIN"/>
+    <c:if test="${user.role == admin}">
+        <a href="controller?command=show_edit_media_person_form&mediaPersonId=${mediaPersonPage.id}">Edit media person</a>
+    </c:if>
 
     <section class="section-movies">
         <div class="movie">

@@ -1,35 +1,35 @@
 package com.epam.web.command;
 
-import com.epam.web.entity.Review;
+import com.epam.web.entity.MovieRating;
 import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.exception.ServiceException;
 import com.epam.web.exception.ValidationException;
 import com.epam.web.memento.Memento;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
-import com.epam.web.service.ReviewService;
+import com.epam.web.service.MovieRatingService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDate;
+public class CreateMovieRatingCommand implements ActionCommand {
 
-public class CreateReviewCommand implements ActionCommand {
-    private static final String REVIEW_TITLE_INPUT_PARAM = "review-title-input";
-    private static final String REVIEW_BODY_INPUT_PARAM = "review-body-input";
-    private static final String MOVIE_ID_PARAM = "movie-id";
-    private static final String USER_ID_PARAM = "user-id";
+    private static final String RATING_PARAM = "rating";
+    private static final String MOVIE_ID_PARAM = "movieId";
+    private static final String USER_ID_PARAM = "userId";
+    private static final String BASE_PAGE_PATH = "path.page.base";
     private static final String ERROR_PAGE_PATH = "path.page.error";
     private static final String ERROR_ATTR = "errorMsg";
 
     private static final Logger logger = LogManager.getLogger();
 
-    private ReviewService reviewService = new ReviewService();
+    private MovieRatingService movieRatingService = new MovieRatingService();
 
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
-            reviewService.create(convertToReview(requestContent));
+            movieRatingService.create(this.convertToMovieRating(requestContent));
+
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
         } catch (ServiceException | InterruptedException | NoSuchRequestParameterException | ValidationException e) {
@@ -37,16 +37,20 @@ public class CreateReviewCommand implements ActionCommand {
             requestContent.setAttribute(ERROR_ATTR, e.getMessage());
             page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
         }
+
         return page;
     }
 
-    private Review convertToReview(SessionRequestContent requestContent) throws NoSuchRequestParameterException {
-        Review review = new Review();
-        review.setTitle(requestContent.getParameter(REVIEW_TITLE_INPUT_PARAM));
-        review.setBody(requestContent.getParameter(REVIEW_BODY_INPUT_PARAM));
-        review.setMovieId(Integer.valueOf(requestContent.getParameter(MOVIE_ID_PARAM)));
-        review.setUserId(Integer.valueOf(requestContent.getParameter(USER_ID_PARAM)));
-        review.setDate(LocalDate.now());
-        return review;
+    private MovieRating convertToMovieRating(SessionRequestContent requestContent) throws NoSuchRequestParameterException {
+        float rating = Float.valueOf(requestContent.getParameter(RATING_PARAM));
+        int movieId = Integer.valueOf(requestContent.getParameter(MOVIE_ID_PARAM));
+        int userId = Integer.valueOf(requestContent.getParameter(USER_ID_PARAM));
+
+        MovieRating movieRating = new MovieRating();
+        movieRating.setMovieId(movieId);
+        movieRating.setUserId(userId);
+        movieRating.setRate(rating);
+
+        return movieRating;
     }
 }

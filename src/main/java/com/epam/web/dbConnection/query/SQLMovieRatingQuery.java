@@ -16,6 +16,17 @@ public class SQLMovieRatingQuery {
             "        AND `movie_rating`.`is_deleted` = 0\n" +
             "        AND `movie`.`is_deleted` = 0";
 
+    public static final String SQL_SELECT_RATINGS_BY_MOVIE_ID = "SELECT \n" +
+            "    `movie_rating`.`user_id`,\n" +
+            "    `movie_rating`.`movie_id`,\n" +
+            "    `movie_rating`.`id`,\n" +
+            "    `movie_rating`.`rate`\n" +
+            "FROM\n" +
+            "    `movie_rating`.`movie_rating`\n" +
+            "WHERE\n" +
+            "    `movie_rating`.`movie_id` = ?\n" +
+            "        AND `movie_rating`.`is_deleted` = 0\n";
+
     public static final String SQL_INSERT_MOVIE_RATING = "INSERT INTO\n" +
             "    `movie_rating`.`movie_rating`(`user_id`, `movie_id`, `rate`)\n" +
             "     VALUES (?, ?, ?)";
@@ -42,4 +53,16 @@ public class SQLMovieRatingQuery {
             "WHERE\n" +
             "    `movie_rating`.`id` = ?\n" +
             "        AND `movie_rating`.`is_deleted` = 0";
+
+    public static final String SQL_SELECT_MOVIE_RATING_BY_USER_ID_AND_MOVIE_ID = "SELECT \n" +
+            "    `movie_rating`.`id`,\n" +
+            "    `movie_rating`.`movie_id`,\n" +
+            "    `movie_rating`.`user_id`,\n" +
+            "    `movie_rating`.`rate`\n" +
+            "FROM\n" +
+            "    `movie_rating`.`movie_rating`\n" +
+            "WHERE\n" +
+            "    `movie_rating`.`user_id` = ?\n" +
+            "        AND `movie_rating`.`movie_id` = ?\n" +
+            "        AND `movie_rating`.`is_deleted` = 0\n";
 }

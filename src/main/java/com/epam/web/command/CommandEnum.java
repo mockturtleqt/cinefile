@@ -97,12 +97,6 @@ public enum CommandEnum {
         }
     },
 
-    RATE_MOVIE {
-        {
-            this.command = new RateMovieCommand();
-        }
-    },
-
     SHOW_EDIT_MOVIE_FORM {
         {
             this.command = new ShowEditMovieFormCommand();
@@ -130,6 +124,18 @@ public enum CommandEnum {
     FIND_ALL_MEDIA_PEOPLE {
         {
             this.command = new FindAllMediaPeopleCommand();
+        }
+    },
+
+    UPDATE_MOVIE_RATING {
+        {
+            this.command = new UpdateMovieRatingCommand();
+        }
+    },
+
+    CREATE_MOVIE_RATING {
+        {
+            this.command = new CreateMovieRatingCommand();
         }
     },
 

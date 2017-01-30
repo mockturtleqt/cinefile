@@ -2,6 +2,7 @@ package com.epam.web.command;
 
 import com.epam.web.entity.User;
 import com.epam.web.exception.NoSuchRequestParameterException;
+import com.epam.web.exception.ServiceException;
 import com.epam.web.memento.Memento;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
@@ -19,6 +20,8 @@ public class LogInCommand implements ActionCommand {
     private static final String LOGIN_ERROR_ATTR = "errorLoginPassMsg";
     private static final String LOGIN_ERROR_MSG = "message.loginerror";
     private static final String LOGIN_PAGE_PATH = "path.page.login";
+    private static final String ERROR_PAGE_PATH = "path.page.error";
+    private static final String ERROR_ATTR = "errorMsg";
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -26,7 +29,7 @@ public class LogInCommand implements ActionCommand {
 
     @Override
     public String execute(SessionRequestContent requestContent) {
-        String page = null;
+        String page;
         try {
             String login = requestContent.getParameter(LOGIN_PARAM);
             String password = requestContent.getParameter(PASSWORD_PARAM);
@@ -41,8 +44,10 @@ public class LogInCommand implements ActionCommand {
                 requestContent.setSessionAttribute(LOGIN_ERROR_ATTR, MessageManager.getProperty(LOGIN_ERROR_MSG));
                 page = ConfigurationManager.getProperty(LOGIN_PAGE_PATH);
             }
-        } catch (InterruptedException | NoSuchRequestParameterException e) {
-            logger.log(Level.ERROR, e);
+        } catch (InterruptedException | NoSuchRequestParameterException | ServiceException e) {
+            logger.log(Level.ERROR, e, e);
+            requestContent.setAttribute(ERROR_ATTR, e);
+            page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
         }
 
         return page;

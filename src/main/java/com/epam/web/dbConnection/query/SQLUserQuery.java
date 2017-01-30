@@ -21,20 +21,21 @@ public class SQLUserQuery {
             "        AND `user`.`is_deleted` = 0";
 
 
-    public static final String SQL_SELECT_USERS_WHO_RATED_THIS_MOVIE = "SELECT \n" +
-            "    `user`.`id`,\n" +
-            "    `user`.`user_rating`,\n" +
-            "    `movie`.`rating`,\n" +
-            "    `movie_rating`.`rate`\n" +
-            "FROM\n" +
-            "    `movie_rating`.`movie_rating`\n" +
-            "        INNER JOIN\n" +
-            "    `movie_rating`.`user` ON `movie_rating`.`user_id` = `user`.`id`\n" +
-            "        INNER JOIN\n" +
-            "    `movie_rating`.`movie` ON `movie_rating`.`movie_id` = `movie`.`id`\n" +
-            "WHERE\n" +
-            "    `movie_rating`.`movie_id` = ?\n" +
-            "        AND `movie_rating`.`is_deleted` = 0\n";
+    //    public static final String SQL_SELECT_USER_WHO_RATED_THIS_MOVIE = "SELECT \n" +
+//            "    `user`.`id`,\n" +
+//            "    `user`.`user_rating`,\n" +
+//            "    `movie`.`rating`,\n" +
+//            "    `movie_rating`.`rate`\n" +
+//            "FROM\n" +
+//            "    `movie_rating`.`movie_rating`\n" +
+//            "        INNER JOIN\n" +
+//            "    `movie_rating`.`user` ON `movie_rating`.`user_id` = `user`.`id`\n" +
+//            "        INNER JOIN\n" +
+//            "    `movie_rating`.`movie` ON `movie_rating`.`movie_id` = `movie`.`id`\n" +
+//            "WHERE\n" +
+//            "    `movie_rating`.`movie_id` = ?\n" +
+//            "        AND `movie_rating`.`is_deleted` = 0\n";
+
 
     public static final String SQL_INSERT_USER = "INSERT INTO\n" +
             "    `movie_rating`.`user`(`login`, `password`, `email`, `first_name`, `last_name`)\n" +
