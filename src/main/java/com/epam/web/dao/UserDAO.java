@@ -4,6 +4,8 @@ import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.User;
 import com.epam.web.entity.type.GenderType;
 import com.epam.web.entity.type.RoleType;
+import com.epam.web.exception.DAOException;
+import com.epam.web.resource.MessageManager;
 import com.epam.web.trigger.MovieRatingTrigger;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Level;
@@ -33,6 +35,11 @@ public class UserDAO extends AbstractDAO<User> {
     private static final String USER_RATING = "user_rating";
     private static final String RATING = "rating";
     private static final String RATE = "rate";
+    private static final String CREATE_USER_ERROR_MSG = "msg.create.user.error";
+    private static final String FIND_USER_ERROR_MSG = "msg.find.user.error";
+    private static final String DELETE_USER_ERROR_MSG = "msg.delete.user.error";
+    private static final String UPDATE_USER_ERROR_MSG = "msg.update.user.error";
+    private static final String UPDATE_USER_RATING_ERROR_MSG = "msg.update.user.rating.error";
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -40,7 +47,7 @@ public class UserDAO extends AbstractDAO<User> {
         super(connection);
     }
 
-    public boolean create(User user) {
+    public boolean create(User user) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -53,14 +60,14 @@ public class UserDAO extends AbstractDAO<User> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(CREATE_USER_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
         return success;
     }
 
-    public User findById(int id) {
+    public User findById(int id) throws DAOException {
         PreparedStatement preparedStatement = null;
         User user = null;
         try {
@@ -71,14 +78,14 @@ public class UserDAO extends AbstractDAO<User> {
                 user = this.createUserFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_USER_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
         return user;
     }
 
-    public boolean update(User user) {
+    public boolean update(User user) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -94,14 +101,14 @@ public class UserDAO extends AbstractDAO<User> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(UPDATE_USER_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
         return success;
     }
 
-    public boolean deleteById(int id) {
+    public boolean deleteById(int id) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -110,14 +117,14 @@ public class UserDAO extends AbstractDAO<User> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(DELETE_USER_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
         return success;
     }
 
-    public User findByLoginAndPassword(String login, String password) {
+    public User findByLoginAndPassword(String login, String password) throws DAOException {
         User user = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -129,35 +136,35 @@ public class UserDAO extends AbstractDAO<User> {
                 user = this.createUserFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(FIND_USER_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
         return user;
     }
+//
+//    public boolean hasRatedThisMovie(int movieId, int userId) throws DAOException {
+//        boolean hasRated = false;
+//        PreparedStatement preparedStatement = null;
+//        try {
+//            preparedStatement = connection.getPreparedStatement(SQL_SELECT_USERS_WHO_RATED_THIS_MOVIE);
+//            preparedStatement.setInt(1, movieId);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                if (userId == resultSet.getInt(ID)) {
+//                    hasRated = true;
+//                    break;
+//                }
+//            }
+//        } catch (SQLException e) {
+//            logger.log(Level.ERROR, e);
+//        } finally {
+//            connection.closeStatement(preparedStatement);
+//        }
+//        return hasRated;
+//    }
 
-    public boolean hasRatedThisMovie(int movieId, int userId) {
-        boolean hasRated = false;
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_SELECT_USERS_WHO_RATED_THIS_MOVIE);
-            preparedStatement.setInt(1, movieId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                if (userId == resultSet.getInt(ID)) {
-                    hasRated = true;
-                    break;
-                }
-            }
-        } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
-        } finally {
-            connection.closeStatement(preparedStatement);
-        }
-        return hasRated;
-    }
-
-    public boolean updateUserRating(int userId, int newUserRating) {
+    public boolean updateUserRating(int userId, int newUserRating) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -167,42 +174,12 @@ public class UserDAO extends AbstractDAO<User> {
             preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+            throw new DAOException(MessageManager.getProperty(UPDATE_USER_RATING_ERROR_MSG), e);
         } finally {
             connection.closeStatement(preparedStatement);
         }
         return success;
     }
-
-//    public boolean updateUserRating(int movieId) {
-//        boolean success = false;
-//        PreparedStatement selectPreparedStatement = null;
-//        PreparedStatement updatePreparedStatement = null;
-//        MovieRatingTrigger trigger = new MovieRatingTrigger();
-//        try {
-//            selectPreparedStatement = connection.getPreparedStatement(SQL_SELECT_USERS_WHO_RATED_THIS_MOVIE);
-//            updatePreparedStatement = connection.getPreparedStatement(SQL_UPDATE_USER_RATING);
-//            selectPreparedStatement.setInt(1, movieId);
-//            ResultSet resultSet = selectPreparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                int userId = resultSet.getInt(ID);
-//                int userRating = resultSet.getInt(USER_RATING);
-//                float movieRating = resultSet.getFloat(RATING);
-//                float rate = resultSet.getFloat(RATE);
-//                int newUserRating = trigger.calculateNewUserRating(userRating, Math.abs(movieRating - rate));
-//                updatePreparedStatement.setInt(1, newUserRating);
-//                updatePreparedStatement.setInt(2, userId);
-//                updatePreparedStatement.executeUpdate();
-//                success = true;
-//            }
-//        } catch (SQLException e) {
-//            logger.log(Level.ERROR, e);
-//        } finally {
-//            connection.closeStatement(selectPreparedStatement);
-//            connection.closeStatement(updatePreparedStatement);
-//        }
-//        return success;
-//    }
 
     private User createUserFromResultSet(ResultSet resultSet) throws SQLException {
         User user = new User();

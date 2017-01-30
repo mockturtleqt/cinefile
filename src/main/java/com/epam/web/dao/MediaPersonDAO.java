@@ -4,6 +4,7 @@ import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.MediaPerson;
 import com.epam.web.entity.type.GenderType;
 import com.epam.web.entity.type.OccupationType;
+import com.epam.web.exception.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +31,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
         super(connection);
     }
 
-    public boolean create(MediaPerson mediaPerson) {
+    public boolean create(MediaPerson mediaPerson) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -53,7 +54,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
         return success;
     }
 
-    public MediaPerson findById(int id) {
+    public MediaPerson findById(int id) throws DAOException {
         PreparedStatement preparedStatement = null;
         MediaPerson mediaPerson = null;
         try {
@@ -71,7 +72,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
         return mediaPerson;
     }
 
-    public boolean update(MediaPerson mediaPerson) {
+    public boolean update(MediaPerson mediaPerson) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -95,7 +96,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
         return success;
     }
 
-    public boolean deleteById(int id) {
+    public boolean deleteById(int id) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -111,7 +112,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
         return success;
     }
 
-    public List<MediaPerson> findAll() {
+    public List<MediaPerson> findAll() throws DAOException {
         List<MediaPerson> mediaPeople = new ArrayList<>();
         Statement statement = null;
         try {
@@ -128,7 +129,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
         return mediaPeople;
     }
 
-    public List<MediaPerson> findByMovieId(int id) {
+    public List<MediaPerson> findByMovieId(int id) throws DAOException {
         PreparedStatement preparedStatement = null;
         List<MediaPerson> crew = new ArrayList<>();
         try {

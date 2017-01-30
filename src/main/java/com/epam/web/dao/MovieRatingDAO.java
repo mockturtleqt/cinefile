@@ -2,6 +2,7 @@ package com.epam.web.dao;
 
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.MovieRating;
+import com.epam.web.exception.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +31,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
         super(connection);
     }
 
-    public MovieRating findById(int id) {
+    public MovieRating findById(int id) throws DAOException {
         PreparedStatement preparedStatement = null;
         MovieRating movieRating = null;
         try {
@@ -48,7 +49,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
         return movieRating;
     }
 
-    public boolean create(MovieRating movieRating) {
+    public boolean create(MovieRating movieRating) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -66,7 +67,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
         return success;
     }
 
-    public boolean update(MovieRating movieRating) {
+    public boolean update(MovieRating movieRating) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -83,7 +84,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
         return success;
     }
 
-    public boolean deleteById(int id) {
+    public boolean deleteById(int id) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -99,7 +100,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
         return success;
     }
 
-    public List<MovieRating> findByUserId(int id) {
+    public List<MovieRating> findByUserId(int id) throws DAOException {
         PreparedStatement preparedStatement = null;
         List<MovieRating> ratings = new ArrayList<>();
         try {

@@ -3,6 +3,7 @@ package com.epam.web.dao;
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Movie;
 import com.epam.web.entity.type.GenreType;
+import com.epam.web.exception.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +30,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
         super(connection);
     }
 
-    public boolean create(Movie movie) {
+    public boolean create(Movie movie) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -51,7 +52,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
         return success;
     }
 
-    public Movie findById(int id) {
+    public Movie findById(int id) throws DAOException {
         Movie movie = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -70,7 +71,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
         return movie;
     }
 
-    public boolean update(Movie movie) {
+    public boolean update(Movie movie) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -92,7 +93,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
         return success;
     }
 
-    public boolean deleteById(int id) {
+    public boolean deleteById(int id) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -108,7 +109,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
         return success;
     }
 
-    public List<Movie> findAll() {
+    public List<Movie> findAll() throws DAOException {
         List<Movie> movieList = new ArrayList<>();
         Statement statement = null;
         try {
@@ -125,7 +126,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
         return movieList;
     }
 
-    public List<Movie> findByNamePart(String movieTitle) {
+    public List<Movie> findByNamePart(String movieTitle) throws DAOException {
         List<Movie> movieList = new ArrayList<>();
         movieTitle = movieTitle.toUpperCase();
         PreparedStatement preparedStatement = null;
@@ -144,7 +145,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
         return movieList;
     }
 
-    public List<Movie> findByMediaPersonId(int id) {
+    public List<Movie> findByMediaPersonId(int id) throws DAOException {
         List<Movie> movieList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         try {
@@ -162,7 +163,7 @@ public class MovieDAO extends AbstractDAO<Movie> {
         return movieList;
     }
 
-    public List<Movie> findTopMovies() {
+    public List<Movie> findTopMovies() throws DAOException {
         List<Movie> movieList = new ArrayList<>();
         Statement statement = null;
         try {

@@ -2,6 +2,7 @@ package com.epam.web.dao;
 
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Review;
+import com.epam.web.exception.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,7 +32,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
         super(connection);
     }
 
-    public boolean create(Review review) {
+    public boolean create(Review review) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -51,7 +52,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
         return success;
     }
 
-    public Review findById(int id) {
+    public Review findById(int id) throws DAOException {
         PreparedStatement preparedStatement = null;
         Review review = null;
         try {
@@ -69,7 +70,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
         return review;
     }
 
-    public boolean update(Review review) {
+    public boolean update(Review review) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -88,7 +89,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
         return success;
     }
 
-    public boolean deleteById(int id) {
+    public boolean deleteById(int id) throws DAOException {
         boolean success = false;
         PreparedStatement preparedStatement = null;
         try {
@@ -104,7 +105,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
         return success;
     }
 
-    public List<Review> findByUserId(int id) {
+    public List<Review> findByUserId(int id) throws DAOException {
         PreparedStatement preparedStatement = null;
         List<Review> reviews = new ArrayList<>();
         try {
@@ -124,7 +125,7 @@ public class ReviewDAO extends AbstractDAO<Review> {
         return reviews;
     }
 
-    public List<Review> findByMovieId(int id) {
+    public List<Review> findByMovieId(int id) throws DAOException {
         PreparedStatement preparedStatement = null;
         List<Review> reviews = new ArrayList<>();
         try {

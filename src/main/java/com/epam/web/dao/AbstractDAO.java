@@ -2,6 +2,7 @@ package com.epam.web.dao;
 
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Entity;
+import com.epam.web.exception.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,13 +20,13 @@ public abstract class AbstractDAO<T extends Entity> {
         this.connection = connection;
     }
 
-    public abstract boolean create(T entity);
+    public abstract boolean create(T entity) throws DAOException;
 
-    public abstract T findById(int id);
+    public abstract T findById(int id) throws DAOException;
 
-    public abstract boolean update(T entity);
+    public abstract boolean update(T entity) throws DAOException;
 
-    public abstract boolean deleteById(int id);
+    public abstract boolean deleteById(int id) throws DAOException;
 
     <Type> String listToString(List<Type> items) {
         StringBuilder itemsAsString = new StringBuilder();
@@ -47,13 +48,4 @@ public abstract class AbstractDAO<T extends Entity> {
         return (localDate != null) ? Date.valueOf(localDate) : null;
     }
 
-
-//
-//    public abstract boolean delete(int id);
-//
-//    public abstract boolean delete(T entity);
-//
-//    public abstract boolean create(T entity);
-//
-//
 }
