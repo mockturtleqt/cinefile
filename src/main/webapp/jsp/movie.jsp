@@ -29,14 +29,12 @@
 
     <section class="section-movies">
         <div class="movie">
-            <c:if test="${not empty moviePage.poster}">
-                <div class="poster">
-                    <a href="#">
-                        <img src="${moviePage.poster}"
-                             alt="${moviePage.title}"/>
-                    </a>
-                </div>
-            </c:if>
+            <div class="poster">
+                <a href="#">
+                    <img src="${moviePage.poster}"
+                         alt="${moviePage.title}"/>
+                </a>
+            </div>
 
             <c:if test="${not empty moviePage.description}">
                 <p class="description">

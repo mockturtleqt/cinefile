@@ -21,6 +21,20 @@ public class SQLMediaPersonQuery {
             "        AND `media_person`.`is_deleted` = 0\n" +
             "        AND `movie`.`is_deleted` = 0";
 
+    public static final String SQL_SELECT_ALL_MEDIA_PEOPLE = "SELECT \n" +
+            "    `media_person`.`id`,\n" +
+            "    `media_person`.`bio`,\n" +
+            "    `media_person`.`occupation`,\n" +
+            "    `media_person`.`first_name`,\n" +
+            "    `media_person`.`last_name`,\n" +
+            "    `media_person`.`gender`,\n" +
+            "    `media_person`.`birthday`,\n" +
+            "    `media_person`.`picture`\n" +
+            "FROM\n" +
+            "    `movie_rating`.`media_person`\n" +
+            "WHERE\n" +
+            "        `media_person`.`is_deleted` = 0";
+
     public static final String SQL_SELECT_MEDIA_PERSON_BY_ID = "SELECT \n" +
             "    `media_person`.`id`,\n" +
             "    `media_person`.`bio`,\n" +

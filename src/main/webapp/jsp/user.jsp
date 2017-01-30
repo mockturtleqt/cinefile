@@ -22,15 +22,19 @@
     </div>
     <section class="section-movies">
         <div class="movie">
-
-            <c:if test="${not empty userPage.picture}">
-                <div class="poster">
-                    <a href="#">
-                        <img src="${userPage.picture}"
-                             alt="${userPage.login}"/>
-                    </a>
-                </div>
+            <c:set var="admin" value="ADMIN"/>
+            <c:if test="${userPage.role == admin}">
+                <a href="controller?command=show_edit_media_person_form">Add media person</a>
+                <br>
+                <a href="controller?command=show_edit_movie_form">Add movie</a>
             </c:if>
+
+            <div class="poster">
+                <a href="#">
+                    <img src="${userPage.picture}"
+                         alt="${userPage.login}"/>
+                </a>
+            </div>
 
             <c:if test="${not empty userPage.userRating}">
                 <p><strong><fmt:message key="user.rating"/>: </strong>${userPage.userRating}</p>
@@ -90,19 +94,20 @@
             </c:if>
 
             <c:if test="${not empty userPage.ratings}">
-                <p><strong><fmt:message key="ratings"/>: </strong></p>
-                <c:forEach var="rating" items="${userPage.ratings}">
-                    <div class="rating">
-                        <p>
-                            <a href="controller?command=show_movie_page&movieId=${rating.movieId}">${rating.movieTitle}</a>
-                            : ${rating.rate}
-                            <br>
-                        </p>
-                    </div>
-                </c:forEach>
-            </c:if>
+            <p><strong><fmt:message key="ratings"/>: </strong></p>
+            <c:forEach var="rating" items="${userPage.ratings}">
+                <p>
+                    <a href="controller?command=show_movie_page&movieId=${rating.movieId}">
+                            ${rating.movieTitle}
+                    </a>
+                    : ${rating.rate}
+                    <br>
+                </p>
 
+            </c:forEach>
         </div>
+        </c:if>
+
         <a href="${requestScope.previous_page}"><fmt:message key="back"/></a>
     </section>
 </section>

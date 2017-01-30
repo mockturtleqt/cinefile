@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="ctg" uri="customtags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,52 +48,20 @@
             <div id="genre-div" class="genre-div">
                 <c:forEach var="genre" items="${requestScope.genreType}">
                     <div class="block-div">
-                        <input type="checkbox" id="${genre}" name="genre"
-                               value="${genre}"/>
+                        <c:choose>
+                            <c:when test="${not empty requestScope.movie.genre and
+                                            ctg:containsGenreType(requestScope.movie.genre, genre)}">
+                                <input type="checkbox" id="${genre}" name="genre" checked="checked"
+                                       value="${genre}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <input type="checkbox" id="${genre}" name="genre"
+                                       value="${genre}"/>
+                            </c:otherwise>
+                        </c:choose>
                         <label for="${genre}">${genre}</label>
                     </div>
                 </c:forEach>
-
-                <%--<div class="block-div">--%>
-                    <%--<input type="checkbox" id="comedy" name="genre" value="COMEDY"/>--%>
-                    <%--<label for="comedy">Comedy</label>--%>
-                <%--</div>--%>
-                <%--<div class="block-div">--%>
-                    <%--<input type="checkbox" id="romance" name="genre" value="romance"/>--%>
-                    <%--<label for="romance">Romance</label>--%>
-                <%--</div>--%>
-                <%--<div class="block-div">--%>
-                    <%--<input type="checkbox" id="thriller" name="genre" value="thriller"/>--%>
-                    <%--<label for="thriller">Thriller</label>--%>
-                <%--</div>--%>
-                <%--<div class="block-div">--%>
-                    <%--<input type="checkbox" id="cartoon" name="genre" value="cartoon"/>--%>
-                    <%--<label for="cartoon">Cartoon</label>--%>
-                <%--</div>--%>
-                <%--<div class="block-div">--%>
-                    <%--<input type="checkbox" id="drama" name="genre" value="drama"/>--%>
-                    <%--<label for="drama">Drama</label>--%>
-                <%--</div>--%>
-                <%--<div class="block-div">--%>
-                    <%--<input type="checkbox" id="fantasy" name="genre" value="fantasy"/>--%>
-                    <%--<label for="fantasy">Fantasy</label>--%>
-                <%--</div>--%>
-                <%--<div class="block-div">--%>
-                    <%--<input type="checkbox" id="documentary" name="genre" value="documentary"/>--%>
-                    <%--<label for="documentary">Documentary</label>--%>
-                <%--</div>--%>
-                <%--<div class="block-div">--%>
-                    <%--<input type="checkbox" id="crime" name="genre" value="crime"/>--%>
-                    <%--<label for="crime">Crime</label>--%>
-                <%--</div>--%>
-                <%--<div class="block-div">--%>
-                    <%--<input type="checkbox" id="action" name="genre" value="action"/>--%>
-                    <%--<label for="action">Action</label>--%>
-                <%--</div>--%>
-                <%--<div class="block-div">--%>
-                    <%--<input type="checkbox" id="adventure" name="genre" value="adventure"/>--%>
-                    <%--<label for="adventure">Adventure</label>--%>
-                <%--</div>--%>
             </div>
         </div>
 

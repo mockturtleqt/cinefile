@@ -121,6 +121,18 @@ public enum CommandEnum {
         }
     },
 
+    FIND_ALL_MOVIES {
+        {
+            this.command = new FindAllMoviesCommand();
+        }
+    },
+
+    FIND_ALL_MEDIA_PEOPLE {
+        {
+            this.command = new FindAllMediaPeopleCommand();
+        }
+    },
+
     DELETE_REVIEW {
         {
             this.command = new DeleteReviewCommand();

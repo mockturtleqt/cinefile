@@ -5,7 +5,7 @@ public class SQLMovieQuery {
             "    `movie_rating`.`movie`(`title`, `release_date`, `description`, `poster`, `rating`, `genre`)\n" +
             "     VALUES (?, ?, ?, ?, ?, ?)";
 
-    public static final String SQL_SELECT_ALL_MOVIES_BY_TITLE = "SELECT \n" +
+    public static final String SQL_SELECT_MOVIES_BY_NAME_PART = "SELECT \n" +
             "    `movie`.`id`,\n" +
             "    `movie`.`title`,\n" +
             "    `movie`.`release_date`,\n" +
@@ -32,6 +32,19 @@ public class SQLMovieQuery {
             "WHERE\n" +
             "    `movie`.`title` = ?\n" +
             "        AND `movie`.`is_deleted` = 0";
+
+    public static final String SQL_SELECT_ALL_MOVIES = "SELECT \n" +
+            "    `movie`.`id`,\n" +
+            "    `movie`.`title`,\n" +
+            "    `movie`.`release_date`,\n" +
+            "    `movie`.`description`,\n" +
+            "    `movie`.`poster`,\n" +
+            "    `movie`.`rating`,\n" +
+            "    `movie`.`genre`\n" +
+            "FROM\n" +
+            "    `movie_rating`.`movie`\n" +
+            "WHERE\n" +
+            "        `movie`.`is_deleted` = 0";
 
     public static final String SQL_SELECT_MOVIE_BY_ID = "SELECT \n" +
             "    `movie`.`id`,\n" +

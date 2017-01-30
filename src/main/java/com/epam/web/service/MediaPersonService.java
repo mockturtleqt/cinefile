@@ -4,7 +4,11 @@ import com.epam.web.dao.MediaPersonDAO;
 import com.epam.web.dao.MovieDAO;
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.MediaPerson;
+import com.epam.web.entity.Movie;
 import com.epam.web.exception.NoSuchPageException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MediaPersonService extends AbstractService<MediaPerson> {
 
@@ -66,5 +70,19 @@ public class MediaPersonService extends AbstractService<MediaPerson> {
             super.returnConnection(connection);
         }
         return success;
+    }
+
+    public List<MediaPerson> findAll() throws InterruptedException {
+        List<MediaPerson> mediaPeople = new ArrayList<>();
+        ProxyConnection connection = null;
+        try {
+            connection = super.getConnection();
+
+            MediaPersonDAO mediaPersonDAO = new MediaPersonDAO(connection);
+            mediaPeople = mediaPersonDAO.findAll();
+        } finally {
+            super.returnConnection(connection);
+        }
+        return mediaPeople;
     }
 }

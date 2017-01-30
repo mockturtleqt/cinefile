@@ -81,14 +81,28 @@ public class MovieService extends AbstractService<Movie> {
         return success;
     }
 
-    public List<Movie> findAll(String title) throws InterruptedException {
+    public List<Movie> findAll() throws InterruptedException {
         List<Movie> movies = new ArrayList<>();
         ProxyConnection connection = null;
         try {
             connection = super.getConnection();
 
             MovieDAO movieDAO = new MovieDAO(connection);
-            movies = movieDAO.findAll(title);
+            movies = movieDAO.findAll();
+        } finally {
+            super.returnConnection(connection);
+        }
+        return movies;
+    }
+
+    public List<Movie> findByNamePart(String title) throws InterruptedException {
+        List<Movie> movies = new ArrayList<>();
+        ProxyConnection connection = null;
+        try {
+            connection = super.getConnection();
+
+            MovieDAO movieDAO = new MovieDAO(connection);
+            movies = movieDAO.findByNamePart(title);
         } finally {
             super.returnConnection(connection);
         }

@@ -30,10 +30,10 @@
                 </form>
             </li>
             <li>
-                <a href="#"><fmt:message key="movie"/> </a>
+                <a href="controller?command=find_all_movies"><fmt:message key="movie"/> </a>
             </li>
             <li>
-                <a href="#"><fmt:message key="celebs"/></a>
+                <a href="controller?command=find_all_media_people"><fmt:message key="celebs"/></a>
             </li>
 
             <%--<jsp:useBean id="user" scope="session" class="com.epam.web.entity.User"/>--%>

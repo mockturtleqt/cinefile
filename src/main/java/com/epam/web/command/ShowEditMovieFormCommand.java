@@ -23,11 +23,12 @@ public class ShowEditMovieFormCommand implements ActionCommand {
 
     public String execute(SessionRequestContent requestContent) {
         try {
+            requestContent.setAttribute(GENRE_TYPE_ATTR, GenreType.values());
+
             String idParam = requestContent.getParameter(ID);
             int id = Integer.valueOf(idParam);
             MovieService movieService = new MovieService();
             Movie movie = movieService.findById(id);
-            requestContent.setAttribute(GENRE_TYPE_ATTR, GenreType.values());
             requestContent.setAttribute(MOVIE_ATTR, movie);
         } catch (NoSuchRequestParameterException | InterruptedException | NoSuchPageException e) {
             logger.log(Level.ERROR, e);

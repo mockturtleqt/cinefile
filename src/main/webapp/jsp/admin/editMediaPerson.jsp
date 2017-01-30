@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,41 +48,43 @@
         <div class="block occupation">
             <label for="occupation-div">Occupation</label>
             <div id="occupation-div" class="occupation-div">
-                <div class="block-div">
-                    <input type="checkbox" id="actor" name="occupation" value="actor"/>
-                    <label for="actor">Actor</label>
-                </div>
-
-                <div class="block-div">
-                    <input type="checkbox" id="director" name="occupation" value="director"/>
-                    <label for="director">Director</label>
-                </div>
-
-                <div class="block-div">
-                    <input type="checkbox" id="producer" name="occupation" value="producer"/>
-                    <label for="producer">Producer</label>
-                </div>
-
-                <div class="block-div">
-                    <input type="checkbox" id="writer" name="occupation" value="writer"/>
-                    <label for="writer">Writer</label>
-                </div>
-
+                <c:forEach var="occupation" items="${requestScope.occupationType}">
+                    <div class="block-div">
+                        <c:choose>
+                            <c:when test="${not empty requestScope.mediaPerson.occupation and
+                                            ctg:containsOccupationType(requestScope.mediaPerson.occupation, occupation)}">
+                                <input type="checkbox" id="${occupation}" name="occupation" checked="checked"
+                                       value="${occupation}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <input type="checkbox" id="${occupation}" name="occupation"
+                                       value="${occupation}"/>
+                            </c:otherwise>
+                        </c:choose>
+                        <label for="${occupation}">${occupation}</label>
+                    </div>
+                </c:forEach>
             </div>
         </div>
 
         <div class="block">
             <label for="gender-div">Gender</label>
             <div id="gender-div">
-                <div class="block-div">
-                    <input type="radio" id="male" name="gender" value="male"/>
-                    <label for="male">Male</label>
-                </div>
 
-                <div class="block-div">
-                    <input type="radio" id="female" name="gender" value="female"/>
-                    <label for="female">Female</label>
-                </div>
+                <c:forEach var="gender" items="${requestScope.genderType}">
+                    <div class="block-div">
+                        <c:choose>
+                            <c:when test="${not empty requestScope.mediaPerson.gender and
+                                            ctg:equalsGender(gender, requestScope.mediaPerson.gender)}">
+                                <input type="radio" id="${gender}" name="gender" value="${gender}" checked="checked"/>
+                            </c:when>
+                            <c:otherwise>
+                                <input type="radio" id="${gender}" name="gender" value="${gender}"/>
+                            </c:otherwise>
+                        </c:choose>
+                        <label for="${gender}">${gender}</label>
+                    </div>
+                </c:forEach>
             </div>
         </div>
 

@@ -8,10 +8,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +111,23 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
         return success;
     }
 
+    public List<MediaPerson> findAll() {
+        List<MediaPerson> mediaPeople = new ArrayList<>();
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_MEDIA_PEOPLE);
+            while (resultSet.next()) {
+                mediaPeople.add(this.createMediaPersonFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(statement);
+        }
+        return mediaPeople;
+    }
+
     public List<MediaPerson> findByMovieId(int id) {
         PreparedStatement preparedStatement = null;
         List<MediaPerson> crew = new ArrayList<>();
@@ -140,16 +154,23 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
         mediaPerson.setBio(resultSet.getString(BIO));
 
         String occupationsString = resultSet.getString(OCCUPATION);
-        List<OccupationType> occupations = new ArrayList<>();
-        for (String occupation : occupationsString.split(",")) {
-            occupations.add(OccupationType.valueOf(occupation.toUpperCase()));
+        List<OccupationType> occupations = null;
+        if (occupationsString != null) {
+            occupations = new ArrayList<>();
+            for (String occupation : occupationsString.split(",")) {
+                occupations.add(OccupationType.valueOf(occupation.toUpperCase()));
+            }
         }
         mediaPerson.setOccupation(occupations);
 
-        mediaPerson.setGender(GenderType.valueOf(resultSet.getString(GENDER).toUpperCase()));
+        String genderString = resultSet.getString(GENDER);
+        GenderType genderType = (genderString != null) ? GenderType.valueOf(genderString.toUpperCase()) : null;
+        mediaPerson.setGender(genderType);
+
         Date date = resultSet.getDate(BIRTHDAY);
         LocalDate localDate = (date != null) ? date.toLocalDate() : null;
         mediaPerson.setBirthday(localDate);
+
         mediaPerson.setPicture(resultSet.getString(PICTURE));
         return mediaPerson;
     }

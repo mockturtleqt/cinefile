@@ -27,8 +27,8 @@ public class FindMovieCommand implements ActionCommand {
             String movieTitle = requestContent.getParameter(MOVIE_TO_FIND_PARAM);
 
             MovieService movieService = new MovieService();
-            List<Movie> movieList = movieService.findAll(movieTitle);
-
+            List<Movie> movieList = movieService.findByNamePart(movieTitle);
+//            TODO RESULTS FOR + MOVIETITLE -> PART TITLE
             requestContent.setAttribute(QUERY_NAME_ATTR, "Results for " + movieTitle + ":");
             requestContent.setAttribute(MOVIE_ATTR, movieList);
             page = ConfigurationManager.getProperty(BASE_PAGE_PATH);

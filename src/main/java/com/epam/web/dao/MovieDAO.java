@@ -108,12 +108,29 @@ public class MovieDAO extends AbstractDAO<Movie> {
         return success;
     }
 
-    public List<Movie> findAll(String movieTitle) {
+    public List<Movie> findAll() {
+        List<Movie> movieList = new ArrayList<>();
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_MOVIES);
+            while (resultSet.next()) {
+                movieList.add(this.createMovieFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+        } finally {
+            connection.closeStatement(statement);
+        }
+        return movieList;
+    }
+
+    public List<Movie> findByNamePart(String movieTitle) {
         List<Movie> movieList = new ArrayList<>();
         movieTitle = movieTitle.toUpperCase();
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = connection.getPreparedStatement(SQL_SELECT_ALL_MOVIES_BY_TITLE);
+            preparedStatement = connection.getPreparedStatement(SQL_SELECT_MOVIES_BY_NAME_PART);
             preparedStatement.setString(1, "%" + movieTitle + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -166,19 +183,23 @@ public class MovieDAO extends AbstractDAO<Movie> {
         Movie movie = new Movie();
         movie.setId(resultSet.getInt(ID));
         movie.setTitle(resultSet.getString(TITLE));
+
         Date date = resultSet.getDate(RELEASE_DATE);
         LocalDate localDate = (date != null) ? date.toLocalDate() : null;
         movie.setReleaseDate(localDate);
+
         movie.setDescription(resultSet.getString(DESCRIPTION));
         movie.setPoster(resultSet.getString(POSTER));
         movie.setRating(resultSet.getFloat(RATING));
 
         String genresString = resultSet.getString(GENRE);
-        List<GenreType> genres = new ArrayList<>();
-        for (String genre : genresString.split(",")) {
-            genres.add(GenreType.valueOf(genre.toUpperCase()));
+        List<GenreType> genres = null;
+        if (genresString != null) {
+            genres = new ArrayList<>();
+            for (String genre : genresString.split(",")) {
+                genres.add(GenreType.valueOf(genre.toUpperCase()));
+            }
         }
-
         movie.setGenre(genres);
         return movie;
     }

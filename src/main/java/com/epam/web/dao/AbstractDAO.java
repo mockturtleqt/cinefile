@@ -32,7 +32,7 @@ public abstract class AbstractDAO<T extends Entity> {
         for (int i = 0; i < items.size(); i++) {
             itemsAsString.append(items.get(i));
             //So that we won't have a comma after the last item
-            if (i != items.size() - 2) {
+            if (i != items.size() - 1) {
                 itemsAsString.append(",");
             }
         }

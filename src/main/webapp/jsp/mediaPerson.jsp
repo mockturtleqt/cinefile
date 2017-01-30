@@ -25,14 +25,12 @@
     <section class="section-movies">
         <div class="movie">
 
-            <c:if test="${not empty mediaPersonPage.picture}">
-                <div class="poster">
-                    <a href="#">
-                        <img src="${mediaPersonPage.picture}"
-                             alt="${mediaPersonPage.firstName} ${mediaPersonPage.lastName}"/>
-                    </a>
-                </div>
-            </c:if>
+            <div class="poster">
+                <a href="#">
+                    <img src="${mediaPersonPage.picture}"
+                         alt="${mediaPersonPage.firstName} ${mediaPersonPage.lastName}"/>
+                </a>
+            </div>
 
             <c:if test="${not empty mediaPersonPage.bio}">
                 <p class="description">

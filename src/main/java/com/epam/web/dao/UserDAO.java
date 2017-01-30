@@ -157,35 +157,52 @@ public class UserDAO extends AbstractDAO<User> {
         return hasRated;
     }
 
-    public boolean updateUserRating(int movieId) {
+    public boolean updateUserRating(int userId, int newUserRating) {
         boolean success = false;
-        PreparedStatement selectPreparedStatement = null;
-        PreparedStatement updatePreparedStatement = null;
-        MovieRatingTrigger trigger = new MovieRatingTrigger();
+        PreparedStatement preparedStatement = null;
         try {
-            selectPreparedStatement = connection.getPreparedStatement(SQL_SELECT_USERS_WHO_RATED_THIS_MOVIE);
-            updatePreparedStatement = connection.getPreparedStatement(SQL_UPDATE_USER_RATING);
-            selectPreparedStatement.setInt(1, movieId);
-            ResultSet resultSet = selectPreparedStatement.executeQuery();
-            while (resultSet.next()) {
-                int userId = resultSet.getInt(ID);
-                int userRating = resultSet.getInt(USER_RATING);
-                float movieRating = resultSet.getFloat(RATING);
-                float rate = resultSet.getFloat(RATE);
-                int newUserRating = trigger.calculateNewUserRating(userRating, Math.abs(movieRating - rate));
-                updatePreparedStatement.setInt(1, newUserRating);
-                updatePreparedStatement.setInt(2, userId);
-                updatePreparedStatement.executeUpdate();
-                success = true;
-            }
+            preparedStatement = connection.getPreparedStatement(SQL_UPDATE_USER_RATING);
+            preparedStatement.setInt(1, newUserRating);
+            preparedStatement.setInt(2, userId);
+            preparedStatement.executeUpdate();
+            success = true;
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
         } finally {
-            connection.closeStatement(selectPreparedStatement);
-            connection.closeStatement(updatePreparedStatement);
+            connection.closeStatement(preparedStatement);
         }
         return success;
     }
+
+//    public boolean updateUserRating(int movieId) {
+//        boolean success = false;
+//        PreparedStatement selectPreparedStatement = null;
+//        PreparedStatement updatePreparedStatement = null;
+//        MovieRatingTrigger trigger = new MovieRatingTrigger();
+//        try {
+//            selectPreparedStatement = connection.getPreparedStatement(SQL_SELECT_USERS_WHO_RATED_THIS_MOVIE);
+//            updatePreparedStatement = connection.getPreparedStatement(SQL_UPDATE_USER_RATING);
+//            selectPreparedStatement.setInt(1, movieId);
+//            ResultSet resultSet = selectPreparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                int userId = resultSet.getInt(ID);
+//                int userRating = resultSet.getInt(USER_RATING);
+//                float movieRating = resultSet.getFloat(RATING);
+//                float rate = resultSet.getFloat(RATE);
+//                int newUserRating = trigger.calculateNewUserRating(userRating, Math.abs(movieRating - rate));
+//                updatePreparedStatement.setInt(1, newUserRating);
+//                updatePreparedStatement.setInt(2, userId);
+//                updatePreparedStatement.executeUpdate();
+//                success = true;
+//            }
+//        } catch (SQLException e) {
+//            logger.log(Level.ERROR, e);
+//        } finally {
+//            connection.closeStatement(selectPreparedStatement);
+//            connection.closeStatement(updatePreparedStatement);
+//        }
+//        return success;
+//    }
 
     private User createUserFromResultSet(ResultSet resultSet) throws SQLException {
         User user = new User();
@@ -197,10 +214,15 @@ public class UserDAO extends AbstractDAO<User> {
         user.setIsBanned(resultSet.getBoolean(IS_BANNED));
         user.setFirstName(resultSet.getString(FIRST_NAME));
         user.setLastName(resultSet.getString(LAST_NAME));
-        user.setGender(GenderType.valueOf(resultSet.getString(GENDER).toUpperCase()));
+
+        String genderString = resultSet.getString(GENDER);
+        GenderType genderType = (genderString != null) ? GenderType.valueOf(genderString.toUpperCase()) : null;
+        user.setGender(genderType);
+
         Date date = resultSet.getDate(BIRTHDAY);
         LocalDate localDate = (date != null) ? date.toLocalDate() : null;
         user.setBirthday(localDate);
+
         user.setPicture(resultSet.getString(PICTURE));
         user.setUserRating(resultSet.getInt(USER_RATING));
         return user;

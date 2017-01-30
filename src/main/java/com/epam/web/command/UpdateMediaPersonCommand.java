@@ -31,7 +31,7 @@ public class UpdateMediaPersonCommand implements ActionCommand {
         String page = null;
         try {
             MediaPersonService mediaPersonService = new MediaPersonService();
-            mediaPersonService.update(convertToMediaPerson(requestContent));
+            boolean success = mediaPersonService.update(convertToMediaPerson(requestContent));
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
         } catch (NoSuchRequestParameterException | InterruptedException e) {
