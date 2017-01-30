@@ -11,16 +11,18 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 public class FindTopMoviesCommand implements ActionCommand {
-    private static final Logger logger = LogManager.getLogger();
-    private static final String MOVIE = "movie";
+    private static final String MOVIE_ATTR = "movie";
     private static final String SORTED_MOVIES_PAGE_PATH = "path.page.sorted.movies";
 
-    public String execute(SessionRequestContent content) {
+    private static final Logger logger = LogManager.getLogger();
+
+    private MovieService movieService = new MovieService();
+
+    public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            MovieService movieService = new MovieService();
             List<Movie> movieList = movieService.findTopMovies();
-            content.setAttribute(MOVIE, movieList);
+            requestContent.setAttribute(MOVIE_ATTR, movieList);
             page = ConfigurationManager.getProperty(SORTED_MOVIES_PAGE_PATH);
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, e);

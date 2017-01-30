@@ -12,17 +12,20 @@ import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
 
 public class UpdateReviewCommand implements ActionCommand {
-    private static final String REVIEW_TITLE_INPUT = "review-title-input";
-    private static final String REVIEW_BODY_INPUT = "review-body-input";
-    private static final String REVIEW_ID = "reviewId";
+    private static final String REVIEW_TITLE_INPUT_PARAM = "review-title-input";
+    private static final String REVIEW_BODY_INPUT_PARAM = "review-body-input";
+    private static final String REVIEW_ID_PARAM = "reviewId";
+
     private static final Logger logger = LogManager.getLogger();
+
+    private ReviewService reviewService = new ReviewService();
 
     public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            String title = requestContent.getParameter(REVIEW_TITLE_INPUT);
-            String body = requestContent.getParameter(REVIEW_BODY_INPUT);
-            int id = Integer.valueOf(requestContent.getParameter(REVIEW_ID));
+            String title = requestContent.getParameter(REVIEW_TITLE_INPUT_PARAM);
+            String body = requestContent.getParameter(REVIEW_BODY_INPUT_PARAM);
+            int id = Integer.valueOf(requestContent.getParameter(REVIEW_ID_PARAM));
 
             Review review = new Review();
             review.setTitle(title);
@@ -30,7 +33,6 @@ public class UpdateReviewCommand implements ActionCommand {
             review.setId(id);
             review.setDate(LocalDate.now());
 
-            ReviewService reviewService = new ReviewService();
             reviewService.update(review);
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();

@@ -12,9 +12,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class LogInCommand implements ActionCommand {
-
-    private static final Logger logger = LogManager.getLogger();
-
     private static final String LOGIN_PARAM = "known-login";
     private static final String PASSWORD_PARAM = "known-password";
     private static final String USER_ATTR = "user";
@@ -23,6 +20,10 @@ public class LogInCommand implements ActionCommand {
     private static final String LOGIN_ERROR_MSG = "message.loginerror";
     private static final String LOGIN_PAGE_PATH = "path.page.login";
 
+    private static final Logger logger = LogManager.getLogger();
+
+    private UserService userService = new UserService();
+
     @Override
     public String execute(SessionRequestContent requestContent) {
         String page = null;
@@ -30,7 +31,6 @@ public class LogInCommand implements ActionCommand {
             String login = requestContent.getParameter(LOGIN_PARAM);
             String password = requestContent.getParameter(PASSWORD_PARAM);
 
-            UserService userService = new UserService();
             User user = userService.findByLoginAndPassword(login, password);
 
             if (user != null) {

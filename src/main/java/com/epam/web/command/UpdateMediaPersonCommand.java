@@ -27,11 +27,12 @@ public class UpdateMediaPersonCommand implements ActionCommand {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private MediaPersonService mediaPersonService = new MediaPersonService();
+
     public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            MediaPersonService mediaPersonService = new MediaPersonService();
-            boolean success = mediaPersonService.update(convertToMediaPerson(requestContent));
+            mediaPersonService.update(convertToMediaPerson(requestContent));
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
         } catch (NoSuchRequestParameterException | InterruptedException e) {
@@ -40,7 +41,7 @@ public class UpdateMediaPersonCommand implements ActionCommand {
         return page;
     }
 
-    private MediaPerson convertToMediaPerson(SessionRequestContent requestContent) throws NoSuchRequestParameterException{
+    private MediaPerson convertToMediaPerson(SessionRequestContent requestContent) throws NoSuchRequestParameterException {
         MediaPerson mediaPerson = new MediaPerson();
         mediaPerson.setId(Integer.valueOf(requestContent.getParameter(ID_PARAM)));
         mediaPerson.setFirstName(requestContent.getParameter(FIRST_NAME_PARAM));

@@ -5,7 +5,6 @@ import com.epam.web.entity.type.GenreType;
 import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.memento.Memento;
 import com.epam.web.requestContent.SessionRequestContent;
-import com.epam.web.service.MovieRatingService;
 import com.epam.web.service.MovieService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -24,10 +23,11 @@ public class CreateMovieCommand implements ActionCommand {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private MovieService movieService = new MovieService();
+
     public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            MovieService movieService = new MovieService();
             movieService.create(convertToMovie(requestContent));
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();

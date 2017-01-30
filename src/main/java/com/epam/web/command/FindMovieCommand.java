@@ -8,25 +8,24 @@ import com.epam.web.service.MovieService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.message.ParameterizedMessage;
 
 import java.util.List;
 
 public class FindMovieCommand implements ActionCommand {
-
-    private static final Logger logger = LogManager.getLogger();
-
     private static final String MOVIE_TO_FIND_PARAM = "movie-to-find";
     private static final String QUERY_NAME_ATTR = "queryName";
     private static final String MOVIE_ATTR = "movie";
     private static final String BASE_PAGE_PATH = "path.page.base";
+
+    private static final Logger logger = LogManager.getLogger();
+
+    private MovieService movieService = new MovieService();
 
     public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
             String movieTitle = requestContent.getParameter(MOVIE_TO_FIND_PARAM);
 
-            MovieService movieService = new MovieService();
             List<Movie> movieList = movieService.findByNamePart(movieTitle);
 //            TODO RESULTS FOR + MOVIETITLE -> PART TITLE
             requestContent.setAttribute(QUERY_NAME_ATTR, "Results for " + movieTitle + ":");

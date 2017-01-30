@@ -1,15 +1,12 @@
 package com.epam.web.command;
 
 import com.epam.web.entity.MediaPerson;
-import com.epam.web.entity.Movie;
 import com.epam.web.entity.type.GenderType;
-import com.epam.web.entity.type.GenreType;
 import com.epam.web.entity.type.OccupationType;
 import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.memento.Memento;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.service.MediaPersonService;
-import com.epam.web.service.MovieService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,10 +26,11 @@ public class CreateMediaPersonCommand implements ActionCommand {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private MediaPersonService mediaPersonService = new MediaPersonService();
+
     public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            MediaPersonService mediaPersonService = new MediaPersonService();
             mediaPersonService.create(convertToMediaPerson(requestContent));
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
@@ -42,7 +40,7 @@ public class CreateMediaPersonCommand implements ActionCommand {
         return page;
     }
 
-    private MediaPerson convertToMediaPerson(SessionRequestContent requestContent) throws NoSuchRequestParameterException{
+    private MediaPerson convertToMediaPerson(SessionRequestContent requestContent) throws NoSuchRequestParameterException {
         MediaPerson mediaPerson = new MediaPerson();
         mediaPerson.setFirstName(requestContent.getParameter(FIRST_NAME_PARAM));
         mediaPerson.setLastName(requestContent.getParameter(LAST_NAME_PARAM));

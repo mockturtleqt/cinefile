@@ -15,25 +15,26 @@ public class ConnectionPool {
     private static final Logger logger = LogManager.getLogger();
 
     private static final int POOL_SIZE = 10;
-    private static final Lock lock = new ReentrantLock();
+    private static final Lock instantiationLock = new ReentrantLock();
+    private static final Lock safeCloseLock = new ReentrantLock();
     private static ConnectionPool instance;
 
     private BlockingQueue<ProxyConnection> connections = new ArrayBlockingQueue<>(POOL_SIZE);
     private DatabaseInitializer databaseInitializer;
 
     private ConnectionPool() {
-        databaseInitializer = new DatabaseInitializer();
+        this.databaseInitializer = new DatabaseInitializer();
         this.initializeConnections();
     }
 
     public static ConnectionPool getInstance() {
         try {
-            lock.lock();
+            instantiationLock.lock();
             if (instance == null) {
                 instance = new ConnectionPool();
             }
         } finally {
-            lock.unlock();
+            instantiationLock.unlock();
         }
         return instance;
     }
@@ -57,15 +58,16 @@ public class ConnectionPool {
         }
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
+    public void closePool() {
         try {
+            safeCloseLock.lock();
             for (ProxyConnection connection : connections) {
                 connection.close();
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
+        } finally {
+            safeCloseLock.unlock();
         }
     }
 }

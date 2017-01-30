@@ -11,20 +11,22 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ShowMoviePageCommand implements ActionCommand {
-    private static final Logger logger = LogManager.getLogger();
     private static final String MOVIE_PAGE_PATH = "path.page.movie";
     private static final String ERROR_PAGE_PATH = "path.page.error";
-    private static final String ID = "movieId";
+    private static final String ID_PARAM = "movieId";
+
+    private static final Logger logger = LogManager.getLogger();
+
+    private MovieService movieService = new MovieService();
 
     @Override
-    public String execute(SessionRequestContent content) {
+    public String execute(SessionRequestContent requestContent) {
         String page = null;
 
         try {
-            int id = Integer.valueOf(content.getParameter(ID));
-            MovieService movieService = new MovieService();
+            int id = Integer.valueOf(requestContent.getParameter(ID_PARAM));
             Movie movie = movieService.findById(id);
-            content.setAttribute("moviePage", movie);
+            requestContent.setAttribute("moviePage", movie);
             page = ConfigurationManager.getProperty(MOVIE_PAGE_PATH);
 
         } catch (InterruptedException | NoSuchRequestParameterException e) {

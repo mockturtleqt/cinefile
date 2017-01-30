@@ -1,7 +1,6 @@
 package com.epam.web.command;
 
 import com.epam.web.entity.Movie;
-import com.epam.web.entity.type.GenderType;
 import com.epam.web.entity.type.GenreType;
 import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.memento.Memento;
@@ -25,10 +24,11 @@ public class UpdateMovieCommand implements ActionCommand {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private MovieService movieService = new MovieService();
+
     public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            MovieService movieService = new MovieService();
             movieService.update(convertToMovie(requestContent));
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();

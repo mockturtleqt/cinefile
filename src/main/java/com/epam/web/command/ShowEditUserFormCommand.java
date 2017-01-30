@@ -12,19 +12,21 @@ import org.apache.logging.log4j.Logger;
 
 public class ShowEditUserFormCommand implements ActionCommand {
     private static final String EDIT_USER_FORM_PATH = "path.page.edit.user";
-    private static final String ID = "userId";
+    private static final String ID_PARAM = "userId";
     private static final String USER_ATTR = "user";
     private static final String GENDER_TYPE_ATTR = "genderType";
 
     private static final Logger logger = LogManager.getLogger();
 
+    private UserService userService = new UserService();
+
     public String execute(SessionRequestContent requestContent) {
         try {
             requestContent.setAttribute(GENDER_TYPE_ATTR, GenderType.values());
 
-            String idParam = requestContent.getParameter(ID);
+            String idParam = requestContent.getParameter(ID_PARAM);
             int id = Integer.valueOf(idParam);
-            UserService userService = new UserService();
+
             User user = userService.findById(id);
             requestContent.setAttribute(USER_ATTR, user);
         } catch (NoSuchRequestParameterException | InterruptedException e) {

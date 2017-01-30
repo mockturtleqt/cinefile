@@ -11,16 +11,18 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 public class FindAllMediaPeopleCommand implements ActionCommand {
-    private static final Logger logger = LogManager.getLogger();
-    private static final String MEDIA_PERSON = "mediaPerson";
+    private static final String MEDIA_PERSON_ATTR = "mediaPerson";
     private static final String SORTED_MEDIA_PEOPLE_PAGE_PATH = "path.page.sorted.media.people";
 
-    public String execute(SessionRequestContent content) {
+    private static final Logger logger = LogManager.getLogger();
+
+    private MediaPersonService mediaPersonService = new MediaPersonService();
+
+    public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            MediaPersonService mediaPersonService = new MediaPersonService();
             List<MediaPerson> mediaPeople = mediaPersonService.findAll();
-            content.setAttribute(MEDIA_PERSON, mediaPeople);
+            requestContent.setAttribute(MEDIA_PERSON_ATTR, mediaPeople);
             page = ConfigurationManager.getProperty(SORTED_MEDIA_PEOPLE_PAGE_PATH);
         } catch (InterruptedException e) {
             logger.log(Level.ERROR, e);

@@ -6,7 +6,6 @@ import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.service.MediaPersonService;
-import com.epam.web.service.MovieService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,19 +13,20 @@ import org.apache.logging.log4j.Logger;
 public class ShowMediaPersonPageCommand implements ActionCommand {
     private static final String MEDIA_PERSON_PAGE_PATH = "path.page.media.person";
     private static final String ERROR_PAGE_PATH = "path.page.error";
-    private static final String ID = "mediaPersonId";
-    private static final String MEDIA_PERSON = "mediaPersonPage";
+    private static final String ID_PARAM = "mediaPersonId";
+    private static final String MEDIA_PERSON_ATTR = "mediaPersonPage";
 
     private static final Logger logger = LogManager.getLogger();
 
-    public String execute(SessionRequestContent content) {
+    private MediaPersonService mediaPersonService = new MediaPersonService();
+
+    public String execute(SessionRequestContent requestContent) {
         String page = null;
         try {
-            int id = Integer.valueOf(content.getParameter(ID));
-            MediaPersonService mediaPersonService = new MediaPersonService();
+            int id = Integer.valueOf(requestContent.getParameter(ID_PARAM));
             MediaPerson mediaPerson = mediaPersonService.findById(id);
 
-            content.setAttribute(MEDIA_PERSON, mediaPerson);
+            requestContent.setAttribute(MEDIA_PERSON_ATTR, mediaPerson);
             page = ConfigurationManager.getProperty(MEDIA_PERSON_PAGE_PATH);
 
         } catch (InterruptedException e) {

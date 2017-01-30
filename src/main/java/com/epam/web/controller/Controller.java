@@ -1,6 +1,7 @@
 package com.epam.web.controller;
 
 import com.epam.web.command.ActionCommand;
+import com.epam.web.dbConnection.ConnectionPool;
 import com.epam.web.factory.ActionFactory;
 import com.epam.web.memento.Memento;
 import com.epam.web.requestContent.SessionRequestContent;
@@ -38,24 +39,23 @@ public class Controller extends HttpServlet {
         processRequest(request, response);
     }
 
+    @Override
+    public void destroy() {
+        ConnectionPool.getInstance().closePool();
+    }
+
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String page;
         ActionFactory client = new ActionFactory();
+        ActionCommand command = client.defineCommand(request);
+
         SessionRequestContent requestContent = new SessionRequestContent(request);
-        ActionCommand command = client.defineCommand(requestContent);
         page = command.execute(requestContent);
         requestContent.insertValues(request);
-
         setPreviousPage(request);
 
-        if (page != null) {
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-            dispatcher.forward(request, response);
-        } else {
-            page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
-            request.getSession().setAttribute(NULLPAGE, MessageManager.getProperty(NULLPAGE_MSG));
-            response.sendRedirect(request.getContextPath() + page);
-        }
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+        dispatcher.forward(request, response);
     }
 
     private void setPreviousPage(HttpServletRequest request) {
