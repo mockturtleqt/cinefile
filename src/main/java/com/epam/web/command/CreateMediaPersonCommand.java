@@ -32,13 +32,14 @@ public class CreateMediaPersonCommand implements ActionCommand {
 
     private MediaPersonService mediaPersonService = new MediaPersonService();
 
+    @Override
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
             mediaPersonService.create(convertToMediaPerson(requestContent));
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
-        } catch (ServiceException | NoSuchRequestParameterException | InterruptedException e) {
+        } catch (ServiceException | NoSuchRequestParameterException e) {
             logger.log(Level.ERROR, e, e);
             requestContent.setAttribute(ERROR_ATTR, e.getMessage());
             page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);

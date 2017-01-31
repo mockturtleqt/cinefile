@@ -26,16 +26,13 @@ public class ShowEditMediaPersonFormCommand implements ActionCommand {
 
     private MediaPersonService mediaPersonService = new MediaPersonService();
 
+    @Override
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
             requestContent.setAttribute(OCCUPATION_TYPE_ATTR, OccupationType.values());
             requestContent.setAttribute(GENDER_TYPE_ATTR, GenderType.values());
-
-            String idParam = requestContent.getParameter(ID_PARAM);
-            int id = Integer.valueOf(idParam);
-
-            MediaPerson mediaPerson = mediaPersonService.findById(id);
+            MediaPerson mediaPerson = mediaPersonService.findById(Integer.valueOf(requestContent.getParameter(ID_PARAM)));
             requestContent.setAttribute(MEDIA_PERSON_ATTR, mediaPerson);
             page = ConfigurationManager.getProperty(EDIT_MEDIA_PERSON_FORM_PATH);
         } catch (ServiceException | NoSuchRequestParameterException | InterruptedException | NoSuchPageException e) {

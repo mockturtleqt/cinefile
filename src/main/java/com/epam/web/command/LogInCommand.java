@@ -33,9 +33,7 @@ public class LogInCommand implements ActionCommand {
         try {
             String login = requestContent.getParameter(LOGIN_PARAM);
             String password = requestContent.getParameter(PASSWORD_PARAM);
-
             User user = userService.findByLoginAndPassword(login, password);
-
             if (user != null) {
                 requestContent.setSessionAttribute(USER_ATTR, user);
                 Memento memento = Memento.getInstance();

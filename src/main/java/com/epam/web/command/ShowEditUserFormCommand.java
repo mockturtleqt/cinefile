@@ -2,6 +2,7 @@ package com.epam.web.command;
 
 import com.epam.web.entity.User;
 import com.epam.web.entity.type.GenderType;
+import com.epam.web.exception.NoSuchPageException;
 import com.epam.web.exception.NoSuchRequestParameterException;
 import com.epam.web.exception.ServiceException;
 import com.epam.web.requestContent.SessionRequestContent;
@@ -23,18 +24,15 @@ public class ShowEditUserFormCommand implements ActionCommand {
 
     private UserService userService = new UserService();
 
+    @Override
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
             requestContent.setAttribute(GENDER_TYPE_ATTR, GenderType.values());
-
-            String idParam = requestContent.getParameter(ID_PARAM);
-            int id = Integer.valueOf(idParam);
-
-            User user = userService.findById(id);
+            User user = userService.findById(Integer.valueOf(requestContent.getParameter(ID_PARAM)));
             requestContent.setAttribute(USER_ATTR, user);
             page = ConfigurationManager.getProperty(EDIT_USER_FORM_PATH);
-        } catch (ServiceException | NoSuchRequestParameterException | InterruptedException e) {
+        } catch (ServiceException | NoSuchRequestParameterException | InterruptedException | NoSuchPageException e) {
             logger.log(Level.ERROR, e, e);
             requestContent.setAttribute(ERROR_ATTR, e.getMessage());
             page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);

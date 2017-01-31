@@ -4,6 +4,7 @@ import com.epam.web.dao.MediaPersonDAO;
 import com.epam.web.dao.MovieDAO;
 import com.epam.web.dao.MovieRatingDAO;
 import com.epam.web.dao.ReviewDAO;
+import com.epam.web.dbConnection.ConnectionPool;
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Movie;
 import com.epam.web.exception.DAOException;
@@ -13,6 +14,7 @@ import com.epam.web.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,29 +26,20 @@ public class MovieService extends AbstractService<Movie> {
     private static final String UPDATE_MOVIE_ERROR_MSG = "msg.update.movie.error";
     private static final Logger logger = LogManager.getLogger();
 
-    public boolean create(Movie movie) throws ServiceException, InterruptedException {
-        ProxyConnection connection = null;
-        boolean success = false;
-        try {
-            connection = super.getConnection();
+    public Movie create(Movie movie) throws ServiceException, InterruptedException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             MovieDAO movieDAO = new MovieDAO(connection);
-            success = movieDAO.create(movie);
-        } catch (DAOException e) {
+            return movieDAO.create(movie);
+        } catch (DAOException | SQLException e) {
             throw new ServiceException(MessageManager.getProperty(CREATE_MOVIE_ERROR_MSG), e);
-        } finally {
-            super.returnConnection(connection);
         }
-        return success;
     }
 
     public Movie findById(int id) throws ServiceException, InterruptedException, NoSuchPageException {
-        ProxyConnection connection = null;
-        Movie movie = null;
-        try {
-            connection = super.getConnection();
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             MovieDAO movieDAO = new MovieDAO(connection);
 
-            movie = Optional.ofNullable(movieDAO.findById(id))
+            Movie movie = Optional.ofNullable(movieDAO.findById(id))
                     .orElseThrow(() -> new NoSuchPageException(MessageManager.getProperty(FIND_MOVIE_ERROR_MSG)));
 
             MediaPersonDAO mediaPersonDAO = new MediaPersonDAO(connection);
@@ -57,89 +50,55 @@ public class MovieService extends AbstractService<Movie> {
 
             MovieRatingDAO movieRatingDAO = new MovieRatingDAO(connection);
             movie.setRatingList(movieRatingDAO.findByMovieId(id));
-        } catch (DAOException e) {
+
+            return movie;
+        } catch (DAOException | SQLException e) {
             throw new ServiceException(MessageManager.getProperty(FIND_MOVIE_ERROR_MSG), e);
-        } finally {
-            super.returnConnection(connection);
         }
-        return movie;
     }
 
-    public boolean update(Movie movie) throws ServiceException, InterruptedException {
-        ProxyConnection connection = null;
-        boolean success = false;
-        try {
-            connection = super.getConnection();
+    public Movie update(Movie movie) throws ServiceException, InterruptedException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             MovieDAO movieDAO = new MovieDAO(connection);
-            success = movieDAO.update(movie);
-        } catch (DAOException e) {
+            return movieDAO.update(movie);
+        } catch (DAOException | SQLException e) {
             throw new ServiceException(MessageManager.getProperty(UPDATE_MOVIE_ERROR_MSG), e);
-        } finally {
-            super.returnConnection(connection);
         }
-        return success;
     }
 
     public boolean deleteById(int id) throws ServiceException, InterruptedException {
-        boolean success = false;
-        ProxyConnection connection = null;
-        try {
-            connection = super.getConnection();
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             MovieDAO movieDAO = new MovieDAO(connection);
-            success = movieDAO.deleteById(id);
-        } catch (DAOException e) {
+            return movieDAO.deleteById(id);
+        } catch (DAOException | SQLException e) {
             throw new ServiceException(MessageManager.getProperty(DELETE_MOVIE_ERROR_MSG), e);
-        } finally {
-            super.returnConnection(connection);
         }
-        return success;
     }
 
     public List<Movie> findAll() throws ServiceException, InterruptedException {
-        List<Movie> movies = new ArrayList<>();
-        ProxyConnection connection = null;
-        try {
-            connection = super.getConnection();
-
-            MovieDAO movieDAO = new MovieDAO(connection);
-            movies = movieDAO.findAll();
-        } catch (DAOException e) {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
+             MovieDAO movieDAO = new MovieDAO(connection);
+            return movieDAO.findAll();
+        } catch (DAOException | SQLException e) {
             throw new ServiceException(MessageManager.getProperty(FIND_MOVIE_ERROR_MSG), e);
-        } finally {
-            super.returnConnection(connection);
         }
-        return movies;
     }
 
     public List<Movie> findByNamePart(String title) throws ServiceException, InterruptedException {
-        List<Movie> movies = new ArrayList<>();
-        ProxyConnection connection = null;
-        try {
-            connection = super.getConnection();
-
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             MovieDAO movieDAO = new MovieDAO(connection);
-            movies = movieDAO.findByNamePart(title);
-        } catch (DAOException e) {
+            return movieDAO.findByNamePart(title);
+        } catch (DAOException | SQLException e) {
             throw new ServiceException(MessageManager.getProperty(FIND_MOVIE_ERROR_MSG), e);
-        } finally {
-            super.returnConnection(connection);
         }
-        return movies;
     }
 
     public List<Movie> findTopMovies() throws ServiceException, InterruptedException {
-        List<Movie> movies = new ArrayList<>();
-        ProxyConnection connection = null;
-        try {
-            connection = super.getConnection();
-
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             MovieDAO movieDAO = new MovieDAO(connection);
-            movies = movieDAO.findTopMovies();
-        } catch (DAOException e) {
+            return movieDAO.findTopMovies();
+        } catch (DAOException | SQLException e) {
             throw new ServiceException(MessageManager.getProperty(FIND_MOVIE_ERROR_MSG), e);
-        } finally {
-            super.returnConnection(connection);
         }
-        return movies;
     }
 }

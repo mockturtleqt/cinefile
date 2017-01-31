@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
+
 public class SignUpCommand implements ActionCommand {
     private static final String USER_ATTR = "user";
     private static final String INDEX_PAGE_PATH = "path.page.index";
@@ -30,9 +32,7 @@ public class SignUpCommand implements ActionCommand {
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
-            User user = this.convertToUser(requestContent);
-            userService.create(user);
-
+            User user = userService.create(convertToUser(requestContent));
             requestContent.setSessionAttribute(USER_ATTR, user);
             page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
         } catch (ServiceException | InterruptedException | NoSuchRequestParameterException | ValidationException e) {
@@ -44,25 +44,12 @@ public class SignUpCommand implements ActionCommand {
     }
 
     private User convertToUser(SessionRequestContent requestContent) throws NoSuchRequestParameterException {
-        String login = requestContent.getParameter(LOGIN_PARAM);
-        String password = requestContent.getParameter(PASSWORD_PARAM);
-        String email = requestContent.getParameter(EMAIL_PARAM);
-        String firstName = requestContent.getParameter(FIRST_NAME_PARAM);
-        String lastName = requestContent.getParameter(LAST_NAME_PARAM);
-
         User user = new User();
-        user.setLogin(login);
-        user.setPassword(password);
-
-        if (!email.isEmpty()) {
-            user.setEmail(email);
-        }
-        if (!firstName.isEmpty()) {
-            user.setFirstName(firstName);
-        }
-        if (!lastName.isEmpty()) {
-            user.setLastName(lastName);
-        }
+        user.setLogin(requestContent.getParameter(LOGIN_PARAM));
+        user.setPassword(requestContent.getParameter(PASSWORD_PARAM));
+        user.setEmail(requestContent.getParameter(EMAIL_PARAM));
+        user.setFirstName(requestContent.getParameter(FIRST_NAME_PARAM));
+        user.setLastName(requestContent.getParameter(LAST_NAME_PARAM));
         return user;
     }
 }

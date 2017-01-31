@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 public class UpdateUserCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger();
 
+    @Override
     public String execute(SessionRequestContent requestContent) {
         String page = null;
 

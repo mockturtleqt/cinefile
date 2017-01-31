@@ -39,12 +39,22 @@ public class ConnectionPool {
         return instance;
     }
 
-    public ProxyConnection getConnection() throws InterruptedException {
-        return connections.take();
+    public ProxyConnection getConnection() {
+        ProxyConnection proxyConnection = null;
+        try {
+            proxyConnection = connections.take();
+        } catch (InterruptedException e) {
+            logger.log(Level.ERROR, e);
+        }
+        return proxyConnection;
     }
 
-    public void returnConnection(ProxyConnection connection) throws InterruptedException {
-        connections.put(connection);
+    public void returnConnection(ProxyConnection connection) {
+        try {
+            connections.put(connection);
+        } catch (InterruptedException e) {
+            logger.log(Level.ERROR, e);
+        }
     }
 
     private void initializeConnections() {
@@ -71,7 +81,7 @@ public class ConnectionPool {
 
     private void closeConnection(ProxyConnection connection) {
         try {
-            connection.close();
+            connection.closeConnection();
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
         }

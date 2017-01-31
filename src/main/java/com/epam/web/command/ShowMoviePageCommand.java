@@ -24,13 +24,10 @@ public class ShowMoviePageCommand implements ActionCommand {
     @Override
     public String execute(SessionRequestContent requestContent) {
         String page;
-
         try {
-            int id = Integer.valueOf(requestContent.getParameter(ID_PARAM));
-            Movie movie = movieService.findById(id);
+            Movie movie = movieService.findById(Integer.valueOf(requestContent.getParameter(ID_PARAM)));
             requestContent.setAttribute("moviePage", movie);
             page = ConfigurationManager.getProperty(MOVIE_PAGE_PATH);
-
         } catch (NoSuchPageException | ServiceException | InterruptedException | NoSuchRequestParameterException e) {
             logger.log(Level.ERROR, e, e);
             requestContent.setAttribute(ERROR_ATTR, e.getMessage());

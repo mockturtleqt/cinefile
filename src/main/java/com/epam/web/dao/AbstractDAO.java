@@ -3,13 +3,11 @@ package com.epam.web.dao;
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Entity;
 import com.epam.web.exception.DAOException;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractDAO<T extends Entity> {
@@ -20,11 +18,11 @@ public abstract class AbstractDAO<T extends Entity> {
         this.connection = connection;
     }
 
-    public abstract boolean create(T entity) throws DAOException;
+    public abstract T create(T entity) throws DAOException;
 
     public abstract T findById(int id) throws DAOException;
 
-    public abstract boolean update(T entity) throws DAOException;
+    public abstract T update(T entity) throws DAOException;
 
     public abstract boolean deleteById(int id) throws DAOException;
 
@@ -37,7 +35,7 @@ public abstract class AbstractDAO<T extends Entity> {
                 itemsAsString.append(",");
             }
         }
-        return  itemsAsString.toString();
+        return itemsAsString.toString();
     }
 
     <Type> String safeEnumToString(Type type) {

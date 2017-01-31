@@ -9,7 +9,6 @@ public class EmptyCommand implements ActionCommand {
 
     @Override
     public String execute(SessionRequestContent requestContent) {
-        String page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
-        return page;
+        return ConfigurationManager.getProperty(ERROR_PAGE_PATH);
     }
 }

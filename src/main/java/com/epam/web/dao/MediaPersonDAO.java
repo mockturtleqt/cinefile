@@ -6,7 +6,6 @@ import com.epam.web.entity.type.GenderType;
 import com.epam.web.entity.type.OccupationType;
 import com.epam.web.exception.DAOException;
 import com.epam.web.resource.MessageManager;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,11 +36,9 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
         super(connection);
     }
 
-    public boolean create(MediaPerson mediaPerson) throws DAOException {
-        boolean success = false;
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_INSERT_MEDIA_PERSON);
+    public MediaPerson create(MediaPerson mediaPerson) throws DAOException {
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_MEDIA_PERSON)) {
             preparedStatement.setString(1, mediaPerson.getFirstName());
             preparedStatement.setString(2, mediaPerson.getLastName());
             preparedStatement.setString(3, mediaPerson.getBio());
@@ -49,22 +46,16 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             preparedStatement.setString(5, safeEnumToString(mediaPerson.getGender()));
             preparedStatement.setDate(6, safeLocalDateToSqlDate(mediaPerson.getBirthday()));
             preparedStatement.setString(7, mediaPerson.getPicture());
-
             preparedStatement.executeUpdate();
-            success = true;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(CREATE_MEDIA_PERSON_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(preparedStatement);
         }
-        return success;
+        return mediaPerson;
     }
 
     public MediaPerson findById(int id) throws DAOException {
-        PreparedStatement preparedStatement = null;
         MediaPerson mediaPerson = null;
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_SELECT_MEDIA_PERSON_BY_ID);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_MEDIA_PERSON_BY_ID)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -72,17 +63,12 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             }
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_MEDIA_PERSON_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(preparedStatement);
         }
         return mediaPerson;
     }
 
-    public boolean update(MediaPerson mediaPerson) throws DAOException {
-        boolean success = false;
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_UPDATE_MEDIA_PERSON);
+    public MediaPerson update(MediaPerson mediaPerson) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_MEDIA_PERSON)) {
             preparedStatement.setString(1, mediaPerson.getFirstName());
             preparedStatement.setString(2, mediaPerson.getLastName());
             preparedStatement.setString(3, mediaPerson.getBio());
@@ -91,64 +77,46 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             preparedStatement.setDate(6, safeLocalDateToSqlDate(mediaPerson.getBirthday()));
             preparedStatement.setString(7, mediaPerson.getPicture());
             preparedStatement.setInt(8, mediaPerson.getId());
-
             preparedStatement.executeUpdate();
-            success = true;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(UPDATE_MEDIA_PERSON_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(preparedStatement);
         }
-        return success;
+        return mediaPerson;
     }
 
     public boolean deleteById(int id) throws DAOException {
-        boolean success = false;
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_DELETE_MEDIA_PERSON_BY_ID);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_MEDIA_PERSON_BY_ID)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            success = true;
+            return true;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(DELETE_MEDIA_PERSON_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(preparedStatement);
         }
-        return success;
     }
 
     public List<MediaPerson> findAll() throws DAOException {
         List<MediaPerson> mediaPeople = new ArrayList<>();
-        Statement statement = null;
-        try {
-            statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_MEDIA_PEOPLE);
             while (resultSet.next()) {
-                mediaPeople.add(this.createMediaPersonFromResultSet(resultSet));
+                mediaPeople.add(createMediaPersonFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_MEDIA_PERSON_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(statement);
         }
         return mediaPeople;
     }
 
     public List<MediaPerson> findByMovieId(int id) throws DAOException {
-        PreparedStatement preparedStatement = null;
         List<MediaPerson> crew = new ArrayList<>();
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_SELECT_MEDIA_PEOPLE_BY_MOVIE_ID);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_MEDIA_PEOPLE_BY_MOVIE_ID)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                crew.add(this.createMediaPersonFromResultSet(resultSet));
+                crew.add(createMediaPersonFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_MEDIA_PERSON_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(preparedStatement);
         }
         return crew;
     }

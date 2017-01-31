@@ -24,15 +24,12 @@ public class ShowEditMovieFormCommand implements ActionCommand {
 
     private MovieService movieService = new MovieService();
 
+    @Override
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
             requestContent.setAttribute(GENRE_TYPE_ATTR, GenreType.values());
-
-            String idParam = requestContent.getParameter(ID_PARAM);
-            int id = Integer.valueOf(idParam);
-
-            Movie movie = movieService.findById(id);
+            Movie movie = movieService.findById(Integer.valueOf(requestContent.getParameter(ID_PARAM)));
             requestContent.setAttribute(MOVIE_ATTR, movie);
             page = ConfigurationManager.getProperty(EDIT_MOVIE_FORM_PATH);
         } catch (ServiceException | NoSuchRequestParameterException | InterruptedException | NoSuchPageException e) {

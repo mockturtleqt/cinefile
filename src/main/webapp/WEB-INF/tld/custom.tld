@@ -7,11 +7,6 @@
     <tlib-version>2.1</tlib-version>
     <short-name>ctg</short-name>
     <uri>customtags</uri>
-    <tag>
-        <name>info-time</name>
-        <tag-class>com.epam.web.customTag.InfoTimeTag</tag-class>
-        <body-content>empty</body-content>
-    </tag>
     <function>
         <name>containsGenreType</name>
         <function-class>com.epam.web.customTag.ContainsFunction</function-class>

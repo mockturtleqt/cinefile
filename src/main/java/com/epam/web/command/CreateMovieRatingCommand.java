@@ -25,11 +25,11 @@ public class CreateMovieRatingCommand implements ActionCommand {
 
     private MovieRatingService movieRatingService = new MovieRatingService();
 
+    @Override
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
-            movieRatingService.create(this.convertToMovieRating(requestContent));
-
+            movieRatingService.create(convertToMovieRating(requestContent));
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
         } catch (ServiceException | InterruptedException | NoSuchRequestParameterException | ValidationException e) {
@@ -37,20 +37,14 @@ public class CreateMovieRatingCommand implements ActionCommand {
             requestContent.setAttribute(ERROR_ATTR, e.getMessage());
             page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
         }
-
         return page;
     }
 
     private MovieRating convertToMovieRating(SessionRequestContent requestContent) throws NoSuchRequestParameterException {
-        float rating = Float.valueOf(requestContent.getParameter(RATING_PARAM));
-        int movieId = Integer.valueOf(requestContent.getParameter(MOVIE_ID_PARAM));
-        int userId = Integer.valueOf(requestContent.getParameter(USER_ID_PARAM));
-
         MovieRating movieRating = new MovieRating();
-        movieRating.setMovieId(movieId);
-        movieRating.setUserId(userId);
-        movieRating.setRate(rating);
-
+        movieRating.setMovieId(Integer.valueOf(requestContent.getParameter(MOVIE_ID_PARAM)));
+        movieRating.setUserId(Integer.valueOf(requestContent.getParameter(USER_ID_PARAM)));
+        movieRating.setRate(Float.valueOf(requestContent.getParameter(RATING_PARAM)));
         return movieRating;
     }
 }

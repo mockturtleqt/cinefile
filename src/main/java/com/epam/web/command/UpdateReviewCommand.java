@@ -25,20 +25,11 @@ public class UpdateReviewCommand implements ActionCommand {
 
     private ReviewService reviewService = new ReviewService();
 
+    @Override
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
-            String title = requestContent.getParameter(REVIEW_TITLE_INPUT_PARAM);
-            String body = requestContent.getParameter(REVIEW_BODY_INPUT_PARAM);
-            int id = Integer.valueOf(requestContent.getParameter(REVIEW_ID_PARAM));
-
-            Review review = new Review();
-            review.setTitle(title);
-            review.setBody(body);
-            review.setId(id);
-            review.setDate(LocalDate.now());
-
-            reviewService.update(review);
+            reviewService.update(convertToReview(requestContent));
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
         } catch (ValidationException | ServiceException | InterruptedException | NoSuchRequestParameterException e) {
@@ -47,5 +38,14 @@ public class UpdateReviewCommand implements ActionCommand {
             page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
         }
         return page;
+    }
+
+    private Review convertToReview(SessionRequestContent requestContent) throws NoSuchRequestParameterException {
+        Review review = new Review();
+        review.setId(Integer.valueOf(requestContent.getParameter(REVIEW_ID_PARAM)));
+        review.setTitle(requestContent.getParameter(REVIEW_TITLE_INPUT_PARAM));
+        review.setBody(requestContent.getParameter(REVIEW_BODY_INPUT_PARAM));
+        review.setDate(LocalDate.now());
+        return review;
     }
 }

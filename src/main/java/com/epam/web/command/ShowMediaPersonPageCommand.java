@@ -22,17 +22,15 @@ public class ShowMediaPersonPageCommand implements ActionCommand {
 
     private MediaPersonService mediaPersonService = new MediaPersonService();
 
+    @Override
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
-            int id = Integer.valueOf(requestContent.getParameter(ID_PARAM));
-            MediaPerson mediaPerson = mediaPersonService.findById(id);
-
+            MediaPerson mediaPerson = mediaPersonService.findById(Integer.valueOf(requestContent.getParameter(ID_PARAM)));
             requestContent.setAttribute(MEDIA_PERSON_ATTR, mediaPerson);
             page = ConfigurationManager.getProperty(MEDIA_PERSON_PAGE_PATH);
 
-        } catch (InterruptedException | ServiceException | NoSuchPageException |
-                NoSuchRequestParameterException e) {
+        } catch (InterruptedException | ServiceException | NoSuchPageException | NoSuchRequestParameterException e) {
             logger.log(Level.ERROR, e, e);
             requestContent.setAttribute(ERROR_ATTR, e.getMessage());
             page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);

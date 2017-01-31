@@ -19,11 +19,11 @@ public class DeleteReviewCommand implements ActionCommand {
 
     private ReviewService reviewService = new ReviewService();
 
+    @Override
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
-            int id = Integer.valueOf(requestContent.getParameter(ID_PARAM));
-            reviewService.deleteById(id);
+            reviewService.deleteById(Integer.valueOf(requestContent.getParameter(ID_PARAM)));
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
         } catch (ServiceException | InterruptedException | NoSuchRequestParameterException e) {
@@ -31,7 +31,6 @@ public class DeleteReviewCommand implements ActionCommand {
             requestContent.setAttribute(ERROR_ATTR, e.getMessage());
             page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
         }
-
         return page;
     }
 }

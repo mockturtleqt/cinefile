@@ -4,7 +4,6 @@ import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Review;
 import com.epam.web.exception.DAOException;
 import com.epam.web.resource.MessageManager;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,9 +11,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.epam.web.dbConnection.query.SQLReviewQuery.*;
 
@@ -38,115 +37,85 @@ public class ReviewDAO extends AbstractDAO<Review> {
         super(connection);
     }
 
-    public boolean create(Review review) throws DAOException {
-        boolean success = false;
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_INSERT_REVIEW);
+    public Review create(Review review) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_REVIEW)) {
             preparedStatement.setString(1, review.getTitle());
             preparedStatement.setString(2, review.getBody());
             preparedStatement.setInt(3, review.getUserId());
             preparedStatement.setInt(4, review.getMovieId());
             preparedStatement.setDate(5, safeLocalDateToSqlDate(review.getDate()));
             preparedStatement.executeUpdate();
-            success = true;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(CREATE_REVIEW_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(preparedStatement);
-        }
-        return success;
-    }
-
-    public Review findById(int id) throws DAOException {
-        PreparedStatement preparedStatement = null;
-        Review review = null;
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_SELECT_REVIEW_BY_ID);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                review = this.createReviewFromResultSet(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new DAOException(MessageManager.getProperty(FIND_REVIEW_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(preparedStatement);
         }
         return review;
     }
 
-    public boolean update(Review review) throws DAOException {
-        boolean success = false;
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_UPDATE_REVIEW);
+    public Review findById(int id) throws DAOException {
+        Review review = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_REVIEW_BY_ID)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                review = createReviewFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(MessageManager.getProperty(FIND_REVIEW_ERROR_MSG), e);
+        }
+        return review;
+    }
+
+    public Review update(Review review) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_REVIEW)) {
             preparedStatement.setString(1, review.getTitle());
             preparedStatement.setString(2, review.getBody());
             preparedStatement.setDate(3, safeLocalDateToSqlDate(review.getDate()));
             preparedStatement.setInt(4, review.getId());
             preparedStatement.executeUpdate();
-            success = true;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(UPDATE_REVIEW_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(preparedStatement);
         }
-        return success;
+        return review;
     }
 
     public boolean deleteById(int id) throws DAOException {
-        boolean success = false;
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_DELETE_REVIEW_BY_ID);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_REVIEW_BY_ID)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            success = true;
+            return true;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(DELETE_REVIEW_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(preparedStatement);
         }
-        return success;
     }
 
     public List<Review> findByUserId(int id) throws DAOException {
-        PreparedStatement preparedStatement = null;
         List<Review> reviews = new ArrayList<>();
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_SELECT_REVIEWS_BY_USER_ID);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_REVIEWS_BY_USER_ID)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Review review = this.createReviewFromResultSet(resultSet);
+                Review review = createReviewFromResultSet(resultSet);
                 review.setMovieTitle(resultSet.getString(MOVIE_TITLE));
                 reviews.add(review);
             }
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_REVIEW_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(preparedStatement);
         }
         return reviews;
     }
 
     public List<Review> findByMovieId(int id) throws DAOException {
-        PreparedStatement preparedStatement = null;
         List<Review> reviews = new ArrayList<>();
-        try {
-            preparedStatement = connection.getPreparedStatement(SQL_SELECT_REVIEWS_BY_MOVIE_ID);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_REVIEWS_BY_MOVIE_ID)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Review review = this.createReviewFromResultSet(resultSet);
+                Review review = createReviewFromResultSet(resultSet);
                 review.setUserLogin(resultSet.getString(LOGIN));
                 reviews.add(review);
             }
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_REVIEW_ERROR_MSG), e);
-        } finally {
-            connection.closeStatement(preparedStatement);
         }
         return reviews;
     }

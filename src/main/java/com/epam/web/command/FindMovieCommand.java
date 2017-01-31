@@ -24,13 +24,12 @@ public class FindMovieCommand implements ActionCommand {
 
     private MovieService movieService = new MovieService();
 
+    @Override
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
             String movieTitle = requestContent.getParameter(MOVIE_TO_FIND_PARAM);
-
             List<Movie> movieList = movieService.findByNamePart(movieTitle);
-
             requestContent.setAttribute(QUERY_NAME_ATTR, "Results for " + movieTitle + ":");
             requestContent.setAttribute(MOVIE_ATTR, movieList);
             page = ConfigurationManager.getProperty(BASE_PAGE_PATH);
