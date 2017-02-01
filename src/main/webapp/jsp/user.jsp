@@ -58,6 +58,11 @@
             <c:if test="${not empty userPage.birthday}">
                 <p><strong><fmt:message key="birthday"/>: </strong>${userPage.birthday}</p>
             </c:if>
+
+            <c:forEach var="validationException" items="${requestScope.validationExceptions}">
+                <h4>${validationException}</h4>
+            </c:forEach>
+
             <c:if test="${not empty userPage.reviews}">
                 <p><strong><fmt:message key="reviews"/> : </strong></p>
                 <c:forEach var="review" items="${userPage.reviews}">

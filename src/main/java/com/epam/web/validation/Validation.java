@@ -2,6 +2,10 @@ package com.epam.web.validation;
 
 import com.epam.web.entity.Entity;
 
+import java.util.List;
+
 public interface Validation<T extends Entity> {
-    public boolean isValid(T entity);
+    List<String> getValidationExceptions();
+
+    boolean isValid(T entity);
 }

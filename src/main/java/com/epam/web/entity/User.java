@@ -23,6 +23,15 @@ public class User extends Entity {
     private List<Review> reviews;
     private List<MovieRating> ratings;
     private int userRating;
+    private List<String> validationExceptions;
+
+    public List<String> getValidationExceptions() {
+        return validationExceptions;
+    }
+
+    public void setValidationExceptions(List<String> validationExceptions) {
+        this.validationExceptions = validationExceptions;
+    }
 
     public int getUserRating() {
         return userRating;

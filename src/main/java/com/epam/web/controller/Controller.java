@@ -50,7 +50,7 @@ public class Controller extends HttpServlet {
         SessionRequestContent requestContent = new SessionRequestContent(request);
         page = command.execute(requestContent);
         requestContent.insertValues(request);
-        //setPreviousPage(request);
+        setPreviousPage(request);
 
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
         dispatcher.forward(request, response);

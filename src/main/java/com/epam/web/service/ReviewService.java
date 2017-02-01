@@ -22,9 +22,11 @@ public class ReviewService extends AbstractService<Review> {
     public Review create(Review review) throws ServiceException, InterruptedException, ValidationException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             ReviewDAO reviewDAO = new ReviewDAO(connection);
-            Review userReview = null;
-            if (isValid(review)) {
+            Review userReview = new Review();
+            if (reviewValidation.isValid(review)) {
                 userReview = reviewDAO.create(review);
+            } else {
+                userReview.setValidationExceptions(reviewValidation.getValidationExceptions());
             }
             return userReview;
         } catch (DAOException | SQLException e) {
@@ -44,9 +46,11 @@ public class ReviewService extends AbstractService<Review> {
     public Review update(Review review) throws ServiceException, InterruptedException, ValidationException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             ReviewDAO reviewDAO = new ReviewDAO(connection);
-            Review userReview = null;
-            if (isValid(review)) {
+            Review userReview = new Review();
+            if (reviewValidation.isValid(review)) {
                 userReview = reviewDAO.update(review);
+            } else {
+                userReview.setValidationExceptions(reviewValidation.getValidationExceptions());
             }
             return userReview;
         } catch (DAOException | SQLException e) {
@@ -63,11 +67,11 @@ public class ReviewService extends AbstractService<Review> {
         }
     }
 
-    private boolean isValid(Review review) throws ValidationException {
-        if (reviewValidation.isValid(review)) {
-            return true;
-        } else {
-            throw new ValidationException(MessageManager.getProperty(CREATE_REVIEW_ERROR_MSG));
-        }
-    }
+//    private boolean isValid(Review review) throws ValidationException {
+//        if (reviewValidation.isValid(review)) {
+//            return true;
+//        } else {
+//            throw new ValidationException(MessageManager.getProperty(CREATE_REVIEW_ERROR_MSG));
+//        }
+//    }
 }

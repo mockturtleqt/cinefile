@@ -21,6 +21,7 @@ public class CreateReviewCommand implements ActionCommand {
     private static final String USER_ID_PARAM = "user-id";
     private static final String ERROR_PAGE_PATH = "path.page.error";
     private static final String ERROR_ATTR = "errorMsg";
+    private static final String VALIDATION_EXCEPTIONS = "validationExceptions";
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -30,7 +31,10 @@ public class CreateReviewCommand implements ActionCommand {
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
-            reviewService.create(convertToReview(requestContent));
+            Review review = reviewService.create(convertToReview(requestContent));
+            if (review.getValidationExceptions() != null || !review.getValidationExceptions().isEmpty()) {
+                requestContent.setAttribute(VALIDATION_EXCEPTIONS, review.getValidationExceptions());
+            }
             Memento memento = Memento.getInstance();
             page = memento.getPreviousPage();
         } catch (ServiceException | InterruptedException | NoSuchRequestParameterException | ValidationException e) {

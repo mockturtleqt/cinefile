@@ -19,6 +19,10 @@
         <h2>Edit movie</h2>
     </div>
 
+    <c:forEach var="validationException" items="${requestScope.validationExceptions}">
+        <h4>${validationException}</h4>
+    </c:forEach>
+
     <form class="edit-form" action="/controller" method="post">
         <c:choose>
             <c:when test="${empty requestScope.movie}">

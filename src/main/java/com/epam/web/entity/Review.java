@@ -2,6 +2,7 @@ package com.epam.web.entity;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Review extends Entity {
     private int id;
@@ -13,6 +14,15 @@ public class Review extends Entity {
     private LocalDate date;
     private String userLogin;
     private String movieTitle;
+    private List<String> validationExceptions;
+
+    public List<String> getValidationExceptions() {
+        return validationExceptions;
+    }
+
+    public void setValidationExceptions(List<String> validationExceptions) {
+        this.validationExceptions = validationExceptions;
+    }
 
     public String getMovieTitle() {
         return movieTitle;

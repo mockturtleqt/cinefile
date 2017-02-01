@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,6 +48,11 @@
         <h2><fmt:message key="registration.greeting.pt1"/></h2>
         <p><fmt:message key="registration.greeting.pt2"/></p>
     </div>
+
+    <c:forEach var="validationException" items="${requestScope.validationExceptions}">
+        <h4>${validationException}</h4>
+    </c:forEach>
+
     <form class="registration-form" action="/controller" method="post">
         <input type="hidden" name="command" value="sign_up">
         <div class="field required">
@@ -89,5 +95,6 @@
     </form>
     <a href="${requestScope.previous_page}"><fmt:message key="back"/></a>
 </div>
+<c:import url="footer.jsp"/>
 </body>
 </html>

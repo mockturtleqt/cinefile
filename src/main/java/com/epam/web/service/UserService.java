@@ -31,9 +31,11 @@ public class UserService extends AbstractService<User> {
     public User create(User user) throws ServiceException, InterruptedException, ValidationException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             UserDAO userDAO = new UserDAO(connection);
-            User currentUser = null;
-            if (isValid(user)) {
+            User currentUser = new User();
+            if (userValidation.isValid(user)) {
                 currentUser = userDAO.create(user);
+            } else {
+                currentUser.setValidationExceptions(userValidation.getValidationExceptions());
             }
             return currentUser;
         } catch (DAOException | SQLException e) {
@@ -62,7 +64,13 @@ public class UserService extends AbstractService<User> {
     public User update(User user) throws ServiceException, InterruptedException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             UserDAO userDAO = new UserDAO(connection);
-            return userDAO.update(user);
+            User currentUser = new User();
+            if (userValidation.isValid(user)) {
+                currentUser = userDAO.update(user);
+            } else {
+                currentUser.setValidationExceptions(userValidation.getValidationExceptions());
+            }
+            return currentUser;
         } catch (DAOException | SQLException e) {
             throw new ServiceException(MessageManager.getProperty(UPDATE_USER_ERROR_MSG), e);
         }
@@ -86,11 +94,11 @@ public class UserService extends AbstractService<User> {
         }
     }
 
-    private boolean isValid(User user) throws ValidationException {
-        if (userValidation.isValid(user)) {
-            return true;
-        } else {
-            throw new ValidationException(MessageManager.getProperty(CREATE_USER_ERROR_MSG));
-        }
-    }
+//    private boolean isValid(User user) throws ValidationException {
+//        if (userValidation.isValid(user)) {
+//            return true;
+//        } else {
+//            throw new ValidationException(MessageManager.getProperty(CREATE_USER_ERROR_MSG));
+//        }
+//    }
 }

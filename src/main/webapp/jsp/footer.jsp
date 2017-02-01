@@ -11,18 +11,25 @@
 </head>
 <body class="Home">
 <fmt:setLocale value="${sessionScope.locale}"/>
-<footer class="main-footer">
-    <div class="footer-block">
-        <h5 class="footer-title"><fmt:message key="subscribe.msg"/></h5>
-        <div class="footer-body">
-            <form class="subscribe-form">
-                <input type="email" name="subscribe-email" class="email-input" placeholder="<fmt:message key="email"/>">
-                <input type="button" name="subscribe-submit" value="<fmt:message key="subscribe"/>"
-                       class="subscribe-btn"/>
-            </form>
-        </div>
+<footer>
+    <div class="footer-div">
+        <p class="footer-p">Thank you for visiting us &hearts;</p>
     </div>
-
 </footer>
+
+<%--<footer class="main-footer">--%>
+<%--<div class="footer-block">--%>
+
+<%--<h5 class="footer-title"><fmt:message key="subscribe.msg"/></h5>--%>
+<%--<div class="footer-body">--%>
+<%--<form class="subscribe-form">--%>
+<%--<input type="email" name="subscribe-email" class="email-input" placeholder="<fmt:message key="email"/>">--%>
+<%--<input type="button" name="subscribe-submit" value="<fmt:message key="subscribe"/>"--%>
+<%--class="subscribe-btn"/>--%>
+<%--</form>--%>
+<%--</div>--%>
+<%--</div>--%>
+
+<%--</footer>--%>
 </body>
 </html>

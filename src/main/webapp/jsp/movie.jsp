@@ -200,6 +200,10 @@
                 </c:forEach>
             </c:if>
 
+            <c:forEach var="validationException" items="${requestScope.validationExceptions}">
+                <h4>${validationException}</h4>
+            </c:forEach>
+
             <c:if test="${user.id != 0 and not addedReview and not user.isBanned}">
                 <form action="controller" method="post">
                     <input type="hidden" name="command" value="create_review"/>

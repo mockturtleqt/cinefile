@@ -18,6 +18,10 @@
         <h2>Edit user</h2>
     </div>
 
+    <c:forEach var="validationException" items="${requestScope.validationExceptions}">
+        <h4>${validationException}</h4>
+    </c:forEach>
+
     <form class="edit-form" action="/controller" method="post">
         <input type="hidden" name="command" value="update_user"/>
         <div class="block">
