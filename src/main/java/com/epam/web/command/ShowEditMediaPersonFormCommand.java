@@ -32,8 +32,11 @@ public class ShowEditMediaPersonFormCommand implements ActionCommand {
         try {
             requestContent.setAttribute(OCCUPATION_TYPE_ATTR, OccupationType.values());
             requestContent.setAttribute(GENDER_TYPE_ATTR, GenderType.values());
-            MediaPerson mediaPerson = mediaPersonService.findById(Integer.valueOf(requestContent.getParameter(ID_PARAM)));
-            requestContent.setAttribute(MEDIA_PERSON_ATTR, mediaPerson);
+
+            if (mediaPersonExists(requestContent)) {
+                MediaPerson mediaPerson = mediaPersonService.findById(Integer.valueOf(requestContent.getParameter(ID_PARAM)));
+                requestContent.setAttribute(MEDIA_PERSON_ATTR, mediaPerson);
+            }
             page = ConfigurationManager.getProperty(EDIT_MEDIA_PERSON_FORM_PATH);
         } catch (ServiceException | NoSuchRequestParameterException | InterruptedException | NoSuchPageException e) {
             logger.log(Level.ERROR, e, e);
@@ -41,5 +44,14 @@ public class ShowEditMediaPersonFormCommand implements ActionCommand {
             page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
         }
         return page;
+    }
+
+    private boolean mediaPersonExists(SessionRequestContent requestContent) {
+        try {
+            requestContent.getParameter(ID_PARAM);
+            return true;
+        } catch (NoSuchRequestParameterException e) {
+            return false;
+        }
     }
 }

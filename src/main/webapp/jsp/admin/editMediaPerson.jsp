@@ -7,6 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="../../css/editPage.css" rel="stylesheet"/>
+    <link href="../../css/style.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Edit media person</title>
 </head>
@@ -16,7 +17,6 @@
 <div class="edit-page">
     <div class="greeting">
         <h2>Edit media person</h2>
-        <h2>${requestScope.mediaPerson}</h2>
     </div>
 
     <form class="edit-form" action="/controller" method="post">
@@ -31,13 +31,13 @@
         </c:choose>
         <div class="block">
             <label for="first-name">First name</label><br/>
-            <input type="text" id="first-name" class="first-name" name="first-name"
+            <input type="text" required id="first-name" class="first-name" name="first-name"
                    value="${requestScope.mediaPerson.firstName}">
         </div>
 
         <div class="block">
             <label for="last-name">Last name</label><br/>
-            <input type="text" id="last-name" class="last-name" name="last-name"
+            <input type="text" required id="last-name" class="last-name" name="last-name"
                    value="${requestScope.mediaPerson.lastName}"/>
         </div>
 

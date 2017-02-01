@@ -38,7 +38,7 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
 
     public MediaPerson create(MediaPerson mediaPerson) throws DAOException {
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_MEDIA_PERSON)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_MEDIA_PERSON, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, mediaPerson.getFirstName());
             preparedStatement.setString(2, mediaPerson.getLastName());
             preparedStatement.setString(3, mediaPerson.getBio());
@@ -47,10 +47,14 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             preparedStatement.setDate(6, safeLocalDateToSqlDate(mediaPerson.getBirthday()));
             preparedStatement.setString(7, mediaPerson.getPicture());
             preparedStatement.executeUpdate();
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                mediaPerson.setId(generatedKeys.getInt(1));
+            }
+            return mediaPerson;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(CREATE_MEDIA_PERSON_ERROR_MSG), e);
         }
-        return mediaPerson;
     }
 
     public MediaPerson findById(int id) throws DAOException {
@@ -61,10 +65,10 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             while (resultSet.next()) {
                 mediaPerson = this.createMediaPersonFromResultSet(resultSet);
             }
+            return mediaPerson;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_MEDIA_PERSON_ERROR_MSG), e);
         }
-        return mediaPerson;
     }
 
     public MediaPerson update(MediaPerson mediaPerson) throws DAOException {
@@ -78,10 +82,10 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             preparedStatement.setString(7, mediaPerson.getPicture());
             preparedStatement.setInt(8, mediaPerson.getId());
             preparedStatement.executeUpdate();
+            return mediaPerson;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(UPDATE_MEDIA_PERSON_ERROR_MSG), e);
         }
-        return mediaPerson;
     }
 
     public boolean deleteById(int id) throws DAOException {
@@ -101,10 +105,10 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             while (resultSet.next()) {
                 mediaPeople.add(createMediaPersonFromResultSet(resultSet));
             }
+            return mediaPeople;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_MEDIA_PERSON_ERROR_MSG), e);
         }
-        return mediaPeople;
     }
 
     public List<MediaPerson> findByMovieId(int id) throws DAOException {
@@ -115,10 +119,10 @@ public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
             while (resultSet.next()) {
                 crew.add(createMediaPersonFromResultSet(resultSet));
             }
+            return crew;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_MEDIA_PERSON_ERROR_MSG), e);
         }
-        return crew;
     }
 
     private MediaPerson createMediaPersonFromResultSet(ResultSet resultSet) throws SQLException {

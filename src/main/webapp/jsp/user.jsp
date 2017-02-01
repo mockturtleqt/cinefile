@@ -24,9 +24,8 @@
         <div class="movie">
             <c:set var="admin" value="ADMIN"/>
             <c:if test="${userPage.role == admin}">
-                <a href="controller?command=show_edit_media_person_form">Add media person</a>
-                <br>
-                <a href="controller?command=show_edit_movie_form">Add movie</a>
+                <h3><a href="controller?command=show_edit_media_person_form">Add media person</a></h3>
+                <h3><a href="controller?command=show_edit_movie_form">Add movie</a></h3>
             </c:if>
 
             <div class="poster">
@@ -66,24 +65,30 @@
                         <h4><a href="controller?command=show_movie_page&movieId=${review.movieId}"><c:out
                                 value="${review.movieTitle}"/></a></h4>
 
-                        <c:if test="${not empty sessionScope.user.role}">
-                            <form action="controller" method="post">
-                                <input type="hidden" name="command" value="delete_review"/>
-                                <input type="hidden" name="reviewId" value="${review.id}"/>
-                                <input type="submit" value="Delete"/>
-                            </form>
-                            <input type="button" class="edit-btn" value="Edit"/>
-                            <form action="controller" method="post" class="edit-review-form">
-                                <input type="hidden" name="reviewId" value="${review.id}"/>
-                                <input type="hidden" name="command" value="update_review"/>
-                                <input type="hidden" name="review"/>
-                                <input type="submit" class="save-btn" name="save-btn" value="Save"/>
-                            </form>
-                        </c:if>
-                        <h3 class="review-title"><c:out value="${review.title}"/></h3>
-                        <p class="review-body">
-                            <c:out value="${review.body}"/>
-                        </p>
+                        <div class="btn-row">
+                            <c:if test="${sessionScope.user.id == userPage.id}">
+                                <button class="edit-btn" id="${review.id}"><i class="fa fa-pencil-square-o"
+                                                                              aria-hidden="true"></i></button>
+
+                                <form action="controller" method="post" class="delete-review-form">
+                                    <input type="hidden" name="command" value="delete_review"/>
+                                    <input type="hidden" name="reviewId" value="${review.id}"/>
+                                    <button class="delete-btn"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                </form>
+
+                                <form action="controller" method="post" id="edit-review-form-${review.id}">
+                                    <input type="hidden" name="reviewId" value="${review.id}"/>
+                                    <input type="hidden" name="command" value="update_review"/>
+                                    <input type="hidden" name="review"/>
+                                    <button class="save-btn" name="save-btn" id="save-${review.id}"><i
+                                            class="icon-save"></i>
+                                    </button>
+                                </form>
+                            </c:if>
+                        </div>
+
+                        <h3 id="title-${review.id}" class="review-title"><c:out value="${review.title}"/></h3>
+                        <p id="body-${review.id}" class="review-body"><c:out value="${review.body}"/></p>
                         <p>
                             <c:out value="${review.date}"/>
                             <br>
@@ -96,6 +101,15 @@
             <c:if test="${not empty userPage.ratings}">
             <p><strong><fmt:message key="ratings"/>: </strong></p>
             <c:forEach var="rating" items="${userPage.ratings}">
+                <c:if test="${sessionScope.user.id == userPage.id}">
+                    <form action="controller" method="post" class="delete-rating-form">
+                        <input type="hidden" name="command" value="delete_movie_rating"/>
+                        <input type="hidden" name="rating-id" value="${rating.id}"/>
+                        <div class="btn">
+                            <button class="delete-rating-btn"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                        </div>
+                    </form>
+                </c:if>
                 <p>
                     <a href="controller?command=show_movie_page&movieId=${rating.movieId}">
                             ${rating.movieTitle}

@@ -4,7 +4,6 @@ import com.epam.web.entity.type.GenderType;
 import com.epam.web.entity.type.OccupationType;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class MediaPerson extends Entity {

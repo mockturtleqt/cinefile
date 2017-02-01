@@ -39,7 +39,7 @@ public class LogInCommand implements ActionCommand {
                 Memento memento = Memento.getInstance();
                 page = memento.getPreviousPage();
             } else {
-                requestContent.setSessionAttribute(LOGIN_ERROR_ATTR, MessageManager.getProperty(LOGIN_ERROR_MSG));
+                requestContent.setAttribute(LOGIN_ERROR_ATTR, MessageManager.getProperty(LOGIN_ERROR_MSG));
                 page = ConfigurationManager.getProperty(LOGIN_PAGE_PATH);
             }
         } catch (InterruptedException | NoSuchRequestParameterException | ServiceException e) {

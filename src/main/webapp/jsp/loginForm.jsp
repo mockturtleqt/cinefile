@@ -69,10 +69,10 @@
                    required/>
         </div>
 
-        <div class="field optional email-container">
+        <div class="field required email-container">
             <input type="email" class="email" name="email"
                    title="<fmt:message key="email.requirements"/>"
-                   placeholder="Email"/>
+                   placeholder="Email" required/>
         </div>
 
         <div class="field optional">

@@ -2,13 +2,11 @@ package com.epam.web.service;
 
 import com.epam.web.dao.MovieDAO;
 import com.epam.web.dao.MovieRatingDAO;
-import com.epam.web.dao.ReviewDAO;
 import com.epam.web.dao.UserDAO;
 import com.epam.web.dbConnection.ConnectionPool;
 import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Movie;
 import com.epam.web.entity.MovieRating;
-import com.epam.web.entity.Review;
 import com.epam.web.entity.User;
 import com.epam.web.exception.DAOException;
 import com.epam.web.exception.ServiceException;
@@ -16,7 +14,6 @@ import com.epam.web.exception.ValidationException;
 import com.epam.web.resource.MessageManager;
 import com.epam.web.trigger.MovieRatingTrigger;
 import com.epam.web.validation.MovieRatingValidation;
-import com.sun.xml.internal.bind.v2.TODO;
 
 import java.sql.SQLException;
 
@@ -28,7 +25,7 @@ public class MovieRatingService extends AbstractService<MovieRating> {
     private MovieRatingValidation movieRatingValidation = new MovieRatingValidation();
 
     public MovieRating create(MovieRating movieRating) throws ServiceException, InterruptedException, ValidationException {
-        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()){
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             MovieRatingDAO movieRatingDAO = new MovieRatingDAO(connection);
             MovieRating rating = null;
             if (isValid(movieRating)) {
@@ -55,7 +52,7 @@ public class MovieRatingService extends AbstractService<MovieRating> {
             MovieRatingDAO movieRatingDAO = new MovieRatingDAO(connection);
             MovieRating rating = null;
             if (isValid(movieRating)) {
-                rating  = movieRatingDAO.update(movieRating);
+                rating = movieRatingDAO.update(movieRating);
                 updateUserRating(connection, movieRating);
             }
             return rating;

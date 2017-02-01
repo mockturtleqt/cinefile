@@ -4,7 +4,7 @@ import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.MovieRating;
 import com.epam.web.exception.DAOException;
 import com.epam.web.resource.MessageManager;
-import org.apache.logging.log4j.Level;
+import com.mysql.jdbc.Statement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,43 +39,47 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
 
     public MovieRating findById(int id) throws DAOException {
         MovieRating movieRating = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_MOVIE_RATING_BY_ID);) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_MOVIE_RATING_BY_ID);) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 movieRating = createRatingFromResultSet(resultSet);
             }
+            return movieRating;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_MOVIE_RATING_ERROR_MSG), e);
         }
-        return movieRating;
     }
 
     public MovieRating create(MovieRating movieRating) throws DAOException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_MOVIE_RATING)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_MOVIE_RATING, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, movieRating.getUserId());
             preparedStatement.setInt(2, movieRating.getMovieId());
             preparedStatement.setFloat(3, movieRating.getRate());
             preparedStatement.executeUpdate();
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                movieRating.setId(generatedKeys.getInt(1));
+            }
+            return movieRating;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(CREATE_MOVIE_RATING_ERROR_MSG), e);
         }
-        return movieRating;
     }
 
     public MovieRating update(MovieRating movieRating) throws DAOException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_MOVIE_RATING)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_MOVIE_RATING)) {
             preparedStatement.setFloat(1, movieRating.getRate());
             preparedStatement.setInt(2, movieRating.getId());
             preparedStatement.executeUpdate();
+            return movieRating;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(UPDATE_MOVIE_RATING_ERROR_MSG), e);
         }
-        return movieRating;
     }
 
     public boolean deleteById(int id) throws DAOException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_MOVIE_RATING_BY_ID)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_MOVIE_RATING_BY_ID)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
             return true;
@@ -86,7 +90,7 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
 
     public List<MovieRating> findByUserId(int id) throws DAOException {
         List<MovieRating> ratings = new ArrayList<>();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_RATINGS_BY_USER_ID)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_RATINGS_BY_USER_ID)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -94,40 +98,40 @@ public class MovieRatingDAO extends AbstractDAO<MovieRating> {
                 rating.setMovieTitle(resultSet.getString(MOVIE_TITLE));
                 ratings.add(rating);
             }
+            return ratings;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_MOVIE_RATING_ERROR_MSG), e);
         }
-        return ratings;
     }
 
     public List<MovieRating> findByMovieId(int id) throws DAOException {
         List<MovieRating> ratings = new ArrayList<>();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_RATINGS_BY_MOVIE_ID)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_RATINGS_BY_MOVIE_ID)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 MovieRating rating = createRatingFromResultSet(resultSet);
                 ratings.add(rating);
             }
+            return ratings;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_MOVIE_RATING_ERROR_MSG), e);
         }
-        return ratings;
     }
 
     public MovieRating findByUserIdAndMovieId(int userId, int movieId) throws DAOException {
         MovieRating rating = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_MOVIE_RATING_BY_USER_ID_AND_MOVIE_ID)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_MOVIE_RATING_BY_USER_ID_AND_MOVIE_ID)) {
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, movieId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 rating = createRatingFromResultSet(resultSet);
             }
+            return rating;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_MOVIE_RATING_ERROR_MSG), e);
         }
-        return rating;
     }
 
     private MovieRating createRatingFromResultSet(ResultSet resultSet) throws SQLException {

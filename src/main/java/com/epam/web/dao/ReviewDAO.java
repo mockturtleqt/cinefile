@@ -4,6 +4,7 @@ import com.epam.web.dbConnection.ProxyConnection;
 import com.epam.web.entity.Review;
 import com.epam.web.exception.DAOException;
 import com.epam.web.resource.MessageManager;
+import com.mysql.jdbc.Statement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.epam.web.dbConnection.query.SQLReviewQuery.*;
 
@@ -38,17 +38,21 @@ public class ReviewDAO extends AbstractDAO<Review> {
     }
 
     public Review create(Review review) throws DAOException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_REVIEW)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_REVIEW, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, review.getTitle());
             preparedStatement.setString(2, review.getBody());
             preparedStatement.setInt(3, review.getUserId());
             preparedStatement.setInt(4, review.getMovieId());
             preparedStatement.setDate(5, safeLocalDateToSqlDate(review.getDate()));
             preparedStatement.executeUpdate();
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                review.setId(generatedKeys.getInt(1));
+            }
+            return review;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(CREATE_REVIEW_ERROR_MSG), e);
         }
-        return review;
     }
 
     public Review findById(int id) throws DAOException {
@@ -59,10 +63,10 @@ public class ReviewDAO extends AbstractDAO<Review> {
             while (resultSet.next()) {
                 review = createReviewFromResultSet(resultSet);
             }
+            return review;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_REVIEW_ERROR_MSG), e);
         }
-        return review;
     }
 
     public Review update(Review review) throws DAOException {
@@ -72,10 +76,10 @@ public class ReviewDAO extends AbstractDAO<Review> {
             preparedStatement.setDate(3, safeLocalDateToSqlDate(review.getDate()));
             preparedStatement.setInt(4, review.getId());
             preparedStatement.executeUpdate();
+            return review;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(UPDATE_REVIEW_ERROR_MSG), e);
         }
-        return review;
     }
 
     public boolean deleteById(int id) throws DAOException {
@@ -98,10 +102,10 @@ public class ReviewDAO extends AbstractDAO<Review> {
                 review.setMovieTitle(resultSet.getString(MOVIE_TITLE));
                 reviews.add(review);
             }
+            return reviews;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_REVIEW_ERROR_MSG), e);
         }
-        return reviews;
     }
 
     public List<Review> findByMovieId(int id) throws DAOException {
@@ -114,10 +118,10 @@ public class ReviewDAO extends AbstractDAO<Review> {
                 review.setUserLogin(resultSet.getString(LOGIN));
                 reviews.add(review);
             }
+            return reviews;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_REVIEW_ERROR_MSG), e);
         }
-        return reviews;
     }
 
     private Review createReviewFromResultSet(ResultSet resultSet) throws SQLException {

@@ -2,11 +2,7 @@ package com.epam.web.entity;
 
 import com.epam.web.entity.type.GenreType;
 
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Period;
-import java.util.Date;
 import java.util.List;
 
 public class Movie extends Entity {

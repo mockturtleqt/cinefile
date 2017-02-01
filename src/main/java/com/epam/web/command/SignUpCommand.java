@@ -11,8 +11,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Optional;
-
 public class SignUpCommand implements ActionCommand {
     private static final String USER_ATTR = "user";
     private static final String INDEX_PAGE_PATH = "path.page.index";

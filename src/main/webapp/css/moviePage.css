@@ -8,7 +8,7 @@ label {
 }
 
 /*body {*/
-    /*margin: 20px;*/
+/*margin: 20px;*/
 /*}*/
 
 /****** Style Star Rating Widget *****/
@@ -68,18 +68,74 @@ label {
     width: 600px;
     height: 30px;
     display: block;
-    /*padding: 5px;*/
     margin-top: 15px;
     border-radius: 5px;
 }
 
 .review-body-input {
     width: 600px;
-    height: 100px;
-    display: block;
-    /*padding: 5px;*/
+    height: 200px;
     margin-top: 15px;
     border-radius: 5px;
+    padding: 5px;
+}
+
+.edit-by-admin-btn {
+    background-color: white;
+    color: #111;
+    padding: 5px;
+    border: none;
+    border-radius: 10px;
+    font-size: 52px;
+}
+
+.edit-by-admin-btn a {
+    text-decoration: none;
+    color: black;
+}
+
+.edit-btn {
+    background-color: #111;
+    color: white;
+    font-size: 20px;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.delete-btn,
+.delete-rating-btn {
+    background-color: #111;
+    color: white;
+    font-size: 20px;
+    padding: 3px 5px 3px 5px;
+    border-radius: 5px;
+}
+
+.save-btn {
+    background-color: #111;
+    color: white;
+    font-size: 20px;
+    padding: 3px 4px 3px 4px;
+    border-radius: 5px;
+}
+
+.section-title * {
+    display: inline-block;
+}
+
+.edit-btn:hover,
+.delete-btn:hover,
+.delete-rating-btn:hover,
+.save-btn:hover {
+    background-color: #5e5e5e;
+}
+
+.btn-row * {
+    display: inline-block;
+}
+
+.btn {
+    display: inline-block;
 }
 
 .leave-review-btn {

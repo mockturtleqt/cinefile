@@ -17,19 +17,22 @@
 <body class="home">
 <fmt:setLocale value="${sessionScope.locale}"/>
 <jsp:useBean id="user" class="com.epam.web.entity.User" scope="session"/>
-<%--<c:set var="user" value="${sessionScope.user}"/>--%>
 
 <c:import url="header.jsp"/>
 <section class="section main">
 
     <div class="section-title">
-        <h2>${moviePage.title}</h2>
+        <h2>${moviePage.title}
+            <c:set var="admin" value="ADMIN"/>
+            <c:if test="${user.role == admin}">
+                <button class="edit-by-admin-btn"><a
+                        href="controller?command=show_edit_movie_form&movieId=${moviePage.id}"><i
+                        class="fa fa-pencil-square-o"
+                        aria-hidden="true"></i></a></button>
+            </c:if>
+        </h2>
     </div>
 
-    <c:set var="admin" value="ADMIN"/>
-    <c:if test="${user.role == admin}">
-        <a href="controller?command=show_edit_movie_form&movieId=${moviePage.id}">Edit movie</a>
-    </c:if>
 
     <section class="section-movies">
         <div class="movie">
@@ -60,7 +63,8 @@
 
             <c:if test="${not empty moviePage.rating}">
                 <p><strong><fmt:message key="rating"/>: </strong>
-                <p id="movieRate">${moviePage.rating}</p></p>
+                <p id="movieRate">${moviePage.rating}</p>
+                </p>
             </c:if>
 
             <c:set var="userRate" value="${ctg:getUserRate(moviePage.ratingList, user.id)}"/>
@@ -150,25 +154,42 @@
                     <div class="review">
                         <h4><a href="controller?command=show_user_page&userId=${review.userId}"><c:out
                                 value="${review.userLogin}"/></a></h4>
-                        <c:if test="${user.id == review.userId}">
-                            <form action="controller" method="post">
-                                <input type="hidden" name="command" value="delete_review"/>
-                                <input type="hidden" name="reviewId" value="${review.id}"/>
-                                <input type="submit" value="Delete"/>
-                            </form>
-                            <input type="button" class="edit-btn" value="Edit"/>
-                            <form action="controller" method="post" class="edit-review-form">
-                                <input type="hidden" name="reviewId" value="${review.id}"/>
-                                <input type="hidden" name="command" value="update_review"/>
-                                <input type="hidden" name="review"/>
-                                <input type="submit" class="save-btn" name="save-btn" value="Save"/>
-                            </form>
-                            <c:set var="addedReview" value="true"/>
-                        </c:if>
-                        <h3 class="review-title"><c:out value="${review.title}"/></h3>
-                        <p class="review-body">
-                            <c:out value="${review.body}"/>
-                        </p>
+
+                        <div class="btn-row">
+                            <c:if test="${user.id == review.userId}">
+
+                                <div class="btn">
+                                    <button class="edit-btn" id="${review.id}"><i class="fa fa-pencil-square-o"
+                                                                                  aria-hidden="true"></i></button>
+                                </div>
+
+                                <form action="controller" method="post" class="delete-review-form">
+                                    <input type="hidden" name="command" value="delete_review"/>
+                                    <input type="hidden" name="reviewId" value="${review.id}"/>
+                                    <div class="btn">
+                                        <button class="delete-btn"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <form action="controller" method="post" id="edit-review-form-${review.id}">
+                                    <input type="hidden" name="reviewId" value="${review.id}"/>
+                                    <input type="hidden" name="command" value="update_review"/>
+                                    <input type="hidden" name="review"/>
+
+                                    <div class="btn">
+                                        <button class="save-btn" name="save-btn" id="save-${review.id}"><i
+                                                class="icon-save"></i>
+                                        </button>
+                                    </div>
+
+                                </form>
+                                <c:set var="addedReview" value="true"/>
+                            </c:if>
+                        </div>
+
+                        <h3 id="title-${review.id}" class="review-title"><c:out value="${review.title}"/></h3>
+                        <p id="body-${review.id}" class="review-body"><c:out value="${review.body}"/></p>
                         <p>
                             <c:out value="${review.date}"/>
                             <br>
@@ -184,10 +205,10 @@
                     <input type="hidden" name="command" value="create_review"/>
                     <input type="hidden" name="user-id" value="${user.id}"/>
                     <input type="hidden" name="movie-id" value="${moviePage.id}"/>
-                    <input type="text" name="review-title-input" class="review-title-input"
+                    <input type="text" required name="review-title-input" class="review-title-input"
                            placeholder="<fmt:message key="review.title"/>"/>
-                    <input type="text" name="review-body-input" class="review-body-input"
-                           placeholder="<fmt:message key="review.body"/> ">
+                    <textarea required cols="60" rows="5" name="review-body-input" class="review-body-input"
+                              placeholder="<fmt:message key="review.body"/> "></textarea>
                     <input type="submit" class="leave-review-btn" value="<fmt:message key="leave.review"/> ">
                 </form>
             </c:if>

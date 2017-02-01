@@ -7,7 +7,7 @@
 <head>
     <title>${mediaPersonPage.firstName} ${mediaPersonPage.lastName}</title>
     <meta charset="utf-8">
-    <%--<link href="../css/moviePage.css" rel="stylesheet"/>--%>
+    <link href="../css/moviePage.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="home">
@@ -18,13 +18,16 @@
 <section class="section main">
 
     <div class="section-title">
-        <h2>${mediaPersonPage.firstName} ${mediaPersonPage.lastName}</h2>
+        <h2>${mediaPersonPage.firstName} ${mediaPersonPage.lastName}
+            <c:set var="admin" value="ADMIN"/>
+            <c:if test="${user.role == admin}">
+                <button class="edit-by-admin-btn"><a
+                        href="controller?command=show_edit_media_person_form&mediaPersonId=${mediaPersonPage.id}"><i
+                        class="fa fa-pencil-square-o"
+                        aria-hidden="true"></i></a></button>
+            </c:if>
+        </h2>
     </div>
-
-    <c:set var="admin" value="ADMIN"/>
-    <c:if test="${user.role == admin}">
-        <a href="controller?command=show_edit_media_person_form&mediaPersonId=${mediaPersonPage.id}">Edit media person</a>
-    </c:if>
 
     <section class="section-movies">
         <div class="movie">

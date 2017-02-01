@@ -5,8 +5,6 @@ import com.epam.web.dbConnection.ConnectionPool;
 import com.epam.web.factory.ActionFactory;
 import com.epam.web.memento.Memento;
 import com.epam.web.requestContent.SessionRequestContent;
-import com.epam.web.resource.ConfigurationManager;
-import com.epam.web.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,19 +50,22 @@ public class Controller extends HttpServlet {
         SessionRequestContent requestContent = new SessionRequestContent(request);
         page = command.execute(requestContent);
         requestContent.insertValues(request);
-        setPreviousPage(request);
+        //setPreviousPage(request);
 
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }
 
     private void setPreviousPage(HttpServletRequest request) {
-        String currentPage = CONTROLLER_PATH + request.getQueryString();
+        if ("GET".equals(request.getMethod())) {
+            String currentPage = CONTROLLER_PATH + request.getQueryString();
+            Memento memento = Memento.getInstance();
+            String previousPage = memento.getPreviousPage();
+            memento.setCurrentPage(currentPage);
 
-        Memento memento = Memento.getInstance();
-        String previousPage = memento.getPreviousPage();
-        memento.setCurrentPage(currentPage);
+            request.setAttribute(PREVIOUS_PAGE, previousPage);
+        }
 
-        request.setAttribute(PREVIOUS_PAGE, previousPage);
+
     }
 }

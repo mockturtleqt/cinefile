@@ -2,8 +2,6 @@ package com.epam.web.entity;
 
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
 
 public class Review extends Entity {
     private int id;

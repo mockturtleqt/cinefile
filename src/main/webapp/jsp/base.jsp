@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,12 +10,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="home">
-
+<fmt:setLocale value="${sessionScope.locale}"/>
 <c:import url="header.jsp"/>
 <section class="section main">
     <div class="section-title">
         <h2>
-            ${requestScope.queryName}
+            <c:choose>
+                <c:when test="${not empty requestScope.queryName}">
+                    <fmt:message key="result.prefix"/> "${requestScope.queryName}":
+                </c:when>
+                <c:otherwise>
+                    <fmt:message key="movies"/>
+                </c:otherwise>
+            </c:choose>
         </h2>
     </div>
     <section class="section-movies">

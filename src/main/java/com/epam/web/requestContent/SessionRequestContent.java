@@ -32,7 +32,11 @@ public class SessionRequestContent {
     }
 
     public String[] getParameters(String parameterName) throws NoSuchRequestParameterException {
-        return requestParameters.get(parameterName);
+        if (requestParameters.get(parameterName) != null) {
+            return requestParameters.get(parameterName);
+        } else {
+            throw new NoSuchRequestParameterException(parameterName);
+        }
     }
 
     public void setAttribute(String attributeName, Object attributeValue) {

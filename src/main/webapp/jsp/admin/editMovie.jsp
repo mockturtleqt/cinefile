@@ -7,6 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="../../css/editPage.css" rel="stylesheet"/>
+    <link href="../../css/style.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Edit movie</title>
 </head>
@@ -30,7 +31,7 @@
         </c:choose>
         <div class="block">
             <label for="title">Title</label><br>
-            <input type="text" id="title" class="title" name="title" value="${requestScope.movie.title}"/>
+            <input type="text" required id="title" class="title" name="title" value="${requestScope.movie.title}"/>
         </div>
 
         <div class="block">

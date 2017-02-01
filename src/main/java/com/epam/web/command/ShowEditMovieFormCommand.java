@@ -29,8 +29,10 @@ public class ShowEditMovieFormCommand implements ActionCommand {
         String page;
         try {
             requestContent.setAttribute(GENRE_TYPE_ATTR, GenreType.values());
-            Movie movie = movieService.findById(Integer.valueOf(requestContent.getParameter(ID_PARAM)));
-            requestContent.setAttribute(MOVIE_ATTR, movie);
+            if (movieExists(requestContent)) {
+                Movie movie = movieService.findById(Integer.valueOf(requestContent.getParameter(ID_PARAM)));
+                requestContent.setAttribute(MOVIE_ATTR, movie);
+            }
             page = ConfigurationManager.getProperty(EDIT_MOVIE_FORM_PATH);
         } catch (ServiceException | NoSuchRequestParameterException | InterruptedException | NoSuchPageException e) {
             logger.log(Level.ERROR, e, e);
@@ -38,5 +40,14 @@ public class ShowEditMovieFormCommand implements ActionCommand {
             page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
         }
         return page;
+    }
+
+    private boolean movieExists(SessionRequestContent requestContent) {
+        try {
+            requestContent.getParameter(ID_PARAM);
+            return true;
+        } catch (NoSuchRequestParameterException e) {
+            return false;
+        }
     }
 }

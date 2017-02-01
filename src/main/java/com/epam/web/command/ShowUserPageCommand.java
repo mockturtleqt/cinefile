@@ -7,7 +7,6 @@ import com.epam.web.exception.ServiceException;
 import com.epam.web.requestContent.SessionRequestContent;
 import com.epam.web.resource.ConfigurationManager;
 import com.epam.web.service.UserService;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

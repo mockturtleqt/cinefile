@@ -139,6 +139,12 @@ public enum CommandEnum {
         }
     },
 
+    DELETE_MOVIE_RATING {
+        {
+            this.command = new DeleteMovieRatingCommand();
+        }
+    },
+
     DELETE_REVIEW {
         {
             this.command = new DeleteReviewCommand();

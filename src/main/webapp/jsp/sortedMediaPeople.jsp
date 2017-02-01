@@ -14,7 +14,7 @@
 <c:import url="header.jsp"/>
 <section class="section main">
     <div class="section-title">
-        <h2><fmt:message key="top.movies.msg"/></h2>
+        <h2><fmt:message key="celebs"/></h2>
     </div>
     <section class="section-movies">
         <ol>

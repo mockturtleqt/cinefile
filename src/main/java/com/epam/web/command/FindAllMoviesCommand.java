@@ -13,7 +13,7 @@ import java.util.List;
 
 public class FindAllMoviesCommand implements ActionCommand {
     private static final String MOVIE_ATTR = "movie";
-    private static final String SORTED_MOVIES_PAGE_PATH = "path.page.sorted.movies";
+    private static final String MOVIES_PAGE_PATH = "path.page.base";
     private static final String ERROR_PAGE_PATH = "path.page.error";
     private static final String ERROR_ATTR = "errorMsg";
 
@@ -27,7 +27,7 @@ public class FindAllMoviesCommand implements ActionCommand {
         try {
             List<Movie> movieList = movieService.findAll();
             requestContent.setAttribute(MOVIE_ATTR, movieList);
-            page = ConfigurationManager.getProperty(SORTED_MOVIES_PAGE_PATH);
+            page = ConfigurationManager.getProperty(MOVIES_PAGE_PATH);
         } catch (ServiceException | InterruptedException e) {
             logger.log(Level.ERROR, e, e);
             requestContent.setAttribute(ERROR_ATTR, e.getMessage());

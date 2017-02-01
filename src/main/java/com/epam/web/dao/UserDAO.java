@@ -6,6 +6,7 @@ import com.epam.web.entity.type.GenderType;
 import com.epam.web.entity.type.RoleType;
 import com.epam.web.exception.DAOException;
 import com.epam.web.resource.MessageManager;
+import com.mysql.jdbc.Statement;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,17 +47,21 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     public User create(User user) throws DAOException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_USER)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, DigestUtils.sha256Hex(user.getPassword())); //hashing password
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getFirstName());
             preparedStatement.setString(5, user.getLastName());
             preparedStatement.executeUpdate();
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                user.setId(generatedKeys.getInt(1));
+            }
+            return user;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(CREATE_USER_ERROR_MSG), e);
         }
-        return user;
     }
 
     public User findById(int id) throws DAOException {
@@ -67,10 +72,10 @@ public class UserDAO extends AbstractDAO<User> {
             while (resultSet.next()) {
                 user = createUserFromResultSet(resultSet);
             }
+            return user;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_USER_ERROR_MSG), e);
         }
-        return user;
     }
 
     public User update(User user) throws DAOException {
@@ -82,12 +87,11 @@ public class UserDAO extends AbstractDAO<User> {
             preparedStatement.setDate(5, safeLocalDateToSqlDate(user.getBirthday()));
             preparedStatement.setString(6, user.getPicture());
             preparedStatement.setInt(7, user.getId());
-
             preparedStatement.executeUpdate();
+            return user;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(UPDATE_USER_ERROR_MSG), e);
         }
-        return user;
     }
 
     public boolean deleteById(int id) throws DAOException {
@@ -109,32 +113,11 @@ public class UserDAO extends AbstractDAO<User> {
             while (resultSet.next()) {
                 user = createUserFromResultSet(resultSet);
             }
+            return user;
         } catch (SQLException e) {
             throw new DAOException(MessageManager.getProperty(FIND_USER_ERROR_MSG), e);
         }
-        return user;
     }
-//
-//    public boolean hasRatedThisMovie(int movieId, int userId) throws DAOException {
-//        boolean hasRated = false;
-//        PreparedStatement preparedStatement = null;
-//        try {
-//            preparedStatement = connection.prepareStatement(SQL_SELECT_USERS_WHO_RATED_THIS_MOVIE);
-//            preparedStatement.setInt(1, movieId);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                if (userId == resultSet.getInt(ID)) {
-//                    hasRated = true;
-//                    break;
-//                }
-//            }
-//        } catch (SQLException e) {
-//            logger.log(Level.ERROR, e);
-//        } finally {
-//            connection.closeStatement(preparedStatement);
-//        }
-//        return hasRated;
-//    }
 
     public void updateUserRating(int userId, int newUserRating) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_USER_RATING)) {

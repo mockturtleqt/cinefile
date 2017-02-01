@@ -27,6 +27,8 @@ public class CreateMediaPersonCommand implements ActionCommand {
     private static final String PICTURE_PARAM = "picture";
     private static final String ERROR_PAGE_PATH = "path.page.error";
     private static final String ERROR_ATTR = "errorMsg";
+    private static final String MEDIA_PERSON_ATTR = "mediaPersonPage";
+    private static final String MEDIA_PERSON_PAGE_PATH = "path.page.media.person";
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -36,9 +38,9 @@ public class CreateMediaPersonCommand implements ActionCommand {
     public String execute(SessionRequestContent requestContent) {
         String page;
         try {
-            mediaPersonService.create(convertToMediaPerson(requestContent));
-            Memento memento = Memento.getInstance();
-            page = memento.getPreviousPage();
+            MediaPerson mediaPerson = mediaPersonService.create(convertToMediaPerson(requestContent));
+            requestContent.setAttribute(MEDIA_PERSON_ATTR, mediaPerson);
+            page = ConfigurationManager.getProperty(MEDIA_PERSON_PAGE_PATH);
         } catch (ServiceException | NoSuchRequestParameterException e) {
             logger.log(Level.ERROR, e, e);
             requestContent.setAttribute(ERROR_ATTR, e.getMessage());
@@ -52,16 +54,22 @@ public class CreateMediaPersonCommand implements ActionCommand {
         mediaPerson.setFirstName(requestContent.getParameter(FIRST_NAME_PARAM));
         mediaPerson.setLastName(requestContent.getParameter(LAST_NAME_PARAM));
         mediaPerson.setBio(requestContent.getParameter(BIOGRAPHY_PARAM));
-        List<OccupationType> occupationTypes = new ArrayList<>();
-        for (String occupation : requestContent.getParameters(OCCUPATION_PARAM)) {
-            occupationTypes.add(OccupationType.valueOf(occupation.toUpperCase()));
+        try {
+            List<OccupationType> occupationTypes = new ArrayList<>();
+            for (String occupation : requestContent.getParameters(OCCUPATION_PARAM)) {
+                occupationTypes.add(OccupationType.valueOf(occupation.toUpperCase()));
+            }
+            mediaPerson.setOccupation(occupationTypes);
+            String gender = requestContent.getParameter(GENDER_PARAM);
+            GenderType genderType = (gender != null) ? GenderType.valueOf(gender) : null;
+            mediaPerson.setGender(genderType);
+        } catch (NoSuchRequestParameterException e) {
+            logger.log(Level.ERROR, e, e);
         }
-        mediaPerson.setOccupation(occupationTypes);
-        String gender = requestContent.getParameter(GENDER_PARAM);
-        GenderType genderType = (gender != null) ? GenderType.valueOf(gender) : null;
-        mediaPerson.setGender(genderType);
+
         String stringBirthday = requestContent.getParameter(BIRTHDAY_PARAM);
-        LocalDate birthday = (stringBirthday != null) ? LocalDate.parse(stringBirthday) : null;
+        LocalDate birthday = (stringBirthday != null && !stringBirthday.isEmpty()) ?
+                LocalDate.parse(stringBirthday) : null;
         mediaPerson.setBirthday(birthday);
         mediaPerson.setPicture(requestContent.getParameter(PICTURE_PARAM));
 

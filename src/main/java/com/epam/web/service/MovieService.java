@@ -15,7 +15,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,7 +76,7 @@ public class MovieService extends AbstractService<Movie> {
 
     public List<Movie> findAll() throws ServiceException, InterruptedException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
-             MovieDAO movieDAO = new MovieDAO(connection);
+            MovieDAO movieDAO = new MovieDAO(connection);
             return movieDAO.findAll();
         } catch (DAOException | SQLException e) {
             throw new ServiceException(MessageManager.getProperty(FIND_MOVIE_ERROR_MSG), e);
