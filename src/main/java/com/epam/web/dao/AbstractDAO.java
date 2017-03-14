@@ -17,7 +17,7 @@ public abstract class AbstractDAO<T extends Entity> {
     public AbstractDAO(ProxyConnection connection) {
         this.connection = connection;
     }
-
+ 
     public abstract T create(T entity) throws DAOException;
 
     public abstract T findById(int id) throws DAOException;
