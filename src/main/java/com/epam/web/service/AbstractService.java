@@ -1,9 +1,9 @@
 package com.epam.web.service;
 
-import com.epam.web.entity.Entity;
+import com.epam.web.domain.Entity;
 import com.epam.web.exception.NoSuchPageException;
-import com.epam.web.exception.ServiceException;
 import com.epam.web.exception.ValidationException;
+import com.epam.web.service.exception.ServiceException;
 
 public abstract class AbstractService<T extends Entity> {
 

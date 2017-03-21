@@ -9,22 +9,26 @@
     <uri>customtags</uri>
     <function>
         <name>containsGenreType</name>
-        <function-class>com.epam.web.customTag.ContainsFunction</function-class>
-        <function-signature>boolean containsGenreType(java.util.List,com.epam.web.entity.type.GenreType)</function-signature>
+        <function-class>com.epam.web.util.customTag.ContainsFunction</function-class>
+        <function-signature>boolean containsGenreType(java.util.List,com.epam.web.domain.type.GenreType)
+        </function-signature>
     </function>
     <function>
         <name>containsOccupationType</name>
-        <function-class>com.epam.web.customTag.ContainsFunction</function-class>
-        <function-signature>boolean containsOccupationType(java.util.List,com.epam.web.entity.type.OccupationType)</function-signature>
+        <function-class>com.epam.web.util.customTag.ContainsFunction</function-class>
+        <function-signature>boolean containsOccupationType(java.util.List,com.epam.web.domain.type.OccupationType)
+        </function-signature>
     </function>
     <function>
         <name>equalsGender</name>
-        <function-class>com.epam.web.customTag.ContainsFunction</function-class>
-        <function-signature>boolean equalsGender(com.epam.web.entity.type.GenderType,com.epam.web.entity.type.GenderType)</function-signature>
+        <function-class>com.epam.web.util.customTag.ContainsFunction</function-class>
+        <function-signature>boolean
+            equalsGender(com.epam.web.domain.type.GenderType,com.epam.web.domain.type.GenderType)
+        </function-signature>
     </function>
     <function>
         <name>getUserRate</name>
-        <function-class>com.epam.web.customTag.ContainsFunction</function-class>
-        <function-signature>com.epam.web.entity.MovieRating getUserRate(java.util.List,int)</function-signature>
+        <function-class>com.epam.web.util.customTag.ContainsFunction</function-class>
+        <function-signature>com.epam.web.domain.MovieRating getUserRate(java.util.List,int)</function-signature>
     </function>
 </taglib>

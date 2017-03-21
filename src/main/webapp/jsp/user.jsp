@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
-<jsp:useBean id="userPage" scope="request" class="com.epam.web.entity.User"/>
+<jsp:useBean id="userPage" scope="request" class="com.epam.web.domain.User"/>
 <head>
     <title>${userPage.login}</title>
     <meta charset="utf-8">

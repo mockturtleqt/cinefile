@@ -1,5 +1,9 @@
 package com.epam.web.command;
 
+import com.epam.web.command.factory.impl.*;
+import com.epam.web.command.factory.impl.admin.*;
+import com.epam.web.command.factory.impl.user.*;
+
 public enum CommandEnum {
     LOGIN {
         {

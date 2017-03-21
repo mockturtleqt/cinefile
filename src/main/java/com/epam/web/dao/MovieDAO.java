@@ -1,10 +1,10 @@
 package com.epam.web.dao;
 
-import com.epam.web.dbConnection.ProxyConnection;
-import com.epam.web.entity.Movie;
-import com.epam.web.entity.type.GenreType;
-import com.epam.web.exception.DAOException;
-import com.epam.web.resource.MessageManager;
+import com.epam.web.dao.exception.DAOException;
+import com.epam.web.domain.Movie;
+import com.epam.web.domain.type.GenreType;
+import com.epam.web.util.dbConnection.ProxyConnection;
+import com.epam.web.util.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.epam.web.dbConnection.query.SQLMovieQuery.*;
+import static com.epam.web.util.dbConnection.query.SQLMovieQuery.*;
 
 public class MovieDAO extends AbstractDAO<Movie> {
     private static final String ID = "id";

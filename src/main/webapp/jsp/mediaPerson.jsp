@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
-<jsp:useBean id="mediaPersonPage" scope="request" class="com.epam.web.entity.MediaPerson"/>
+<jsp:useBean id="mediaPersonPage" scope="request" class="com.epam.web.domain.MediaPerson"/>
 <head>
     <title>${mediaPersonPage.firstName} ${mediaPersonPage.lastName}</title>
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
 </head>
 <body class="home">
 <fmt:setLocale value="${sessionScope.locale}"/>
-<jsp:useBean id="user" class="com.epam.web.entity.User" scope="session"/>
+<jsp:useBean id="user" class="com.epam.web.domain.User" scope="session"/>
 
 <c:import url="header.jsp"/>
 <section class="section main">

@@ -1,10 +1,10 @@
 package com.epam.web.controller;
 
 import com.epam.web.command.ActionCommand;
-import com.epam.web.dbConnection.ConnectionPool;
-import com.epam.web.factory.ActionFactory;
-import com.epam.web.memento.Memento;
-import com.epam.web.requestContent.SessionRequestContent;
+import com.epam.web.command.factory.ActionFactory;
+import com.epam.web.controller.requestContent.SessionRequestContent;
+import com.epam.web.util.dbConnection.ConnectionPool;
+import com.epam.web.util.memento.Memento;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -3,17 +3,17 @@ package com.epam.web.service;
 import com.epam.web.dao.MovieDAO;
 import com.epam.web.dao.MovieRatingDAO;
 import com.epam.web.dao.UserDAO;
-import com.epam.web.dbConnection.ConnectionPool;
-import com.epam.web.dbConnection.ProxyConnection;
-import com.epam.web.entity.Movie;
-import com.epam.web.entity.MovieRating;
-import com.epam.web.entity.User;
-import com.epam.web.exception.DAOException;
-import com.epam.web.exception.ServiceException;
+import com.epam.web.dao.exception.DAOException;
+import com.epam.web.domain.Movie;
+import com.epam.web.domain.MovieRating;
+import com.epam.web.domain.User;
 import com.epam.web.exception.ValidationException;
-import com.epam.web.resource.MessageManager;
-import com.epam.web.trigger.MovieRatingTrigger;
-import com.epam.web.validation.MovieRatingValidation;
+import com.epam.web.service.exception.ServiceException;
+import com.epam.web.util.dbConnection.ConnectionPool;
+import com.epam.web.util.dbConnection.ProxyConnection;
+import com.epam.web.util.resource.MessageManager;
+import com.epam.web.util.trigger.MovieRatingTrigger;
+import com.epam.web.util.validation.MovieRatingValidation;
 
 import java.sql.SQLException;
 

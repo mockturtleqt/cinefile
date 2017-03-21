@@ -4,7 +4,7 @@
 <%@ taglib prefix="ctg" uri="customtags" %>
 <!DOCTYPE html>
 <html>
-<jsp:useBean id="moviePage" scope="request" class="com.epam.web.entity.Movie"/>
+<jsp:useBean id="moviePage" scope="request" class="com.epam.web.domain.Movie"/>
 <head>
     <title>${moviePage.title}</title>
     <meta charset="utf-8">
@@ -16,7 +16,7 @@
 </head>
 <body class="home">
 <fmt:setLocale value="${sessionScope.locale}"/>
-<jsp:useBean id="user" class="com.epam.web.entity.User" scope="session"/>
+<jsp:useBean id="user" class="com.epam.web.domain.User" scope="session"/>
 
 <c:import url="header.jsp"/>
 <section class="section main">

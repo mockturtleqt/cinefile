@@ -36,7 +36,7 @@
                 <a href="controller?command=find_all_media_people"><fmt:message key="celebs"/></a>
             </li>
 
-            <%--<jsp:useBean id="user" scope="session" class="com.epam.web.entity.User"/>--%>
+            <%--<jsp:useBean id="user" scope="session" class="com.epam.web.domain.User"/>--%>
             <c:set var="user" value="${sessionScope.user}"/>
             <c:choose>
                 <c:when test="${not empty user.login}">

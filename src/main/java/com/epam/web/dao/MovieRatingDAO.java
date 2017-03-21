@@ -1,9 +1,9 @@
 package com.epam.web.dao;
 
-import com.epam.web.dbConnection.ProxyConnection;
-import com.epam.web.entity.MovieRating;
-import com.epam.web.exception.DAOException;
-import com.epam.web.resource.MessageManager;
+import com.epam.web.dao.exception.DAOException;
+import com.epam.web.domain.MovieRating;
+import com.epam.web.util.dbConnection.ProxyConnection;
+import com.epam.web.util.resource.MessageManager;
 import com.mysql.jdbc.Statement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.epam.web.dbConnection.query.SQLMovieRatingQuery.*;
+import static com.epam.web.util.dbConnection.query.SQLMovieRatingQuery.*;
 
 public class MovieRatingDAO extends AbstractDAO<MovieRating> {
     private static final String ID = "id";

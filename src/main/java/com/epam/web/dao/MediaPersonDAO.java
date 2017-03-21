@@ -1,11 +1,11 @@
 package com.epam.web.dao;
 
-import com.epam.web.dbConnection.ProxyConnection;
-import com.epam.web.entity.MediaPerson;
-import com.epam.web.entity.type.GenderType;
-import com.epam.web.entity.type.OccupationType;
-import com.epam.web.exception.DAOException;
-import com.epam.web.resource.MessageManager;
+import com.epam.web.dao.exception.DAOException;
+import com.epam.web.domain.MediaPerson;
+import com.epam.web.domain.type.GenderType;
+import com.epam.web.domain.type.OccupationType;
+import com.epam.web.util.dbConnection.ProxyConnection;
+import com.epam.web.util.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.epam.web.dbConnection.query.SQLMediaPersonQuery.*;
+import static com.epam.web.util.dbConnection.query.SQLMediaPersonQuery.*;
 
 public class MediaPersonDAO extends AbstractDAO<MediaPerson> {
     private static final String ID = "id";

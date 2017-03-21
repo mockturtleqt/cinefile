@@ -1,11 +1,11 @@
 package com.epam.web.dao;
 
-import com.epam.web.dbConnection.ProxyConnection;
-import com.epam.web.entity.User;
-import com.epam.web.entity.type.GenderType;
-import com.epam.web.entity.type.RoleType;
-import com.epam.web.exception.DAOException;
-import com.epam.web.resource.MessageManager;
+import com.epam.web.dao.exception.DAOException;
+import com.epam.web.domain.User;
+import com.epam.web.domain.type.GenderType;
+import com.epam.web.domain.type.RoleType;
+import com.epam.web.util.dbConnection.ProxyConnection;
+import com.epam.web.util.resource.MessageManager;
 import com.mysql.jdbc.Statement;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-import static com.epam.web.dbConnection.query.SQLUserQuery.*;
+import static com.epam.web.util.dbConnection.query.SQLUserQuery.*;
 
 public class UserDAO extends AbstractDAO<User> {
     private static final String ID = "id";

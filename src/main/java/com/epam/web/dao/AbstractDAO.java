@@ -1,8 +1,8 @@
 package com.epam.web.dao;
 
-import com.epam.web.dbConnection.ProxyConnection;
-import com.epam.web.entity.Entity;
-import com.epam.web.exception.DAOException;
+import com.epam.web.dao.exception.DAOException;
+import com.epam.web.domain.Entity;
+import com.epam.web.util.dbConnection.ProxyConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
